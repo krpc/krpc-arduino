@@ -82,6 +82,10 @@ typedef krpc_object_t krpc_SpaceCenter_Control_t;
  */
 typedef krpc_object_t krpc_SpaceCenter_ControlSurface_t;
 /**
+ * Represents crew in a vessel. Can be obtained using SpaceCenter::Vessel::crew.
+ */
+typedef krpc_object_t krpc_SpaceCenter_CrewMember_t;
+/**
  * A decoupler. Obtained by calling SpaceCenter::Part::decoupler
  */
 typedef krpc_object_t krpc_SpaceCenter_Decoupler_t;
@@ -1044,6 +1048,26 @@ krpc_error_t krpc_decode_list_object(
 
 #endif  // KRPC_TYPE_LIST_OBJECT
 
+#ifndef KRPC_TYPE_LIST_OBJECT
+#define KRPC_TYPE_LIST_OBJECT
+
+typedef struct krpc_list_object_s krpc_list_object_t;
+struct krpc_list_object_s {
+  size_t size;
+  krpc_SpaceCenter_CrewMember_t * items;
+};
+
+krpc_error_t krpc_encode_list_object(
+  pb_ostream_t * stream, const krpc_list_object_t * value);
+krpc_error_t krpc_encode_size_list_object(
+  size_t * size, const krpc_list_object_t * value);
+bool krpc_encode_callback_list_object(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
+krpc_error_t krpc_decode_list_object(
+  pb_istream_t * stream, krpc_list_object_t * value);
+
+#endif  // KRPC_TYPE_LIST_OBJECT
+
 #ifndef KRPC_TYPE_SET_STRING
 #define KRPC_TYPE_SET_STRING
 
@@ -1442,6 +1466,29 @@ typedef enum {
    */
   KRPC_SPACECENTER_CONTROLSTATE_NONE = 2
 } krpc_SpaceCenter_ControlState_t;
+
+/**
+ * The type of a crew member.
+ * See SpaceCenter::CrewMember::type.
+ */
+typedef enum {
+  /**
+   * An applicant for crew.
+   */
+  KRPC_SPACECENTER_CREWMEMBERTYPE_APPLICANT = 0,
+  /**
+   * Rocket crew.
+   */
+  KRPC_SPACECENTER_CREWMEMBERTYPE_CREW = 1,
+  /**
+   * A tourist.
+   */
+  KRPC_SPACECENTER_CREWMEMBERTYPE_TOURIST = 2,
+  /**
+   * An unowned crew member.
+   */
+  KRPC_SPACECENTER_CREWMEMBERTYPE_UNOWNED = 3
+} krpc_SpaceCenter_CrewMemberType_t;
 
 /**
  * The state of a docking port. See SpaceCenter::DockingPort::state.
@@ -3859,6 +3906,76 @@ krpc_error_t krpc_SpaceCenter_ControlSurface_Deployed(krpc_connection_t connecti
  * Whether the control surface has yaw control enabled.
  */
 krpc_error_t krpc_SpaceCenter_ControlSurface_set_YawEnabled(krpc_connection_t connection, krpc_SpaceCenter_ControlSurface_t instance, bool value);
+
+/**
+ * The crew members stupidity.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_set_Stupidity(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, float value);
+
+/**
+ * The crew members name.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_set_Name(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, const char * value);
+
+/**
+ * The crew members experience.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_set_Experience(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, float value);
+
+/**
+ * Whether the crew member is on a mission.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_OnMission(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_CrewMember_t instance);
+
+/**
+ * Whether the crew member is a veteran.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_Veteran(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_CrewMember_t instance);
+
+/**
+ * The crew members experience.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_Experience(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_CrewMember_t instance);
+
+/**
+ * The crew members stupidity.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_Stupidity(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_CrewMember_t instance);
+
+/**
+ * The crew members courage.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_Courage(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_CrewMember_t instance);
+
+/**
+ * The crew members courage.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_set_Courage(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, float value);
+
+/**
+ * Whether the crew member is a badass.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_set_Badass(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, bool value);
+
+/**
+ * Whether the crew member is a badass.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_Badass(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_CrewMember_t instance);
+
+/**
+ * Whether the crew member is a veteran.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_set_Veteran(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, bool value);
+
+/**
+ * The type of crew member.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_Type(krpc_connection_t connection, krpc_SpaceCenter_CrewMemberType_t * returnValue, krpc_SpaceCenter_CrewMember_t instance);
+
+/**
+ * The crew members name.
+ */
+krpc_error_t krpc_SpaceCenter_CrewMember_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_CrewMember_t instance);
 
 /**
  * Fires the decoupler. Returns the new vessel created when the decoupler fires.
@@ -6765,6 +6882,11 @@ krpc_error_t krpc_SpaceCenter_Vessel_MaxVacuumThrust(krpc_connection_t connectio
 krpc_error_t krpc_SpaceCenter_Vessel_ReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_Vessel_t instance);
 
 /**
+ * The crew in the vessel.
+ */
+krpc_error_t krpc_SpaceCenter_Vessel_Crew(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Vessel_t instance);
+
+/**
  * The maximum torque that parts (excluding reaction wheels, gimballed engines,
  * RCS and control surfaces) can generate.
  * Returns the torques in N.m around each of the coordinate axes of the
@@ -6869,6 +6991,16 @@ krpc_error_t krpc_SpaceCenter_Vessel_Name(krpc_connection_t connection, char * *
  * The current orbit of the vessel.
  */
 krpc_error_t krpc_SpaceCenter_Vessel_Orbit(krpc_connection_t connection, krpc_SpaceCenter_Orbit_t * returnValue, krpc_SpaceCenter_Vessel_t instance);
+
+/**
+ * The number of crew that are occupying the vessel.
+ */
+krpc_error_t krpc_SpaceCenter_Vessel_CrewCount(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Vessel_t instance);
+
+/**
+ * The number of crew that can occupy the vessel.
+ */
+krpc_error_t krpc_SpaceCenter_Vessel_CrewCapacity(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Vessel_t instance);
 
 /**
  * The total mass of the vessel, including resources, in kg.
@@ -10718,6 +10850,87 @@ inline krpc_error_t krpc_decode_list_object(
   value->size = 0;
   if (value->items == NULL) {
     value->items = (krpc_SpaceCenter_Light_t*)krpc_calloc(KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_SpaceCenter_Light_t));
+    state.capacity = KRPC_ALLOC_BLOCK_SIZE;
+  }
+  krpc_schema_List message = krpc_schema_List_init_default;
+  message.items.funcs.decode = &krpc_decode_callback_item_list_object;
+  message.items.arg = &state;
+  KRPC_RETURN_ON_ERROR(krpc_decode_message_List(stream, &message));
+  return KRPC_OK;
+}
+
+#endif  // KRPC_IMPL_TYPE_LIST_OBJECT
+
+#ifndef KRPC_IMPL_TYPE_LIST_OBJECT
+#define KRPC_IMPL_TYPE_LIST_OBJECT
+
+static bool krpc_encode_callback_items_list_object(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  const krpc_list_object_t * value = (const krpc_list_object_t*)(*arg);
+  size_t i = 0;
+  for (; i < value->size; i++) {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for list item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_object(&size, value->items[i]));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for list item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_object(stream, value->items[i]));
+  }
+  return true;
+}
+
+inline krpc_error_t krpc_encode_list_object(
+  pb_ostream_t * stream, const krpc_list_object_t * value) {
+  krpc_schema_List message = krpc_schema_List_init_default;
+  message.items.funcs.encode = &krpc_encode_callback_items_list_object;
+  message.items.arg = (krpc_list_object_t*)value;
+  KRPC_RETURN_ON_ERROR(krpc_encode_message_List(stream, &message));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_encode_size_list_object(
+  size_t * size, const krpc_list_object_t * value) {
+  pb_ostream_t stream = PB_OSTREAM_SIZING;
+  KRPC_RETURN_ON_ERROR(krpc_encode_list_object(&stream, value));
+  *size = stream.bytes_written;
+  return KRPC_OK;
+}
+
+inline bool krpc_encode_callback_list_object(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  if (!pb_encode_tag_for_field(stream, field))
+    KRPC_CALLBACK_RETURN_ERROR("encoding tag for list_object");
+  krpc_list_object_t * value = (krpc_list_object_t*)(*arg);
+  size_t size;
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_list_object(&size, value));
+  if (!pb_encode_varint(stream, size))
+    KRPC_CALLBACK_RETURN_ERROR("encoding size for list_object");
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_list_object(stream, value));
+  return true;
+}
+
+static bool krpc_decode_callback_item_list_object(
+  pb_istream_t * stream, const pb_field_t * field, void ** arg) {
+  typedef struct { size_t capacity; krpc_list_object_t * value; } State;
+  State * state = (State*)(*arg);
+  size_t i = state->value->size;
+  state->value->size++;
+  if (state->capacity > 0 && state->value->size > state->capacity) {
+    state->value->items = (krpc_SpaceCenter_CrewMember_t*)krpc_recalloc(state->value->items, state->capacity, KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_SpaceCenter_CrewMember_t));
+    state->capacity += KRPC_ALLOC_BLOCK_SIZE;
+  }
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_object(stream, &state->value->items[i]));
+  return true;
+}
+
+inline krpc_error_t krpc_decode_list_object(
+  pb_istream_t * stream, krpc_list_object_t * value) {
+  typedef struct { size_t capacity; krpc_list_object_t * value; } State;
+  State state = { 0, value };
+  value->size = 0;
+  if (value->items == NULL) {
+    value->items = (krpc_SpaceCenter_CrewMember_t*)krpc_calloc(KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_SpaceCenter_CrewMember_t));
     state.capacity = KRPC_ALLOC_BLOCK_SIZE;
   }
   krpc_schema_List message = krpc_schema_List_init_default;
@@ -16367,6 +16580,220 @@ inline krpc_error_t krpc_SpaceCenter_ControlSurface_set_YawEnabled(krpc_connecti
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_set_Stupidity(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_set_Stupidity", 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_set_Name(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, const char * value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_set_Name", 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_set_Experience(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_set_Experience", 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_OnMission(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_CrewMember_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_get_OnMission", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_Veteran(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_CrewMember_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_get_Veteran", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_Experience(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_CrewMember_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_get_Experience", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_Stupidity(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_CrewMember_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_get_Stupidity", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_Courage(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_CrewMember_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_get_Courage", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_set_Courage(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_set_Courage", 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_set_Badass(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_set_Badass", 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_Badass(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_CrewMember_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_get_Badass", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_set_Veteran(krpc_connection_t connection, krpc_SpaceCenter_CrewMember_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_set_Veteran", 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_Type(krpc_connection_t connection, krpc_SpaceCenter_CrewMemberType_t * returnValue, krpc_SpaceCenter_CrewMember_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_get_Type", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_enum(&_stream, (int*)returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_CrewMember_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_CrewMember_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "CrewMember_get_Name", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
+  }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
@@ -24107,6 +24534,23 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_ReferenceFrame(krpc_connection_t con
   return KRPC_OK;
 }
 
+inline krpc_error_t krpc_SpaceCenter_Vessel_Crew(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "Vessel_get_Crew", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableOtherTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
@@ -24349,6 +24793,40 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Orbit(krpc_connection_t connection, 
     pb_istream_t _stream;
     KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
     KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Vessel_CrewCount(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "Vessel_get_CrewCount", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_int32(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Vessel_CrewCapacity(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, "SpaceCenter", "Vessel_get_CrewCapacity", 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_int32(&_stream, returnValue));
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
