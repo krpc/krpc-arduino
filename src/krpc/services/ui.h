@@ -1031,7 +1031,7 @@ inline krpc_error_t krpc_decode_list_string(
 inline krpc_error_t krpc_UI_AddCanvas(krpc_connection_t connection, krpc_UI_Canvas_t * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "UI", "AddCanvas", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -1047,7 +1047,7 @@ inline krpc_error_t krpc_UI_AddCanvas(krpc_connection_t connection, krpc_UI_Canv
 inline krpc_error_t krpc_UI_Clear(krpc_connection_t connection, bool clientOnly) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Clear", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 3, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_bool, &clientOnly));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1059,7 +1059,7 @@ inline krpc_error_t krpc_UI_Clear(krpc_connection_t connection, bool clientOnly)
 inline krpc_error_t krpc_UI_Message(krpc_connection_t connection, const char * content, float duration, krpc_UI_MessagePosition_t position) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Message", 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 2, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &content));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &duration));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_enum, &position));
@@ -1073,7 +1073,7 @@ inline krpc_error_t krpc_UI_Message(krpc_connection_t connection, const char * c
 inline krpc_error_t krpc_UI_StockCanvas(krpc_connection_t connection, krpc_UI_Canvas_t * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "UI", "get_StockCanvas", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 4, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -1089,7 +1089,7 @@ inline krpc_error_t krpc_UI_StockCanvas(krpc_connection_t connection, krpc_UI_Ca
 inline krpc_error_t krpc_UI_Button_Remove(krpc_connection_t connection, krpc_UI_Button_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Button_Remove", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 5, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1101,7 +1101,7 @@ inline krpc_error_t krpc_UI_Button_Remove(krpc_connection_t connection, krpc_UI_
 inline krpc_error_t krpc_UI_Button_Clicked(krpc_connection_t connection, bool * returnValue, krpc_UI_Button_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Button_get_Clicked", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 8, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1118,7 +1118,7 @@ inline krpc_error_t krpc_UI_Button_Clicked(krpc_connection_t connection, bool * 
 inline krpc_error_t krpc_UI_Button_set_Visible(krpc_connection_t connection, krpc_UI_Button_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Button_set_Visible", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 11, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1131,7 +1131,7 @@ inline krpc_error_t krpc_UI_Button_set_Visible(krpc_connection_t connection, krp
 inline krpc_error_t krpc_UI_Button_set_Clicked(krpc_connection_t connection, krpc_UI_Button_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Button_set_Clicked", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 9, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1144,7 +1144,7 @@ inline krpc_error_t krpc_UI_Button_set_Clicked(krpc_connection_t connection, krp
 inline krpc_error_t krpc_UI_Button_RectTransform(krpc_connection_t connection, krpc_UI_RectTransform_t * returnValue, krpc_UI_Button_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Button_get_RectTransform", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 6, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1161,7 +1161,7 @@ inline krpc_error_t krpc_UI_Button_RectTransform(krpc_connection_t connection, k
 inline krpc_error_t krpc_UI_Button_Visible(krpc_connection_t connection, bool * returnValue, krpc_UI_Button_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Button_get_Visible", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 10, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1178,7 +1178,7 @@ inline krpc_error_t krpc_UI_Button_Visible(krpc_connection_t connection, bool * 
 inline krpc_error_t krpc_UI_Button_Text(krpc_connection_t connection, krpc_UI_Text_t * returnValue, krpc_UI_Button_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Button_get_Text", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 7, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1195,7 +1195,7 @@ inline krpc_error_t krpc_UI_Button_Text(krpc_connection_t connection, krpc_UI_Te
 inline krpc_error_t krpc_UI_Canvas_AddButton(krpc_connection_t connection, krpc_UI_Button_t * returnValue, krpc_UI_Canvas_t instance, const char * content, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Canvas_AddButton", 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 15, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &content));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &visible));
@@ -1214,7 +1214,7 @@ inline krpc_error_t krpc_UI_Canvas_AddButton(krpc_connection_t connection, krpc_
 inline krpc_error_t krpc_UI_Canvas_AddInputField(krpc_connection_t connection, krpc_UI_InputField_t * returnValue, krpc_UI_Canvas_t instance, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Canvas_AddInputField", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 14, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &visible));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1232,7 +1232,7 @@ inline krpc_error_t krpc_UI_Canvas_AddInputField(krpc_connection_t connection, k
 inline krpc_error_t krpc_UI_Canvas_AddPanel(krpc_connection_t connection, krpc_UI_Panel_t * returnValue, krpc_UI_Canvas_t instance, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Canvas_AddPanel", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 12, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &visible));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1250,7 +1250,7 @@ inline krpc_error_t krpc_UI_Canvas_AddPanel(krpc_connection_t connection, krpc_U
 inline krpc_error_t krpc_UI_Canvas_AddText(krpc_connection_t connection, krpc_UI_Text_t * returnValue, krpc_UI_Canvas_t instance, const char * content, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Canvas_AddText", 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 13, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &content));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &visible));
@@ -1269,7 +1269,7 @@ inline krpc_error_t krpc_UI_Canvas_AddText(krpc_connection_t connection, krpc_UI
 inline krpc_error_t krpc_UI_Canvas_Remove(krpc_connection_t connection, krpc_UI_Canvas_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Canvas_Remove", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 16, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1281,7 +1281,7 @@ inline krpc_error_t krpc_UI_Canvas_Remove(krpc_connection_t connection, krpc_UI_
 inline krpc_error_t krpc_UI_Canvas_set_Visible(krpc_connection_t connection, krpc_UI_Canvas_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Canvas_set_Visible", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 19, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1294,7 +1294,7 @@ inline krpc_error_t krpc_UI_Canvas_set_Visible(krpc_connection_t connection, krp
 inline krpc_error_t krpc_UI_Canvas_Visible(krpc_connection_t connection, bool * returnValue, krpc_UI_Canvas_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Canvas_get_Visible", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 18, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1311,7 +1311,7 @@ inline krpc_error_t krpc_UI_Canvas_Visible(krpc_connection_t connection, bool * 
 inline krpc_error_t krpc_UI_Canvas_RectTransform(krpc_connection_t connection, krpc_UI_RectTransform_t * returnValue, krpc_UI_Canvas_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Canvas_get_RectTransform", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 17, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1328,7 +1328,7 @@ inline krpc_error_t krpc_UI_Canvas_RectTransform(krpc_connection_t connection, k
 inline krpc_error_t krpc_UI_InputField_Remove(krpc_connection_t connection, krpc_UI_InputField_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "InputField_Remove", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 20, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1340,7 +1340,7 @@ inline krpc_error_t krpc_UI_InputField_Remove(krpc_connection_t connection, krpc
 inline krpc_error_t krpc_UI_InputField_set_Visible(krpc_connection_t connection, krpc_UI_InputField_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "InputField_set_Visible", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 28, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1353,7 +1353,7 @@ inline krpc_error_t krpc_UI_InputField_set_Visible(krpc_connection_t connection,
 inline krpc_error_t krpc_UI_InputField_Text(krpc_connection_t connection, krpc_UI_Text_t * returnValue, krpc_UI_InputField_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "InputField_get_Text", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 24, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1370,7 +1370,7 @@ inline krpc_error_t krpc_UI_InputField_Text(krpc_connection_t connection, krpc_U
 inline krpc_error_t krpc_UI_InputField_set_Changed(krpc_connection_t connection, krpc_UI_InputField_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "InputField_set_Changed", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 26, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1383,7 +1383,7 @@ inline krpc_error_t krpc_UI_InputField_set_Changed(krpc_connection_t connection,
 inline krpc_error_t krpc_UI_InputField_Changed(krpc_connection_t connection, bool * returnValue, krpc_UI_InputField_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "InputField_get_Changed", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 25, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1400,7 +1400,7 @@ inline krpc_error_t krpc_UI_InputField_Changed(krpc_connection_t connection, boo
 inline krpc_error_t krpc_UI_InputField_Value(krpc_connection_t connection, char * * returnValue, krpc_UI_InputField_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "InputField_get_Value", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 22, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1417,7 +1417,7 @@ inline krpc_error_t krpc_UI_InputField_Value(krpc_connection_t connection, char 
 inline krpc_error_t krpc_UI_InputField_RectTransform(krpc_connection_t connection, krpc_UI_RectTransform_t * returnValue, krpc_UI_InputField_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "InputField_get_RectTransform", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 21, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1434,7 +1434,7 @@ inline krpc_error_t krpc_UI_InputField_RectTransform(krpc_connection_t connectio
 inline krpc_error_t krpc_UI_InputField_Visible(krpc_connection_t connection, bool * returnValue, krpc_UI_InputField_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "InputField_get_Visible", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 27, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1451,7 +1451,7 @@ inline krpc_error_t krpc_UI_InputField_Visible(krpc_connection_t connection, boo
 inline krpc_error_t krpc_UI_InputField_set_Value(krpc_connection_t connection, krpc_UI_InputField_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "InputField_set_Value", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 23, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1464,7 +1464,7 @@ inline krpc_error_t krpc_UI_InputField_set_Value(krpc_connection_t connection, k
 inline krpc_error_t krpc_UI_Panel_AddButton(krpc_connection_t connection, krpc_UI_Button_t * returnValue, krpc_UI_Panel_t instance, const char * content, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Panel_AddButton", 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 32, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &content));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &visible));
@@ -1483,7 +1483,7 @@ inline krpc_error_t krpc_UI_Panel_AddButton(krpc_connection_t connection, krpc_U
 inline krpc_error_t krpc_UI_Panel_AddInputField(krpc_connection_t connection, krpc_UI_InputField_t * returnValue, krpc_UI_Panel_t instance, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Panel_AddInputField", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 31, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &visible));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1501,7 +1501,7 @@ inline krpc_error_t krpc_UI_Panel_AddInputField(krpc_connection_t connection, kr
 inline krpc_error_t krpc_UI_Panel_AddPanel(krpc_connection_t connection, krpc_UI_Panel_t * returnValue, krpc_UI_Panel_t instance, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Panel_AddPanel", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 29, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &visible));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1519,7 +1519,7 @@ inline krpc_error_t krpc_UI_Panel_AddPanel(krpc_connection_t connection, krpc_UI
 inline krpc_error_t krpc_UI_Panel_AddText(krpc_connection_t connection, krpc_UI_Text_t * returnValue, krpc_UI_Panel_t instance, const char * content, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Panel_AddText", 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 30, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &content));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &visible));
@@ -1538,7 +1538,7 @@ inline krpc_error_t krpc_UI_Panel_AddText(krpc_connection_t connection, krpc_UI_
 inline krpc_error_t krpc_UI_Panel_Remove(krpc_connection_t connection, krpc_UI_Panel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Panel_Remove", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 33, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1550,7 +1550,7 @@ inline krpc_error_t krpc_UI_Panel_Remove(krpc_connection_t connection, krpc_UI_P
 inline krpc_error_t krpc_UI_Panel_set_Visible(krpc_connection_t connection, krpc_UI_Panel_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Panel_set_Visible", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 36, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1563,7 +1563,7 @@ inline krpc_error_t krpc_UI_Panel_set_Visible(krpc_connection_t connection, krpc
 inline krpc_error_t krpc_UI_Panel_Visible(krpc_connection_t connection, bool * returnValue, krpc_UI_Panel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Panel_get_Visible", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 35, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1580,7 +1580,7 @@ inline krpc_error_t krpc_UI_Panel_Visible(krpc_connection_t connection, bool * r
 inline krpc_error_t krpc_UI_Panel_RectTransform(krpc_connection_t connection, krpc_UI_RectTransform_t * returnValue, krpc_UI_Panel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Panel_get_RectTransform", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 34, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1597,7 +1597,7 @@ inline krpc_error_t krpc_UI_Panel_RectTransform(krpc_connection_t connection, kr
 inline krpc_error_t krpc_UI_RectTransform_set_LocalPosition(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_LocalPosition", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 40, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1610,7 +1610,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_LocalPosition(krpc_connection_t co
 inline krpc_error_t krpc_UI_RectTransform_set_Rotation(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_Rotation", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 55, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1623,7 +1623,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_Rotation(krpc_connection_t connect
 inline krpc_error_t krpc_UI_RectTransform_set_AnchorMax(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_AnchorMax", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 49, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1636,7 +1636,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_AnchorMax(krpc_connection_t connec
 inline krpc_error_t krpc_UI_RectTransform_LocalPosition(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_LocalPosition", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 39, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1653,7 +1653,7 @@ inline krpc_error_t krpc_UI_RectTransform_LocalPosition(krpc_connection_t connec
 inline krpc_error_t krpc_UI_RectTransform_Position(krpc_connection_t connection, krpc_tuple_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_Position", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 37, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1670,7 +1670,7 @@ inline krpc_error_t krpc_UI_RectTransform_Position(krpc_connection_t connection,
 inline krpc_error_t krpc_UI_RectTransform_set_UpperRight(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_UpperRight", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 44, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1683,7 +1683,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_UpperRight(krpc_connection_t conne
 inline krpc_error_t krpc_UI_RectTransform_UpperRight(krpc_connection_t connection, krpc_tuple_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_UpperRight", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 43, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1700,7 +1700,7 @@ inline krpc_error_t krpc_UI_RectTransform_UpperRight(krpc_connection_t connectio
 inline krpc_error_t krpc_UI_RectTransform_set_Scale(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_Scale", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 57, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1713,7 +1713,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_Scale(krpc_connection_t connection
 inline krpc_error_t krpc_UI_RectTransform_set_Pivot(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_Pivot", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 53, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1726,7 +1726,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_Pivot(krpc_connection_t connection
 inline krpc_error_t krpc_UI_RectTransform_set_AnchorMin(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_AnchorMin", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 51, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1739,7 +1739,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_AnchorMin(krpc_connection_t connec
 inline krpc_error_t krpc_UI_RectTransform_AnchorMax(krpc_connection_t connection, krpc_tuple_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_AnchorMax", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 48, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1756,7 +1756,7 @@ inline krpc_error_t krpc_UI_RectTransform_AnchorMax(krpc_connection_t connection
 inline krpc_error_t krpc_UI_RectTransform_AnchorMin(krpc_connection_t connection, krpc_tuple_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_AnchorMin", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 50, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1773,7 +1773,7 @@ inline krpc_error_t krpc_UI_RectTransform_AnchorMin(krpc_connection_t connection
 inline krpc_error_t krpc_UI_RectTransform_Scale(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_Scale", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 56, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1790,7 +1790,7 @@ inline krpc_error_t krpc_UI_RectTransform_Scale(krpc_connection_t connection, kr
 inline krpc_error_t krpc_UI_RectTransform_set_Size(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_Size", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 42, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1803,7 +1803,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_Size(krpc_connection_t connection,
 inline krpc_error_t krpc_UI_RectTransform_Pivot(krpc_connection_t connection, krpc_tuple_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_Pivot", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 52, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1820,7 +1820,7 @@ inline krpc_error_t krpc_UI_RectTransform_Pivot(krpc_connection_t connection, kr
 inline krpc_error_t krpc_UI_RectTransform_set_LowerLeft(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_LowerLeft", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 46, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1833,7 +1833,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_LowerLeft(krpc_connection_t connec
 inline krpc_error_t krpc_UI_RectTransform_LowerLeft(krpc_connection_t connection, krpc_tuple_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_LowerLeft", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 45, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1850,7 +1850,7 @@ inline krpc_error_t krpc_UI_RectTransform_LowerLeft(krpc_connection_t connection
 inline krpc_error_t krpc_UI_RectTransform_set_Position(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_Position", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 38, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1863,7 +1863,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_Position(krpc_connection_t connect
 inline krpc_error_t krpc_UI_RectTransform_Rotation(krpc_connection_t connection, krpc_tuple_double_double_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_Rotation", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 54, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1880,7 +1880,7 @@ inline krpc_error_t krpc_UI_RectTransform_Rotation(krpc_connection_t connection,
 inline krpc_error_t krpc_UI_RectTransform_set_Anchor(krpc_connection_t connection, krpc_UI_RectTransform_t instance, const krpc_tuple_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_set_Anchor", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 47, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1893,7 +1893,7 @@ inline krpc_error_t krpc_UI_RectTransform_set_Anchor(krpc_connection_t connectio
 inline krpc_error_t krpc_UI_RectTransform_Size(krpc_connection_t connection, krpc_tuple_double_double_t * returnValue, krpc_UI_RectTransform_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "RectTransform_get_Size", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 41, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1910,7 +1910,7 @@ inline krpc_error_t krpc_UI_RectTransform_Size(krpc_connection_t connection, krp
 inline krpc_error_t krpc_UI_Text_Remove(krpc_connection_t connection, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_Remove", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 58, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1922,7 +1922,7 @@ inline krpc_error_t krpc_UI_Text_Remove(krpc_connection_t connection, krpc_UI_Te
 inline krpc_error_t krpc_UI_Text_set_Font(krpc_connection_t connection, krpc_UI_Text_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_set_Font", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 64, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1935,7 +1935,7 @@ inline krpc_error_t krpc_UI_Text_set_Font(krpc_connection_t connection, krpc_UI_
 inline krpc_error_t krpc_UI_Text_Style(krpc_connection_t connection, krpc_UI_FontStyle_t * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_Style", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 67, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1952,7 +1952,7 @@ inline krpc_error_t krpc_UI_Text_Style(krpc_connection_t connection, krpc_UI_Fon
 inline krpc_error_t krpc_UI_Text_Size(krpc_connection_t connection, int32_t * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_Size", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 65, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1969,7 +1969,7 @@ inline krpc_error_t krpc_UI_Text_Size(krpc_connection_t connection, int32_t * re
 inline krpc_error_t krpc_UI_Text_set_Content(krpc_connection_t connection, krpc_UI_Text_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_set_Content", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 62, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1982,7 +1982,7 @@ inline krpc_error_t krpc_UI_Text_set_Content(krpc_connection_t connection, krpc_
 inline krpc_error_t krpc_UI_Text_LineSpacing(krpc_connection_t connection, float * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_LineSpacing", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 71, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1999,7 +1999,7 @@ inline krpc_error_t krpc_UI_Text_LineSpacing(krpc_connection_t connection, float
 inline krpc_error_t krpc_UI_Text_Color(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_Color", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 73, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2016,7 +2016,7 @@ inline krpc_error_t krpc_UI_Text_Color(krpc_connection_t connection, krpc_tuple_
 inline krpc_error_t krpc_UI_Text_set_LineSpacing(krpc_connection_t connection, krpc_UI_Text_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_set_LineSpacing", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 72, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2029,7 +2029,7 @@ inline krpc_error_t krpc_UI_Text_set_LineSpacing(krpc_connection_t connection, k
 inline krpc_error_t krpc_UI_Text_AvailableFonts(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_AvailableFonts", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 60, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2046,7 +2046,7 @@ inline krpc_error_t krpc_UI_Text_AvailableFonts(krpc_connection_t connection, kr
 inline krpc_error_t krpc_UI_Text_Content(krpc_connection_t connection, char * * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_Content", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 61, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2063,7 +2063,7 @@ inline krpc_error_t krpc_UI_Text_Content(krpc_connection_t connection, char * * 
 inline krpc_error_t krpc_UI_Text_Visible(krpc_connection_t connection, bool * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_Visible", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 75, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2080,7 +2080,7 @@ inline krpc_error_t krpc_UI_Text_Visible(krpc_connection_t connection, bool * re
 inline krpc_error_t krpc_UI_Text_RectTransform(krpc_connection_t connection, krpc_UI_RectTransform_t * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_RectTransform", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 59, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2097,7 +2097,7 @@ inline krpc_error_t krpc_UI_Text_RectTransform(krpc_connection_t connection, krp
 inline krpc_error_t krpc_UI_Text_set_Size(krpc_connection_t connection, krpc_UI_Text_t instance, int32_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_set_Size", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 66, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2110,7 +2110,7 @@ inline krpc_error_t krpc_UI_Text_set_Size(krpc_connection_t connection, krpc_UI_
 inline krpc_error_t krpc_UI_Text_set_Color(krpc_connection_t connection, krpc_UI_Text_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_set_Color", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 74, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2123,7 +2123,7 @@ inline krpc_error_t krpc_UI_Text_set_Color(krpc_connection_t connection, krpc_UI
 inline krpc_error_t krpc_UI_Text_Font(krpc_connection_t connection, char * * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_Font", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 63, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2140,7 +2140,7 @@ inline krpc_error_t krpc_UI_Text_Font(krpc_connection_t connection, char * * ret
 inline krpc_error_t krpc_UI_Text_set_Visible(krpc_connection_t connection, krpc_UI_Text_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_set_Visible", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 76, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2153,7 +2153,7 @@ inline krpc_error_t krpc_UI_Text_set_Visible(krpc_connection_t connection, krpc_
 inline krpc_error_t krpc_UI_Text_set_Style(krpc_connection_t connection, krpc_UI_Text_t instance, krpc_UI_FontStyle_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_set_Style", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 68, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2166,7 +2166,7 @@ inline krpc_error_t krpc_UI_Text_set_Style(krpc_connection_t connection, krpc_UI
 inline krpc_error_t krpc_UI_Text_Alignment(krpc_connection_t connection, krpc_UI_TextAnchor_t * returnValue, krpc_UI_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_get_Alignment", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 69, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2183,7 +2183,7 @@ inline krpc_error_t krpc_UI_Text_Alignment(krpc_connection_t connection, krpc_UI
 inline krpc_error_t krpc_UI_Text_set_Alignment(krpc_connection_t connection, krpc_UI_Text_t instance, krpc_UI_TextAnchor_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "UI", "Text_set_Alignment", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 70, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;

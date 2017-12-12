@@ -829,7 +829,7 @@ inline krpc_error_t krpc_decode_list_string(
 inline krpc_error_t krpc_Drawing_AddDirection(krpc_connection_t connection, krpc_Drawing_Line_t * returnValue, const krpc_tuple_double_double_double_t * direction, krpc_SpaceCenter_ReferenceFrame_t referenceFrame, float length, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[4];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "AddDirection", 4, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 2, 4, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_tuple_double_double_double, direction));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_float, &length));
@@ -849,7 +849,7 @@ inline krpc_error_t krpc_Drawing_AddDirection(krpc_connection_t connection, krpc
 inline krpc_error_t krpc_Drawing_AddLine(krpc_connection_t connection, krpc_Drawing_Line_t * returnValue, const krpc_tuple_double_double_double_t * start, const krpc_tuple_double_double_double_t * end, krpc_SpaceCenter_ReferenceFrame_t referenceFrame, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[4];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "AddLine", 4, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1, 4, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_tuple_double_double_double, start));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, end));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &referenceFrame));
@@ -869,7 +869,7 @@ inline krpc_error_t krpc_Drawing_AddLine(krpc_connection_t connection, krpc_Draw
 inline krpc_error_t krpc_Drawing_AddPolygon(krpc_connection_t connection, krpc_Drawing_Polygon_t * returnValue, const krpc_list_tuple_double_double_double_t * vertices, krpc_SpaceCenter_ReferenceFrame_t referenceFrame, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "AddPolygon", 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 3, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_list_tuple_double_double_double, vertices));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &visible));
@@ -888,7 +888,7 @@ inline krpc_error_t krpc_Drawing_AddPolygon(krpc_connection_t connection, krpc_D
 inline krpc_error_t krpc_Drawing_AddText(krpc_connection_t connection, krpc_Drawing_Text_t * returnValue, const char * text, krpc_SpaceCenter_ReferenceFrame_t referenceFrame, const krpc_tuple_double_double_double_t * position, const krpc_tuple_double_double_double_double_t * rotation, bool visible) {
   krpc_call_t _call;
   krpc_argument_t _arguments[5];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "AddText", 5, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 4, 5, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &text));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_tuple_double_double_double, position));
@@ -909,7 +909,7 @@ inline krpc_error_t krpc_Drawing_AddText(krpc_connection_t connection, krpc_Draw
 inline krpc_error_t krpc_Drawing_Clear(krpc_connection_t connection, bool clientOnly) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Clear", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 5, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_bool, &clientOnly));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -921,7 +921,7 @@ inline krpc_error_t krpc_Drawing_Clear(krpc_connection_t connection, bool client
 inline krpc_error_t krpc_Drawing_Line_Remove(krpc_connection_t connection, krpc_Drawing_Line_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_Remove", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 6, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -933,7 +933,7 @@ inline krpc_error_t krpc_Drawing_Line_Remove(krpc_connection_t connection, krpc_
 inline krpc_error_t krpc_Drawing_Line_set_Thickness(krpc_connection_t connection, krpc_Drawing_Line_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_set_Thickness", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 14, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -946,7 +946,7 @@ inline krpc_error_t krpc_Drawing_Line_set_Thickness(krpc_connection_t connection
 inline krpc_error_t krpc_Drawing_Line_End(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_Drawing_Line_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_get_End", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 9, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -963,7 +963,7 @@ inline krpc_error_t krpc_Drawing_Line_End(krpc_connection_t connection, krpc_tup
 inline krpc_error_t krpc_Drawing_Line_set_Visible(krpc_connection_t connection, krpc_Drawing_Line_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_set_Visible", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 18, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -976,7 +976,7 @@ inline krpc_error_t krpc_Drawing_Line_set_Visible(krpc_connection_t connection, 
 inline krpc_error_t krpc_Drawing_Line_Start(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_Drawing_Line_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_get_Start", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 7, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -993,7 +993,7 @@ inline krpc_error_t krpc_Drawing_Line_Start(krpc_connection_t connection, krpc_t
 inline krpc_error_t krpc_Drawing_Line_Color(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_Drawing_Line_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_get_Color", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 11, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1010,7 +1010,7 @@ inline krpc_error_t krpc_Drawing_Line_Color(krpc_connection_t connection, krpc_t
 inline krpc_error_t krpc_Drawing_Line_Material(krpc_connection_t connection, char * * returnValue, krpc_Drawing_Line_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_get_Material", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 19, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1027,7 +1027,7 @@ inline krpc_error_t krpc_Drawing_Line_Material(krpc_connection_t connection, cha
 inline krpc_error_t krpc_Drawing_Line_set_Material(krpc_connection_t connection, krpc_Drawing_Line_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_set_Material", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 20, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1040,7 +1040,7 @@ inline krpc_error_t krpc_Drawing_Line_set_Material(krpc_connection_t connection,
 inline krpc_error_t krpc_Drawing_Line_Thickness(krpc_connection_t connection, float * returnValue, krpc_Drawing_Line_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_get_Thickness", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 13, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1057,7 +1057,7 @@ inline krpc_error_t krpc_Drawing_Line_Thickness(krpc_connection_t connection, fl
 inline krpc_error_t krpc_Drawing_Line_set_End(krpc_connection_t connection, krpc_Drawing_Line_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_set_End", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 10, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1070,7 +1070,7 @@ inline krpc_error_t krpc_Drawing_Line_set_End(krpc_connection_t connection, krpc
 inline krpc_error_t krpc_Drawing_Line_set_ReferenceFrame(krpc_connection_t connection, krpc_Drawing_Line_t instance, krpc_SpaceCenter_ReferenceFrame_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_set_ReferenceFrame", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 16, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1083,7 +1083,7 @@ inline krpc_error_t krpc_Drawing_Line_set_ReferenceFrame(krpc_connection_t conne
 inline krpc_error_t krpc_Drawing_Line_set_Start(krpc_connection_t connection, krpc_Drawing_Line_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_set_Start", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 8, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1096,7 +1096,7 @@ inline krpc_error_t krpc_Drawing_Line_set_Start(krpc_connection_t connection, kr
 inline krpc_error_t krpc_Drawing_Line_set_Color(krpc_connection_t connection, krpc_Drawing_Line_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_set_Color", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 12, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1109,7 +1109,7 @@ inline krpc_error_t krpc_Drawing_Line_set_Color(krpc_connection_t connection, kr
 inline krpc_error_t krpc_Drawing_Line_Visible(krpc_connection_t connection, bool * returnValue, krpc_Drawing_Line_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_get_Visible", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 17, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1126,7 +1126,7 @@ inline krpc_error_t krpc_Drawing_Line_Visible(krpc_connection_t connection, bool
 inline krpc_error_t krpc_Drawing_Line_ReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_Drawing_Line_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Line_get_ReferenceFrame", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 15, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1143,7 +1143,7 @@ inline krpc_error_t krpc_Drawing_Line_ReferenceFrame(krpc_connection_t connectio
 inline krpc_error_t krpc_Drawing_Polygon_Remove(krpc_connection_t connection, krpc_Drawing_Polygon_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_Remove", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 21, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1155,7 +1155,7 @@ inline krpc_error_t krpc_Drawing_Polygon_Remove(krpc_connection_t connection, kr
 inline krpc_error_t krpc_Drawing_Polygon_set_Thickness(krpc_connection_t connection, krpc_Drawing_Polygon_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_set_Thickness", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 27, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1168,7 +1168,7 @@ inline krpc_error_t krpc_Drawing_Polygon_set_Thickness(krpc_connection_t connect
 inline krpc_error_t krpc_Drawing_Polygon_set_Material(krpc_connection_t connection, krpc_Drawing_Polygon_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_set_Material", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 33, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1181,7 +1181,7 @@ inline krpc_error_t krpc_Drawing_Polygon_set_Material(krpc_connection_t connecti
 inline krpc_error_t krpc_Drawing_Polygon_Color(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_Drawing_Polygon_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_get_Color", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 24, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1198,7 +1198,7 @@ inline krpc_error_t krpc_Drawing_Polygon_Color(krpc_connection_t connection, krp
 inline krpc_error_t krpc_Drawing_Polygon_Material(krpc_connection_t connection, char * * returnValue, krpc_Drawing_Polygon_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_get_Material", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 32, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1215,7 +1215,7 @@ inline krpc_error_t krpc_Drawing_Polygon_Material(krpc_connection_t connection, 
 inline krpc_error_t krpc_Drawing_Polygon_Vertices(krpc_connection_t connection, krpc_list_tuple_double_double_double_t * returnValue, krpc_Drawing_Polygon_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_get_Vertices", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 22, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1232,7 +1232,7 @@ inline krpc_error_t krpc_Drawing_Polygon_Vertices(krpc_connection_t connection, 
 inline krpc_error_t krpc_Drawing_Polygon_set_Vertices(krpc_connection_t connection, krpc_Drawing_Polygon_t instance, const krpc_list_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_set_Vertices", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 23, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_list_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1245,7 +1245,7 @@ inline krpc_error_t krpc_Drawing_Polygon_set_Vertices(krpc_connection_t connecti
 inline krpc_error_t krpc_Drawing_Polygon_Thickness(krpc_connection_t connection, float * returnValue, krpc_Drawing_Polygon_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_get_Thickness", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 26, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1262,7 +1262,7 @@ inline krpc_error_t krpc_Drawing_Polygon_Thickness(krpc_connection_t connection,
 inline krpc_error_t krpc_Drawing_Polygon_Visible(krpc_connection_t connection, bool * returnValue, krpc_Drawing_Polygon_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_get_Visible", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 30, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1279,7 +1279,7 @@ inline krpc_error_t krpc_Drawing_Polygon_Visible(krpc_connection_t connection, b
 inline krpc_error_t krpc_Drawing_Polygon_set_ReferenceFrame(krpc_connection_t connection, krpc_Drawing_Polygon_t instance, krpc_SpaceCenter_ReferenceFrame_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_set_ReferenceFrame", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 29, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1292,7 +1292,7 @@ inline krpc_error_t krpc_Drawing_Polygon_set_ReferenceFrame(krpc_connection_t co
 inline krpc_error_t krpc_Drawing_Polygon_set_Visible(krpc_connection_t connection, krpc_Drawing_Polygon_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_set_Visible", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 31, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1305,7 +1305,7 @@ inline krpc_error_t krpc_Drawing_Polygon_set_Visible(krpc_connection_t connectio
 inline krpc_error_t krpc_Drawing_Polygon_set_Color(krpc_connection_t connection, krpc_Drawing_Polygon_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_set_Color", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 25, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1318,7 +1318,7 @@ inline krpc_error_t krpc_Drawing_Polygon_set_Color(krpc_connection_t connection,
 inline krpc_error_t krpc_Drawing_Polygon_ReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_Drawing_Polygon_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Polygon_get_ReferenceFrame", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 28, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1335,7 +1335,7 @@ inline krpc_error_t krpc_Drawing_Polygon_ReferenceFrame(krpc_connection_t connec
 inline krpc_error_t krpc_Drawing_Text_Remove(krpc_connection_t connection, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_Remove", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 35, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1347,7 +1347,7 @@ inline krpc_error_t krpc_Drawing_Text_Remove(krpc_connection_t connection, krpc_
 inline krpc_error_t krpc_Drawing_Text_Style(krpc_connection_t connection, krpc_UI_FontStyle_t * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Style", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 48, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1364,7 +1364,7 @@ inline krpc_error_t krpc_Drawing_Text_Style(krpc_connection_t connection, krpc_U
 inline krpc_error_t krpc_Drawing_Text_set_LineSpacing(krpc_connection_t connection, krpc_Drawing_Text_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_LineSpacing", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 53, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1377,7 +1377,7 @@ inline krpc_error_t krpc_Drawing_Text_set_LineSpacing(krpc_connection_t connecti
 inline krpc_error_t krpc_Drawing_Text_ReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_ReferenceFrame", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 58, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1394,7 +1394,7 @@ inline krpc_error_t krpc_Drawing_Text_ReferenceFrame(krpc_connection_t connectio
 inline krpc_error_t krpc_Drawing_Text_CharacterSize(krpc_connection_t connection, float * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_CharacterSize", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 46, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1411,7 +1411,7 @@ inline krpc_error_t krpc_Drawing_Text_CharacterSize(krpc_connection_t connection
 inline krpc_error_t krpc_Drawing_Text_Content(krpc_connection_t connection, char * * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Content", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 40, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1428,7 +1428,7 @@ inline krpc_error_t krpc_Drawing_Text_Content(krpc_connection_t connection, char
 inline krpc_error_t krpc_Drawing_Text_set_ReferenceFrame(krpc_connection_t connection, krpc_Drawing_Text_t instance, krpc_SpaceCenter_ReferenceFrame_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_ReferenceFrame", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 59, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1441,7 +1441,7 @@ inline krpc_error_t krpc_Drawing_Text_set_ReferenceFrame(krpc_connection_t conne
 inline krpc_error_t krpc_Drawing_Text_set_Color(krpc_connection_t connection, krpc_Drawing_Text_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Color", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 57, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1454,7 +1454,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Color(krpc_connection_t connection, kr
 inline krpc_error_t krpc_Drawing_Text_set_CharacterSize(krpc_connection_t connection, krpc_Drawing_Text_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_CharacterSize", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 47, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1467,7 +1467,7 @@ inline krpc_error_t krpc_Drawing_Text_set_CharacterSize(krpc_connection_t connec
 inline krpc_error_t krpc_Drawing_Text_set_Style(krpc_connection_t connection, krpc_Drawing_Text_t instance, krpc_UI_FontStyle_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Style", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 49, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1480,7 +1480,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Style(krpc_connection_t connection, kr
 inline krpc_error_t krpc_Drawing_Text_set_Content(krpc_connection_t connection, krpc_Drawing_Text_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Content", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 41, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1493,7 +1493,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Content(krpc_connection_t connection, 
 inline krpc_error_t krpc_Drawing_Text_LineSpacing(krpc_connection_t connection, float * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_LineSpacing", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 52, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1510,7 +1510,7 @@ inline krpc_error_t krpc_Drawing_Text_LineSpacing(krpc_connection_t connection, 
 inline krpc_error_t krpc_Drawing_Text_Material(krpc_connection_t connection, char * * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Material", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 62, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1527,7 +1527,7 @@ inline krpc_error_t krpc_Drawing_Text_Material(krpc_connection_t connection, cha
 inline krpc_error_t krpc_Drawing_Text_Rotation(krpc_connection_t connection, krpc_tuple_double_double_double_double_t * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Rotation", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 38, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1544,7 +1544,7 @@ inline krpc_error_t krpc_Drawing_Text_Rotation(krpc_connection_t connection, krp
 inline krpc_error_t krpc_Drawing_Text_set_Anchor(krpc_connection_t connection, krpc_Drawing_Text_t instance, krpc_UI_TextAnchor_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Anchor", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 55, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1557,7 +1557,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Anchor(krpc_connection_t connection, k
 inline krpc_error_t krpc_Drawing_Text_set_Font(krpc_connection_t connection, krpc_Drawing_Text_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Font", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 43, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1570,7 +1570,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Font(krpc_connection_t connection, krp
 inline krpc_error_t krpc_Drawing_Text_set_Rotation(krpc_connection_t connection, krpc_Drawing_Text_t instance, const krpc_tuple_double_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Rotation", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 39, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1583,7 +1583,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Rotation(krpc_connection_t connection,
 inline krpc_error_t krpc_Drawing_Text_set_Material(krpc_connection_t connection, krpc_Drawing_Text_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Material", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 63, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1596,7 +1596,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Material(krpc_connection_t connection,
 inline krpc_error_t krpc_Drawing_Text_set_Visible(krpc_connection_t connection, krpc_Drawing_Text_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Visible", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 61, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1609,7 +1609,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Visible(krpc_connection_t connection, 
 inline krpc_error_t krpc_Drawing_Text_Size(krpc_connection_t connection, int32_t * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Size", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 44, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1626,7 +1626,7 @@ inline krpc_error_t krpc_Drawing_Text_Size(krpc_connection_t connection, int32_t
 inline krpc_error_t krpc_Drawing_Text_Position(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Position", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 36, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1643,7 +1643,7 @@ inline krpc_error_t krpc_Drawing_Text_Position(krpc_connection_t connection, krp
 inline krpc_error_t krpc_Drawing_Text_Anchor(krpc_connection_t connection, krpc_UI_TextAnchor_t * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Anchor", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 54, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1660,7 +1660,7 @@ inline krpc_error_t krpc_Drawing_Text_Anchor(krpc_connection_t connection, krpc_
 inline krpc_error_t krpc_Drawing_Text_Color(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Color", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 56, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1677,7 +1677,7 @@ inline krpc_error_t krpc_Drawing_Text_Color(krpc_connection_t connection, krpc_t
 inline krpc_error_t krpc_Drawing_Text_Visible(krpc_connection_t connection, bool * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Visible", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 60, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1694,7 +1694,7 @@ inline krpc_error_t krpc_Drawing_Text_Visible(krpc_connection_t connection, bool
 inline krpc_error_t krpc_Drawing_Text_set_Size(krpc_connection_t connection, krpc_Drawing_Text_t instance, int32_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Size", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 45, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1707,7 +1707,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Size(krpc_connection_t connection, krp
 inline krpc_error_t krpc_Drawing_Text_set_Position(krpc_connection_t connection, krpc_Drawing_Text_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Position", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 37, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1720,7 +1720,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Position(krpc_connection_t connection,
 inline krpc_error_t krpc_Drawing_Text_Font(krpc_connection_t connection, char * * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Font", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 42, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1737,7 +1737,7 @@ inline krpc_error_t krpc_Drawing_Text_Font(krpc_connection_t connection, char * 
 inline krpc_error_t krpc_Drawing_Text_Alignment(krpc_connection_t connection, krpc_UI_TextAlignment_t * returnValue, krpc_Drawing_Text_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_get_Alignment", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 50, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1754,7 +1754,7 @@ inline krpc_error_t krpc_Drawing_Text_Alignment(krpc_connection_t connection, kr
 inline krpc_error_t krpc_Drawing_Text_set_Alignment(krpc_connection_t connection, krpc_Drawing_Text_t instance, krpc_UI_TextAlignment_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_set_Alignment", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 51, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1767,7 +1767,7 @@ inline krpc_error_t krpc_Drawing_Text_set_Alignment(krpc_connection_t connection
 inline krpc_error_t krpc_Drawing_Text_AvailableFonts(krpc_connection_t connection, krpc_list_string_t * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "Drawing", "Text_static_AvailableFonts", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 34, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));

@@ -379,7 +379,7 @@ inline krpc_error_t krpc_decode_list_object(
 inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection, krpc_RemoteTech_Antenna_t * returnValue, krpc_SpaceCenter_Part_t part) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 2, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &part));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -396,7 +396,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection, krpc_R
 inline krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, krpc_RemoteTech_Comms_t * returnValue, krpc_SpaceCenter_Vessel_t vessel) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &vessel));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -413,7 +413,7 @@ inline krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, krpc_Rem
 inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "get_Available", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 3, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -429,7 +429,7 @@ inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connection, bool
 inline krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t connection, krpc_list_string_t * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "get_GroundStations", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 4, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -445,7 +445,7 @@ inline krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t connection,
 inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_connection_t connection, char * * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_get_TargetGroundStation", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 11, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -462,7 +462,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_connection_
 inline krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection, krpc_RemoteTech_Target_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_get_Target", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 7, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -479,7 +479,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection,
 inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_get_TargetVessel", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 13, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -496,7 +496,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_t conne
 inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_RemoteTech_Target_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_set_Target", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 8, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -509,7 +509,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t connect
 inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_Vessel_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_set_TargetVessel", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 14, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -522,7 +522,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connection_t c
 inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_get_HasConnection", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 6, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -539,7 +539,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection_t conn
 inline krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_get_Part", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 5, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -556,7 +556,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, k
 inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_get_TargetBody", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 9, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -573,7 +573,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t connect
 inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_set_TargetGroundStation", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 12, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -586,7 +586,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_connect
 inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_CelestialBody_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Antenna_set_TargetBody", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 10, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -599,7 +599,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connection_t con
 inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance, krpc_SpaceCenter_Vessel_t other) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms_SignalDelayToVessel", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 15, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &other));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -617,7 +617,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connection_t 
 inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms_get_HasFlightComputer", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 18, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -634,7 +634,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connection_t co
 inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms_get_SignalDelayToGroundStation", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 22, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -651,7 +651,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc_connec
 inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms_get_SignalDelay", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 21, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -668,7 +668,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t connecti
 inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms_get_HasConnectionToGroundStation", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 20, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -685,7 +685,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(krpc_conn
 inline krpc_error_t krpc_RemoteTech_Comms_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms_get_Vessel", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 16, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -702,7 +702,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_Vessel(krpc_connection_t connection, k
 inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms_get_HasLocalControl", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 17, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -719,7 +719,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection_t conn
 inline krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms_get_Antennas", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 23, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -736,7 +736,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t connection,
 inline krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "RemoteTech", "Comms_get_HasConnection", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 19, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));

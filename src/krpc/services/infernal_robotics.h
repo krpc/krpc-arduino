@@ -617,7 +617,7 @@ inline krpc_error_t krpc_decode_list_object(
 inline krpc_error_t krpc_InfernalRobotics_ServoGroupWithName(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t * returnValue, krpc_SpaceCenter_Vessel_t vessel, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroupWithName", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 2, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &vessel));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -635,7 +635,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroupWithName(krpc_connection_t c
 inline krpc_error_t krpc_InfernalRobotics_ServoGroups(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Vessel_t vessel) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroups", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &vessel));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -652,7 +652,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroups(krpc_connection_t connecti
 inline krpc_error_t krpc_InfernalRobotics_ServoWithName(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t * returnValue, krpc_SpaceCenter_Vessel_t vessel, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoWithName", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 3, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &vessel));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -670,7 +670,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoWithName(krpc_connection_t connec
 inline krpc_error_t krpc_InfernalRobotics_Available(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "get_Available", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 4, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -686,7 +686,7 @@ inline krpc_error_t krpc_InfernalRobotics_Available(krpc_connection_t connection
 inline krpc_error_t krpc_InfernalRobotics_Servo_MoveCenter(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_MoveCenter", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 7, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -698,7 +698,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MoveCenter(krpc_connection_t con
 inline krpc_error_t krpc_InfernalRobotics_Servo_MoveLeft(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_MoveLeft", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 6, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -710,7 +710,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MoveLeft(krpc_connection_t conne
 inline krpc_error_t krpc_InfernalRobotics_Servo_MoveNextPreset(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_MoveNextPreset", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 8, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -722,7 +722,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MoveNextPreset(krpc_connection_t
 inline krpc_error_t krpc_InfernalRobotics_Servo_MovePrevPreset(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_MovePrevPreset", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 9, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -734,7 +734,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MovePrevPreset(krpc_connection_t
 inline krpc_error_t krpc_InfernalRobotics_Servo_MoveRight(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_MoveRight", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 5, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -746,7 +746,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MoveRight(krpc_connection_t conn
 inline krpc_error_t krpc_InfernalRobotics_Servo_MoveTo(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, float position, float speed) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_MoveTo", 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 10, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &position));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_float, &speed));
@@ -760,7 +760,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MoveTo(krpc_connection_t connect
 inline krpc_error_t krpc_InfernalRobotics_Servo_Stop(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_Stop", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 11, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -772,7 +772,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_Stop(krpc_connection_t connectio
 inline krpc_error_t krpc_InfernalRobotics_Servo_Acceleration(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_Acceleration", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 28, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -789,7 +789,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_Acceleration(krpc_connection_t c
 inline krpc_error_t krpc_InfernalRobotics_Servo_MaxPosition(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_MaxPosition", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 21, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -806,7 +806,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MaxPosition(krpc_connection_t co
 inline krpc_error_t krpc_InfernalRobotics_Servo_IsFreeMoving(krpc_connection_t connection, bool * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_IsFreeMoving", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 31, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -823,7 +823,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_IsFreeMoving(krpc_connection_t c
 inline krpc_error_t krpc_InfernalRobotics_Servo_set_CurrentSpeed(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_set_CurrentSpeed", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 27, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -836,7 +836,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_set_CurrentSpeed(krpc_connection
 inline krpc_error_t krpc_InfernalRobotics_Servo_set_MaxPosition(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_set_MaxPosition", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 22, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -849,7 +849,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_set_MaxPosition(krpc_connection_
 inline krpc_error_t krpc_InfernalRobotics_Servo_MinPosition(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_MinPosition", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 19, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -866,7 +866,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MinPosition(krpc_connection_t co
 inline krpc_error_t krpc_InfernalRobotics_Servo_MaxConfigPosition(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_MaxConfigPosition", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 18, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -883,7 +883,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MaxConfigPosition(krpc_connectio
 inline krpc_error_t krpc_InfernalRobotics_Servo_IsAxisInverted(krpc_connection_t connection, bool * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_IsAxisInverted", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 34, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -900,7 +900,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_IsAxisInverted(krpc_connection_t
 inline krpc_error_t krpc_InfernalRobotics_Servo_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_Part", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 14, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -917,7 +917,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_Part(krpc_connection_t connectio
 inline krpc_error_t krpc_InfernalRobotics_Servo_set_IsAxisInverted(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_set_IsAxisInverted", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 35, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -930,7 +930,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_set_IsAxisInverted(krpc_connecti
 inline krpc_error_t krpc_InfernalRobotics_Servo_set_Speed(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_set_Speed", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 25, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -943,7 +943,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_set_Speed(krpc_connection_t conn
 inline krpc_error_t krpc_InfernalRobotics_Servo_set_Name(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_set_Name", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 13, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -956,7 +956,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_set_Name(krpc_connection_t conne
 inline krpc_error_t krpc_InfernalRobotics_Servo_Name(krpc_connection_t connection, char * * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_Name", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 12, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -973,7 +973,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_Name(krpc_connection_t connectio
 inline krpc_error_t krpc_InfernalRobotics_Servo_ConfigSpeed(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_ConfigSpeed", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 23, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -990,7 +990,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_ConfigSpeed(krpc_connection_t co
 inline krpc_error_t krpc_InfernalRobotics_Servo_IsMoving(krpc_connection_t connection, bool * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_IsMoving", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 30, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1007,7 +1007,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_IsMoving(krpc_connection_t conne
 inline krpc_error_t krpc_InfernalRobotics_Servo_MinConfigPosition(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_MinConfigPosition", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 17, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1024,7 +1024,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_MinConfigPosition(krpc_connectio
 inline krpc_error_t krpc_InfernalRobotics_Servo_set_Highlight(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_set_Highlight", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 15, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1037,7 +1037,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_set_Highlight(krpc_connection_t 
 inline krpc_error_t krpc_InfernalRobotics_Servo_Position(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_Position", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 16, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1054,7 +1054,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_Position(krpc_connection_t conne
 inline krpc_error_t krpc_InfernalRobotics_Servo_CurrentSpeed(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_CurrentSpeed", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 26, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1071,7 +1071,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_CurrentSpeed(krpc_connection_t c
 inline krpc_error_t krpc_InfernalRobotics_Servo_set_Acceleration(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_set_Acceleration", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 29, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1084,7 +1084,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_set_Acceleration(krpc_connection
 inline krpc_error_t krpc_InfernalRobotics_Servo_IsLocked(krpc_connection_t connection, bool * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_IsLocked", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 32, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1101,7 +1101,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_IsLocked(krpc_connection_t conne
 inline krpc_error_t krpc_InfernalRobotics_Servo_set_IsLocked(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_set_IsLocked", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 33, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1114,7 +1114,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_set_IsLocked(krpc_connection_t c
 inline krpc_error_t krpc_InfernalRobotics_Servo_set_MinPosition(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_set_MinPosition", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 20, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1127,7 +1127,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_set_MinPosition(krpc_connection_
 inline krpc_error_t krpc_InfernalRobotics_Servo_Speed(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_Servo_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "Servo_get_Speed", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 24, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1144,7 +1144,7 @@ inline krpc_error_t krpc_InfernalRobotics_Servo_Speed(krpc_connection_t connecti
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MoveCenter(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_MoveCenter", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 39, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1156,7 +1156,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MoveCenter(krpc_connection_
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MoveLeft(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_MoveLeft", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 38, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1168,7 +1168,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MoveLeft(krpc_connection_t 
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MoveNextPreset(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_MoveNextPreset", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 40, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1180,7 +1180,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MoveNextPreset(krpc_connect
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MovePrevPreset(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_MovePrevPreset", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 41, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1192,7 +1192,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MovePrevPreset(krpc_connect
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MoveRight(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_MoveRight", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 37, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1204,7 +1204,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MoveRight(krpc_connection_t
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_ServoWithName(krpc_connection_t connection, krpc_InfernalRobotics_Servo_t * returnValue, krpc_InfernalRobotics_ServoGroup_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_ServoWithName", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 36, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1222,7 +1222,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_ServoWithName(krpc_connecti
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Stop(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_Stop", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 42, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1234,7 +1234,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Stop(krpc_connection_t conn
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_Speed(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_set_Speed", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 50, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1247,7 +1247,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_Speed(krpc_connection_t
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_Name(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_set_Name", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 44, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1260,7 +1260,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_Name(krpc_connection_t 
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Name(krpc_connection_t connection, char * * returnValue, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_get_Name", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 43, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1277,7 +1277,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Name(krpc_connection_t conn
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_ForwardKey(krpc_connection_t connection, char * * returnValue, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_get_ForwardKey", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 45, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1294,7 +1294,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_ForwardKey(krpc_connection_
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Speed(krpc_connection_t connection, float * returnValue, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_get_Speed", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 49, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1311,7 +1311,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Speed(krpc_connection_t con
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Expanded(krpc_connection_t connection, bool * returnValue, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_get_Expanded", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 51, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1328,7 +1328,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Expanded(krpc_connection_t 
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_Expanded(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_set_Expanded", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 52, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1341,7 +1341,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_Expanded(krpc_connectio
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_ReverseKey(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_set_ReverseKey", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 48, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1354,7 +1354,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_ReverseKey(krpc_connect
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Parts(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_get_Parts", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 54, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1371,7 +1371,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Parts(krpc_connection_t con
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_ReverseKey(krpc_connection_t connection, char * * returnValue, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_get_ReverseKey", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 47, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1388,7 +1388,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_ReverseKey(krpc_connection_
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Servos(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_InfernalRobotics_ServoGroup_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_get_Servos", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 53, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1405,7 +1405,7 @@ inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Servos(krpc_connection_t co
 inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_ForwardKey(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "InfernalRobotics", "ServoGroup_set_ForwardKey", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 46, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;

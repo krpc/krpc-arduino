@@ -124,6 +124,11 @@ krpc_error_t krpc_KRPC_GetStatus(krpc_connection_t connection, krpc_schema_Statu
 krpc_error_t krpc_KRPC_RemoveStream(krpc_connection_t connection, uint64_t id);
 
 /**
+ * Set the update rate for a stream in Hz.
+ */
+krpc_error_t krpc_KRPC_SetStreamRate(krpc_connection_t connection, uint64_t id, float rate);
+
+/**
  * Start a previously added streaming request.
  */
 krpc_error_t krpc_KRPC_StartStream(krpc_connection_t connection, uint64_t id);
@@ -511,7 +516,7 @@ inline krpc_error_t krpc_decode_list_tuple_bytes_string_string(
 inline krpc_error_t krpc_KRPC_AddEvent(krpc_connection_t connection, krpc_schema_Event * returnValue, krpc_KRPC_Expression_t expression) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "AddEvent", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 9, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &expression));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -528,7 +533,7 @@ inline krpc_error_t krpc_KRPC_AddEvent(krpc_connection_t connection, krpc_schema
 inline krpc_error_t krpc_KRPC_AddStream(krpc_connection_t connection, krpc_schema_Stream * returnValue, const krpc_schema_ProcedureCall * call, bool start) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "AddStream", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 5, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_message_ProcedureCall, call));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &start));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -546,7 +551,7 @@ inline krpc_error_t krpc_KRPC_AddStream(krpc_connection_t connection, krpc_schem
 inline krpc_error_t krpc_KRPC_GetClientID(krpc_connection_t connection, krpc_bytes_t * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "GetClientID", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -562,7 +567,7 @@ inline krpc_error_t krpc_KRPC_GetClientID(krpc_connection_t connection, krpc_byt
 inline krpc_error_t krpc_KRPC_GetClientName(krpc_connection_t connection, char * * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "GetClientName", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -578,7 +583,7 @@ inline krpc_error_t krpc_KRPC_GetClientName(krpc_connection_t connection, char *
 inline krpc_error_t krpc_KRPC_GetServices(krpc_connection_t connection, krpc_schema_Services * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "GetServices", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 4, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -594,7 +599,7 @@ inline krpc_error_t krpc_KRPC_GetServices(krpc_connection_t connection, krpc_sch
 inline krpc_error_t krpc_KRPC_GetStatus(krpc_connection_t connection, krpc_schema_Status * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "GetStatus", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -610,8 +615,21 @@ inline krpc_error_t krpc_KRPC_GetStatus(krpc_connection_t connection, krpc_schem
 inline krpc_error_t krpc_KRPC_RemoveStream(krpc_connection_t connection, uint64_t id) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "RemoveStream", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 8, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &id));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KRPC_SetStreamRate(krpc_connection_t connection, uint64_t id, float rate) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 1, 7, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &id));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &rate));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -622,7 +640,7 @@ inline krpc_error_t krpc_KRPC_RemoveStream(krpc_connection_t connection, uint64_
 inline krpc_error_t krpc_KRPC_StartStream(krpc_connection_t connection, uint64_t id) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "StartStream", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 6, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &id));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -634,7 +652,7 @@ inline krpc_error_t krpc_KRPC_StartStream(krpc_connection_t connection, uint64_t
 inline krpc_error_t krpc_KRPC_Paused(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "get_Paused", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 12, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -650,7 +668,7 @@ inline krpc_error_t krpc_KRPC_Paused(krpc_connection_t connection, bool * return
 inline krpc_error_t krpc_KRPC_Clients(krpc_connection_t connection, krpc_list_tuple_bytes_string_string_t * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "get_Clients", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 10, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -666,7 +684,7 @@ inline krpc_error_t krpc_KRPC_Clients(krpc_connection_t connection, krpc_list_tu
 inline krpc_error_t krpc_KRPC_set_Paused(krpc_connection_t connection, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "set_Paused", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 13, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -678,7 +696,7 @@ inline krpc_error_t krpc_KRPC_set_Paused(krpc_connection_t connection, bool valu
 inline krpc_error_t krpc_KRPC_CurrentGameScene(krpc_connection_t connection, krpc_KRPC_GameScene_t * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "get_CurrentGameScene", 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 11, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -694,7 +712,7 @@ inline krpc_error_t krpc_KRPC_CurrentGameScene(krpc_connection_t connection, krp
 inline krpc_error_t krpc_KRPC_Expression_Add(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Add", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 29, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -712,7 +730,7 @@ inline krpc_error_t krpc_KRPC_Expression_Add(krpc_connection_t connection, krpc_
 inline krpc_error_t krpc_KRPC_Expression_And(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_And", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 25, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -730,7 +748,7 @@ inline krpc_error_t krpc_KRPC_Expression_And(krpc_connection_t connection, krpc_
 inline krpc_error_t krpc_KRPC_Expression_Call(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_schema_ProcedureCall * call) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Call", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 18, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_message_ProcedureCall, call));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -747,7 +765,7 @@ inline krpc_error_t krpc_KRPC_Expression_Call(krpc_connection_t connection, krpc
 inline krpc_error_t krpc_KRPC_Expression_ConstantDouble(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_ConstantDouble", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 14, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -764,7 +782,7 @@ inline krpc_error_t krpc_KRPC_Expression_ConstantDouble(krpc_connection_t connec
 inline krpc_error_t krpc_KRPC_Expression_ConstantFloat(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_ConstantFloat", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 15, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -781,7 +799,7 @@ inline krpc_error_t krpc_KRPC_Expression_ConstantFloat(krpc_connection_t connect
 inline krpc_error_t krpc_KRPC_Expression_ConstantInt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, int32_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_ConstantInt", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 16, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_int32, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -798,7 +816,7 @@ inline krpc_error_t krpc_KRPC_Expression_ConstantInt(krpc_connection_t connectio
 inline krpc_error_t krpc_KRPC_Expression_ConstantString(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_ConstantString", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 17, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -815,7 +833,7 @@ inline krpc_error_t krpc_KRPC_Expression_ConstantString(krpc_connection_t connec
 inline krpc_error_t krpc_KRPC_Expression_Divide(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Divide", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 32, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -833,7 +851,7 @@ inline krpc_error_t krpc_KRPC_Expression_Divide(krpc_connection_t connection, kr
 inline krpc_error_t krpc_KRPC_Expression_Equal(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Equal", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 19, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -851,7 +869,7 @@ inline krpc_error_t krpc_KRPC_Expression_Equal(krpc_connection_t connection, krp
 inline krpc_error_t krpc_KRPC_Expression_ExclusiveOr(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_ExclusiveOr", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 27, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -869,7 +887,7 @@ inline krpc_error_t krpc_KRPC_Expression_ExclusiveOr(krpc_connection_t connectio
 inline krpc_error_t krpc_KRPC_Expression_GreaterThan(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_GreaterThan", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 21, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -887,7 +905,7 @@ inline krpc_error_t krpc_KRPC_Expression_GreaterThan(krpc_connection_t connectio
 inline krpc_error_t krpc_KRPC_Expression_GreaterThanOrEqual(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_GreaterThanOrEqual", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 22, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -905,7 +923,7 @@ inline krpc_error_t krpc_KRPC_Expression_GreaterThanOrEqual(krpc_connection_t co
 inline krpc_error_t krpc_KRPC_Expression_LeftShift(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_LeftShift", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 35, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -923,7 +941,7 @@ inline krpc_error_t krpc_KRPC_Expression_LeftShift(krpc_connection_t connection,
 inline krpc_error_t krpc_KRPC_Expression_LessThan(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_LessThan", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 23, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -941,7 +959,7 @@ inline krpc_error_t krpc_KRPC_Expression_LessThan(krpc_connection_t connection, 
 inline krpc_error_t krpc_KRPC_Expression_LessThanOrEqual(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_LessThanOrEqual", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 24, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -959,7 +977,7 @@ inline krpc_error_t krpc_KRPC_Expression_LessThanOrEqual(krpc_connection_t conne
 inline krpc_error_t krpc_KRPC_Expression_Modulo(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Modulo", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 33, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -977,7 +995,7 @@ inline krpc_error_t krpc_KRPC_Expression_Modulo(krpc_connection_t connection, kr
 inline krpc_error_t krpc_KRPC_Expression_Multiply(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Multiply", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 31, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -995,7 +1013,7 @@ inline krpc_error_t krpc_KRPC_Expression_Multiply(krpc_connection_t connection, 
 inline krpc_error_t krpc_KRPC_Expression_Not(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Not", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 28, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1012,7 +1030,7 @@ inline krpc_error_t krpc_KRPC_Expression_Not(krpc_connection_t connection, krpc_
 inline krpc_error_t krpc_KRPC_Expression_NotEqual(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_NotEqual", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 20, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1030,7 +1048,7 @@ inline krpc_error_t krpc_KRPC_Expression_NotEqual(krpc_connection_t connection, 
 inline krpc_error_t krpc_KRPC_Expression_Or(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Or", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 26, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1048,7 +1066,7 @@ inline krpc_error_t krpc_KRPC_Expression_Or(krpc_connection_t connection, krpc_K
 inline krpc_error_t krpc_KRPC_Expression_Power(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Power", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 34, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1066,7 +1084,7 @@ inline krpc_error_t krpc_KRPC_Expression_Power(krpc_connection_t connection, krp
 inline krpc_error_t krpc_KRPC_Expression_RightShift(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_RightShift", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 36, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1084,7 +1102,7 @@ inline krpc_error_t krpc_KRPC_Expression_RightShift(krpc_connection_t connection
 inline krpc_error_t krpc_KRPC_Expression_Subtract(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_Subtract", 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 30, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1102,7 +1120,7 @@ inline krpc_error_t krpc_KRPC_Expression_Subtract(krpc_connection_t connection, 
 inline krpc_error_t krpc_KRPC_Expression_ToDouble(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_ToDouble", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 37, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1119,7 +1137,7 @@ inline krpc_error_t krpc_KRPC_Expression_ToDouble(krpc_connection_t connection, 
 inline krpc_error_t krpc_KRPC_Expression_ToFloat(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_ToFloat", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 38, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1136,7 +1154,7 @@ inline krpc_error_t krpc_KRPC_Expression_ToFloat(krpc_connection_t connection, k
 inline krpc_error_t krpc_KRPC_Expression_ToInt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, "KRPC", "Expression_static_ToInt", 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 39, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
