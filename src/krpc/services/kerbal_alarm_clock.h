@@ -28,7 +28,7 @@ typedef krpc_object_t krpc_KerbalAlarmClock_Alarm_t;
 typedef struct krpc_list_object_s krpc_list_object_t;
 struct krpc_list_object_s {
   size_t size;
-  krpc_KerbalAlarmClock_Alarm_t * items;
+  krpc_object_t * items;
 };
 
 krpc_error_t krpc_encode_list_object(
@@ -194,14 +194,19 @@ krpc_error_t krpc_KerbalAlarmClock_Available(krpc_connection_t connection, bool 
 krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
- * The celestial body the vessel is arriving at.
+ * The action that the alarm triggers.
  */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+krpc_error_t krpc_KerbalAlarmClock_Alarm_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmAction_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
- * The celestial body the vessel is departing from.
+ * The action that the alarm triggers.
  */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_KerbalAlarmClock_AlarmAction_t value);
+
+/**
+ * The unique identifier for the alarm.
+ */
+krpc_error_t krpc_KerbalAlarmClock_Alarm_ID(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
  * The number of seconds before the event that the alarm will fire.
@@ -209,9 +214,29 @@ krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody(krpc_connection_t connec
 krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
- * The type of the alarm.
+ * The number of seconds before the event that the alarm will fire.
  */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_Type(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmType_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value);
+
+/**
+ * The short name of the alarm.
+ */
+krpc_error_t krpc_KerbalAlarmClock_Alarm_Name(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * The short name of the alarm.
+ */
+krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value);
+
+/**
+ * The long description of the alarm.
+ */
+krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * The long description of the alarm.
+ */
+krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value);
 
 /**
  * The number of seconds until the alarm will fire.
@@ -229,34 +254,9 @@ krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat(krpc_connection_t connection, bo
 krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, bool value);
 
 /**
- * The short name of the alarm.
- */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value);
-
-/**
- * The vessel that the alarm is attached to.
- */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_Vessel_t value);
-
-/**
- * The short name of the alarm.
- */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_Name(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
-
-/**
  * The time delay to automatically create an alarm after it has fired.
  */
 krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
-
-/**
- * The action that the alarm triggers.
- */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_KerbalAlarmClock_AlarmAction_t value);
-
-/**
- * The long description of the alarm.
- */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
  * The time delay to automatically create an alarm after it has fired.
@@ -269,19 +269,29 @@ krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod(krpc_connection_t conn
 krpc_error_t krpc_KerbalAlarmClock_Alarm_Time(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
- * The action that the alarm triggers.
- */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmAction_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
-
-/**
  * The time at which the alarm will fire.
  */
 krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value);
 
 /**
- * The unique identifier for the alarm.
+ * The type of the alarm.
  */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_ID(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+krpc_error_t krpc_KerbalAlarmClock_Alarm_Type(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmType_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * The vessel that the alarm is attached to.
+ */
+krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * The vessel that the alarm is attached to.
+ */
+krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_Vessel_t value);
+
+/**
+ * The celestial body the vessel is departing from.
+ */
+krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
  * The celestial body the vessel is departing from.
@@ -291,22 +301,12 @@ krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody(krpc_connection_t co
 /**
  * The celestial body the vessel is arriving at.
  */
+krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * The celestial body the vessel is arriving at.
+ */
 krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value);
-
-/**
- * The number of seconds before the event that the alarm will fire.
- */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value);
-
-/**
- * The long description of the alarm.
- */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value);
-
-/**
- * The vessel that the alarm is attached to.
- */
-krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 // Implementation
 
@@ -366,7 +366,7 @@ static bool krpc_decode_callback_item_list_object(
   size_t i = state->value->size;
   state->value->size++;
   if (state->capacity > 0 && state->value->size > state->capacity) {
-    state->value->items = (krpc_KerbalAlarmClock_Alarm_t*)krpc_recalloc(state->value->items, state->capacity, KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_KerbalAlarmClock_Alarm_t));
+    state->value->items = (krpc_object_t*)krpc_recalloc(state->value->items, state->capacity, KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_object_t));
     state->capacity += KRPC_ALLOC_BLOCK_SIZE;
   }
   KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_object(stream, &state->value->items[i]));
@@ -379,7 +379,7 @@ inline krpc_error_t krpc_decode_list_object(
   State state = { 0, value };
   value->size = 0;
   if (value->items == NULL) {
-    value->items = (krpc_KerbalAlarmClock_Alarm_t*)krpc_calloc(KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_KerbalAlarmClock_Alarm_t));
+    value->items = (krpc_object_t*)krpc_calloc(KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_object_t));
     state.capacity = KRPC_ALLOC_BLOCK_SIZE;
   }
   krpc_schema_List message = krpc_schema_List_init_default;
@@ -394,7 +394,7 @@ inline krpc_error_t krpc_decode_list_object(
 inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t * returnValue, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 1, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -411,7 +411,7 @@ inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName(krpc_connection_t connec
 inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_KerbalAlarmClock_AlarmType_t type) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 2, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_enum, &type));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -428,7 +428,7 @@ inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType(krpc_connection_t conne
 inline krpc_error_t krpc_KerbalAlarmClock_CreateAlarm(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t * returnValue, krpc_KerbalAlarmClock_AlarmType_t type, const char * name, double ut) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 2, 3, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_enum, &type));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_double, &ut));
@@ -447,7 +447,7 @@ inline krpc_error_t krpc_KerbalAlarmClock_CreateAlarm(krpc_connection_t connecti
 inline krpc_error_t krpc_KerbalAlarmClock_Alarms(krpc_connection_t connection, krpc_list_object_t * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, 2, 5, 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 5, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -463,7 +463,7 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarms(krpc_connection_t connection, k
 inline krpc_error_t krpc_KerbalAlarmClock_Available(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, 2, 4, 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 4, 0, _arguments));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -479,7 +479,7 @@ inline krpc_error_t krpc_KerbalAlarmClock_Available(krpc_connection_t connection
 inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 6, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 6, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -488,61 +488,10 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove(krpc_connection_t connect
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmAction_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 28, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 26, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 9, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_double(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmType_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 13, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 7, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -556,10 +505,130 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type(krpc_connection_t connectio
   return KRPC_OK;
 }
 
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_KerbalAlarmClock_AlarmAction_t value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 5, 8, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_ID(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 5, 14, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 5, 9, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_double(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 5, 10, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 5, 15, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 5, 16, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 5, 17, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 5, 18, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
 inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remaining(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 19, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 19, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -576,7 +645,7 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remaining(krpc_connection_t conn
 inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 20, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 20, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -593,7 +662,7 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat(krpc_connection_t connect
 inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 21, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 21, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -603,53 +672,10 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat(krpc_connection_t con
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 16, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_Vessel_t value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 25, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 15, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
 inline krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 22, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 22, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -663,40 +689,10 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod(krpc_connection_t c
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_KerbalAlarmClock_AlarmAction_t value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 8, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 17, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
 inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 23, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 23, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -709,7 +705,7 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod(krpc_connection
 inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Time(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 11, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 11, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -723,10 +719,23 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Time(krpc_connection_t connectio
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmAction_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 5, 12, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmType_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 7, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 13, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -740,92 +749,10 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action(krpc_connection_t connect
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 12, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_ID(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 14, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 27, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 29, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 10, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 18, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
 inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 24, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 24, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -835,6 +762,79 @@ inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel(krpc_connection_t connect
     KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
     KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
   }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_Vessel_t value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 5, 25, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 5, 26, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 5, 27, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 5, 28, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 5, 29, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
