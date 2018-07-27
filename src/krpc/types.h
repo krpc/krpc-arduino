@@ -1,6 +1,6 @@
 #pragma once
 
-#include <krpc_cnano/krpc.pb.h>
+#include <krpc/krpc.pb.h>
 
 #ifdef __cplusplus
 extern "C" {

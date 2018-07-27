@@ -1,12 +1,12 @@
 #pragma once
 
-#include <krpc_cnano/decoder.h>
-#include <krpc_cnano/encoder.h>
-#include <krpc_cnano/error.h>
-#include <krpc_cnano/memory.h>
-#include <krpc_cnano/pb_decode.h>
-#include <krpc_cnano/pb_encode.h>
-#include <krpc_cnano/types.h>
+#include <krpc/decoder.h>
+#include <krpc/encoder.h>
+#include <krpc/error.h>
+#include <krpc/memory.h>
+#include <krpc/pb_decode.h>
+#include <krpc/pb_encode.h>
+#include <krpc/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,7 +58,7 @@ typedef krpc_object_t krpc_SpaceCenter_Comms_t;
 typedef krpc_object_t krpc_SpaceCenter_Contract_t;
 /**
  * Contracts manager.
- * Obtained by calling SpaceCenter::waypoint_manager.
+ * Obtained by calling SpaceCenter::contract_manager.
  */
 typedef krpc_object_t krpc_SpaceCenter_ContractManager_t;
 /**

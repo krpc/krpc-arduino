@@ -1,6 +1,6 @@
-#include <krpc_cnano/communication.h>
+#include <krpc/communication.h>
 
-#include <krpc_cnano/error.h>
+#include <krpc/error.h>
 
 #if defined(KRPC_COMMUNICATION_POSIX)
 

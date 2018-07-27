@@ -1,14 +1,14 @@
-#include <krpc_cnano.h>
+#include <krpc.h>
 
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
-#include <krpc_cnano/encoder.h>
+#include <krpc/encoder.h>
 
-#include <krpc_cnano/pb.h>
-#include <krpc_cnano/pb_decode.h>
-#include <krpc_cnano/pb_encode.h>
+#include <krpc/pb.h>
+#include <krpc/pb_decode.h>
+#include <krpc/pb_encode.h>
 
 static bool write_callback(pb_ostream_t *stream, const uint8_t *buf, size_t count);
 static bool read_callback(pb_istream_t *stream, uint8_t *buf, size_t count);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <krpc_cnano/error.h>
+#include <krpc/error.h>
 
 #include <stddef.h>
 #include <stdint.h>

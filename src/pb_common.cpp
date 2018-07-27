@@ -3,7 +3,7 @@
  * 2014 Petteri Aimonen <jpa@kapsi.fi>
  */
 
-#include "pb_common.h"
+#include "krpc/pb_common.h"
 
 bool pb_field_iter_begin(pb_field_iter_t *iter, const pb_field_t *fields, void *dest_struct)
 {

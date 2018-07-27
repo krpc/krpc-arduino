@@ -1,18 +1,18 @@
-#include <krpc_cnano/decoder.h>
+#include <krpc/decoder.h>
 
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
-#include <krpc_cnano/pb.h>
-#include <krpc_cnano/pb_decode.h>
+#include <krpc/pb.h>
+#include <krpc/pb_decode.h>
 
-#include <krpc_cnano/error.h>
-#include <krpc_cnano/krpc.pb.h>
-#include <krpc_cnano/memory.h>
-#include <krpc_cnano/types.h>
+#include <krpc/error.h>
+#include <krpc/krpc.pb.h>
+#include <krpc/memory.h>
+#include <krpc/types.h>
 #ifdef __AVR__
-#include <krpc_cnano/utils.h>
+#include <krpc/utils.h>
 #endif
 
 // Callback to decode a return value from a procedure result
