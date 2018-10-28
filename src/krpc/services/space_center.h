@@ -3869,7 +3869,7 @@ krpc_error_t krpc_SpaceCenter_Flight_Elevation(krpc_connection_t connection, dou
 krpc_error_t krpc_SpaceCenter_Flight_EquivalentAirSpeed(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Flight_t instance);
 
 /**
- * The current G force acting on the vessel in m/s^2.
+ * The current G force acting on the vessel in g.
  */
 krpc_error_t krpc_SpaceCenter_Flight_GForce(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Flight_t instance);
 
@@ -4452,10 +4452,10 @@ krpc_error_t krpc_SpaceCenter_Node_UT(krpc_connection_t connection, double * ret
 krpc_error_t krpc_SpaceCenter_Node_set_UT(krpc_connection_t connection, krpc_SpaceCenter_Node_t instance, double value);
 
 /**
- * Estimates and returns the distance at closest approach to a target vessel, in meters.
- * @param target Target vessel.
+ * Estimates and returns the distance at closest approach to a target orbit, in meters.
+ * @param target Target orbit.
  */
-krpc_error_t krpc_SpaceCenter_Orbit_DistanceAtClosestApproach(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target);
+krpc_error_t krpc_SpaceCenter_Orbit_DistanceAtClosestApproach(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target);
 
 /**
  * The eccentric anomaly at the given universal time.
@@ -4464,14 +4464,14 @@ krpc_error_t krpc_SpaceCenter_Orbit_DistanceAtClosestApproach(krpc_connection_t 
 krpc_error_t krpc_SpaceCenter_Orbit_EccentricAnomalyAtUT(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, double ut);
 
 /**
- * Returns the times at closest approach and corresponding distances, to a target vessel.
+ * Returns the times at closest approach and corresponding distances, to a target orbit.
  * @return A list of two lists.
  * The first is a list of times at closest approach, as universal times in seconds.
  * The second is a list of corresponding distances at closest approach, in meters.
- * @param target Target vessel.
+ * @param target Target orbit.
  * @param orbits The number of future orbits to search.
  */
-krpc_error_t krpc_SpaceCenter_Orbit_ListClosestApproaches(krpc_connection_t connection, krpc_list_list_double_t * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target, int32_t orbits);
+krpc_error_t krpc_SpaceCenter_Orbit_ListClosestApproaches(krpc_connection_t connection, krpc_list_list_double_t * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target, int32_t orbits);
 
 /**
  * The mean anomaly at the given time.
@@ -4507,29 +4507,29 @@ krpc_error_t krpc_SpaceCenter_Orbit_RadiusAt(krpc_connection_t connection, doubl
 krpc_error_t krpc_SpaceCenter_Orbit_RadiusAtTrueAnomaly(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, double trueAnomaly);
 
 /**
- * Relative inclination of this orbit and the orbit of the given target vessel, in radians.
- * @param target Target vessel.
+ * Relative inclination of this orbit and the target orbit, in radians.
+ * @param target Target orbit.
  */
-krpc_error_t krpc_SpaceCenter_Orbit_RelativeInclination(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target);
+krpc_error_t krpc_SpaceCenter_Orbit_RelativeInclination(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target);
 
 /**
- * Estimates and returns the time at closest approach to a target vessel.
+ * Estimates and returns the time at closest approach to a target orbit.
  * @return The universal time at closest approach, in seconds.
- * @param target Target vessel.
+ * @param target Target orbit.
  */
-krpc_error_t krpc_SpaceCenter_Orbit_TimeOfClosestApproach(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target);
+krpc_error_t krpc_SpaceCenter_Orbit_TimeOfClosestApproach(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target);
 
 /**
- * The true anomaly of the ascending node with the given target vessel.
- * @param target Target vessel.
+ * The true anomaly of the ascending node with the given target orbit.
+ * @param target Target orbit.
  */
-krpc_error_t krpc_SpaceCenter_Orbit_TrueAnomalyAtAN(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target);
+krpc_error_t krpc_SpaceCenter_Orbit_TrueAnomalyAtAN(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target);
 
 /**
- * The true anomaly of the descending node with the given target vessel.
- * @param target Target vessel.
+ * The true anomaly of the descending node with the given target orbit.
+ * @param target Target orbit.
  */
-krpc_error_t krpc_SpaceCenter_Orbit_TrueAnomalyAtDN(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target);
+krpc_error_t krpc_SpaceCenter_Orbit_TrueAnomalyAtDN(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target);
 
 /**
  * The true anomaly at the given orbital radius.
@@ -5158,10 +5158,9 @@ krpc_error_t krpc_SpaceCenter_Part_Stage(krpc_connection_t connection, int32_t *
  * The name tag for the part. Can be set to a custom string using the
  * in-game user interface.
  *
- * This requires either the
- * <a href="https://github.com/krpc/NameTag/releases/latest">NameTag</a> or
+ * This string is shared with
  * <a href="https://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOS</a>
- * mod to be installed.
+ * if it is installed.
  */
 krpc_error_t krpc_SpaceCenter_Part_Tag(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Part_t instance);
 
@@ -5169,10 +5168,9 @@ krpc_error_t krpc_SpaceCenter_Part_Tag(krpc_connection_t connection, char * * re
  * The name tag for the part. Can be set to a custom string using the
  * in-game user interface.
  *
- * This requires either the
- * <a href="https://github.com/krpc/NameTag/releases/latest">NameTag</a> or
+ * This string is shared with
  * <a href="https://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOS</a>
- * mod to be installed.
+ * if it is installed.
  */
 krpc_error_t krpc_SpaceCenter_Part_set_Tag(krpc_connection_t connection, krpc_SpaceCenter_Part_t instance, const char * value);
 
@@ -16237,7 +16235,7 @@ inline krpc_error_t krpc_SpaceCenter_Node_set_UT(krpc_connection_t connection, k
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Orbit_DistanceAtClosestApproach(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target) {
+inline krpc_error_t krpc_SpaceCenter_Orbit_DistanceAtClosestApproach(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 2, 367, 2, _arguments));
@@ -16273,7 +16271,7 @@ inline krpc_error_t krpc_SpaceCenter_Orbit_EccentricAnomalyAtUT(krpc_connection_
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Orbit_ListClosestApproaches(krpc_connection_t connection, krpc_list_list_double_t * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target, int32_t orbits) {
+inline krpc_error_t krpc_SpaceCenter_Orbit_ListClosestApproaches(krpc_connection_t connection, krpc_list_list_double_t * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target, int32_t orbits) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
   KRPC_CHECK(krpc_call(&_call, 2, 368, 3, _arguments));
@@ -16383,7 +16381,7 @@ inline krpc_error_t krpc_SpaceCenter_Orbit_RadiusAtTrueAnomaly(krpc_connection_t
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Orbit_RelativeInclination(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target) {
+inline krpc_error_t krpc_SpaceCenter_Orbit_RelativeInclination(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 2, 371, 2, _arguments));
@@ -16401,7 +16399,7 @@ inline krpc_error_t krpc_SpaceCenter_Orbit_RelativeInclination(krpc_connection_t
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Orbit_TimeOfClosestApproach(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target) {
+inline krpc_error_t krpc_SpaceCenter_Orbit_TimeOfClosestApproach(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 2, 366, 2, _arguments));
@@ -16419,7 +16417,7 @@ inline krpc_error_t krpc_SpaceCenter_Orbit_TimeOfClosestApproach(krpc_connection
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Orbit_TrueAnomalyAtAN(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target) {
+inline krpc_error_t krpc_SpaceCenter_Orbit_TrueAnomalyAtAN(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 2, 369, 2, _arguments));
@@ -16437,7 +16435,7 @@ inline krpc_error_t krpc_SpaceCenter_Orbit_TrueAnomalyAtAN(krpc_connection_t con
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Orbit_TrueAnomalyAtDN(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Vessel_t target) {
+inline krpc_error_t krpc_SpaceCenter_Orbit_TrueAnomalyAtDN(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Orbit_t instance, krpc_SpaceCenter_Orbit_t target) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 2, 370, 2, _arguments));

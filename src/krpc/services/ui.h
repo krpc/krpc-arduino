@@ -245,8 +245,10 @@ krpc_error_t krpc_UI_Clear(krpc_connection_t connection, bool clientOnly);
  * @param content Message content.
  * @param duration Duration before the message disappears, in seconds.
  * @param position Position to display the message.
+ * @param size Size of the message, differs per position.
+ * @param color The color of the message.
  */
-krpc_error_t krpc_UI_Message(krpc_connection_t connection, const char * content, float duration, krpc_UI_MessagePosition_t position);
+krpc_error_t krpc_UI_Message(krpc_connection_t connection, const char * content, float duration, krpc_UI_MessagePosition_t position, const krpc_tuple_double_double_double_t * color, float size);
 
 /**
  * The stock UI canvas.
@@ -1054,13 +1056,15 @@ inline krpc_error_t krpc_UI_Clear(krpc_connection_t connection, bool clientOnly)
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_UI_Message(krpc_connection_t connection, const char * content, float duration, krpc_UI_MessagePosition_t position) {
+inline krpc_error_t krpc_UI_Message(krpc_connection_t connection, const char * content, float duration, krpc_UI_MessagePosition_t position, const krpc_tuple_double_double_double_t * color, float size) {
   krpc_call_t _call;
-  krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 7, 2, 3, _arguments));
+  krpc_argument_t _arguments[5];
+  KRPC_CHECK(krpc_call(&_call, 7, 2, 5, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &content));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &duration));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_enum, &position));
+  KRPC_CHECK(krpc_add_argument(&_call, 3, &krpc_encode_callback_tuple_double_double_double, color));
+  KRPC_CHECK(krpc_add_argument(&_call, 4, &krpc_encode_callback_float, &size));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
