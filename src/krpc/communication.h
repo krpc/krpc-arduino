@@ -5,14 +5,14 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#if !defined(KRPC_COMMS_CUSTOM)
+#if !defined(KRPC_COMMUNICATION_CUSTOM)
   #if defined(ARDUINO)
     #define KRPC_COMMUNICATION_ARDUINO
     #ifndef __cplusplus
     #error "Require a C++ compiler to build kRPC for Arduino"
     #endif
     #include <HardwareSerial.h>
-  #elif !defined(KRPC_COMMS_CUSTOM)
+  #elif !defined(KRPC_COMMUNICATION_CUSTOM)
     #define KRPC_COMMUNICATION_POSIX
   #endif
 #endif
