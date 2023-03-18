@@ -3,7 +3,7 @@
 
 #ifndef PB_KRPC_SCHEMA_BAZEL_OUT_K8_FASTBUILD_BIN_CLIENT_CNANO_SRC_KRPC_PB_C_SRC_PROTO_NANOPB_KRPC_PB_H_INCLUDED
 #define PB_KRPC_SCHEMA_BAZEL_OUT_K8_FASTBUILD_BIN_CLIENT_CNANO_SRC_KRPC_PB_C_SRC_PROTO_NANOPB_KRPC_PB_H_INCLUDED
-#include <krpc/pb.h>
+#include <krpc_cnano/pb.h>
 
 #if PB_PROTO_HEADER_VERSION != 40
 #error Regenerate this file with the current version of nanopb generator.
@@ -173,6 +173,7 @@ typedef struct _krpc_schema_Parameter {
     bool has_type;
     krpc_schema_Type type;
     pb_callback_t default_value;
+    bool nullable;
 } krpc_schema_Parameter;
 
 typedef struct _krpc_schema_Tuple {
@@ -311,7 +312,7 @@ extern "C" {
 #define krpc_schema_Services_init_default        {{{NULL}, NULL}}
 #define krpc_schema_Service_init_default         {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
 #define krpc_schema_Procedure_init_default       {{{NULL}, NULL}, {{NULL}, NULL}, false, krpc_schema_Type_init_default, 0, {{NULL}, NULL}, {{NULL}, NULL}}
-#define krpc_schema_Parameter_init_default       {{{NULL}, NULL}, false, krpc_schema_Type_init_default, {{NULL}, NULL}}
+#define krpc_schema_Parameter_init_default       {{{NULL}, NULL}, false, krpc_schema_Type_init_default, {{NULL}, NULL}, 0}
 #define krpc_schema_Class_init_default           {{{NULL}, NULL}, {{NULL}, NULL}}
 #define krpc_schema_Enumeration_init_default     {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
 #define krpc_schema_EnumerationValue_init_default {{{NULL}, NULL}, 0, {{NULL}, NULL}}
@@ -340,7 +341,7 @@ extern "C" {
 #define krpc_schema_Services_init_zero           {{{NULL}, NULL}}
 #define krpc_schema_Service_init_zero            {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
 #define krpc_schema_Procedure_init_zero          {{{NULL}, NULL}, {{NULL}, NULL}, false, krpc_schema_Type_init_zero, 0, {{NULL}, NULL}, {{NULL}, NULL}}
-#define krpc_schema_Parameter_init_zero          {{{NULL}, NULL}, false, krpc_schema_Type_init_zero, {{NULL}, NULL}}
+#define krpc_schema_Parameter_init_zero          {{{NULL}, NULL}, false, krpc_schema_Type_init_zero, {{NULL}, NULL}, 0}
 #define krpc_schema_Class_init_zero              {{{NULL}, NULL}, {{NULL}, NULL}}
 #define krpc_schema_Enumeration_init_zero        {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
 #define krpc_schema_EnumerationValue_init_zero   {{{NULL}, NULL}, 0, {{NULL}, NULL}}
@@ -411,6 +412,7 @@ extern "C" {
 #define krpc_schema_Parameter_name_tag           1
 #define krpc_schema_Parameter_type_tag           2
 #define krpc_schema_Parameter_default_value_tag  3
+#define krpc_schema_Parameter_nullable_tag       4
 #define krpc_schema_Tuple_items_tag              1
 #define krpc_schema_List_items_tag               1
 #define krpc_schema_Set_items_tag                1
@@ -549,7 +551,8 @@ X(a, CALLBACK, REPEATED, UENUM,    game_scenes,       6)
 #define krpc_schema_Parameter_FIELDLIST(X, a) \
 X(a, CALLBACK, SINGULAR, STRING,   name,              1) \
 X(a, STATIC,   OPTIONAL, MESSAGE,  type,              2) \
-X(a, CALLBACK, SINGULAR, BYTES,    default_value,     3)
+X(a, CALLBACK, SINGULAR, BYTES,    default_value,     3) \
+X(a, STATIC,   SINGULAR, BOOL,     nullable,          4)
 #define krpc_schema_Parameter_CALLBACK pb_default_field_callback
 #define krpc_schema_Parameter_DEFAULT NULL
 #define krpc_schema_Parameter_type_MSGTYPE krpc_schema_Type

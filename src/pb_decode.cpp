@@ -13,9 +13,9 @@
     #define checkreturn __attribute__((warn_unused_result))
 #endif
 
-#include "krpc/pb.h"
-#include "krpc/pb_decode.h"
-#include "krpc/pb_common.h"
+#include "pb.h"
+#include "pb_decode.h"
+#include "pb_common.h"
 
 /**************************************
  * Declarations internal to this file *

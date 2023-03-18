@@ -1,12 +1,12 @@
 #pragma once
 
-#include <krpc/decoder.h>
-#include <krpc/encoder.h>
-#include <krpc/error.h>
-#include <krpc/memory.h>
-#include <krpc/pb_decode.h>
-#include <krpc/pb_encode.h>
-#include <krpc/types.h>
+#include <krpc_cnano/decoder.h>
+#include <krpc_cnano/encoder.h>
+#include <krpc_cnano/error.h>
+#include <krpc_cnano/memory.h>
+#include <krpc_cnano/pb_decode.h>
+#include <krpc_cnano/pb_encode.h>
+#include <krpc_cnano/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -1663,11 +1663,12 @@ krpc_error_t krpc_SpaceCenter_LaunchableVessels(krpc_connection_t connection, kr
  * Load the game with the given name.
  * This will create a load a save file called name.sfs from the folder of the
  * current save game.
+ * @param name Name of the save.
  */
 krpc_error_t krpc_SpaceCenter_Load(krpc_connection_t connection, const char * name);
 
 /**
- * Switch to the spacecenter view.
+ * Switch to the space center view.
  */
 krpc_error_t krpc_SpaceCenter_LoadSpaceCenter(krpc_connection_t connection);
 
@@ -1714,6 +1715,7 @@ krpc_error_t krpc_SpaceCenter_RevertToLaunch(krpc_connection_t connection);
  * Save the game with a given name.
  * This will create a save file called name.sfs in the folder of the
  * current save game.
+ * @param name Name of the save.
  */
 krpc_error_t krpc_SpaceCenter_Save(krpc_connection_t connection, const char * name);
 
@@ -1725,7 +1727,7 @@ krpc_error_t krpc_SpaceCenter_Save(krpc_connection_t connection, const char * na
 krpc_error_t krpc_SpaceCenter_Screenshot(krpc_connection_t connection, const char * filePath, int32_t scale);
 
 /**
- * Tranfsers a crew member to a different part.
+ * Transfers a crew member to a different part.
  * @param crewMember The crew member to transfer.
  * @param targetPart The part to move them to.
  */
@@ -2043,7 +2045,7 @@ krpc_error_t krpc_SpaceCenter_Alarm_Title(krpc_connection_t connection, char * *
 krpc_error_t krpc_SpaceCenter_Alarm_Type(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Alarm_t instance);
 
 /**
- * Vessel the alarm references. null if it does not reference a vesssel.
+ * Vessel the alarm references. null if it does not reference a vessel.
  */
 krpc_error_t krpc_SpaceCenter_Alarm_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_SpaceCenter_Alarm_t instance);
 
@@ -4218,6 +4220,16 @@ krpc_error_t krpc_SpaceCenter_Engine_HasFuel(krpc_connection_t connection, bool 
 krpc_error_t krpc_SpaceCenter_Engine_HasModes(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance);
 
 /**
+ * Whether the independent throttle is enabled for the engine.
+ */
+krpc_error_t krpc_SpaceCenter_Engine_IndependentThrottle(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance);
+
+/**
+ * Whether the independent throttle is enabled for the engine.
+ */
+krpc_error_t krpc_SpaceCenter_Engine_set_IndependentThrottle(krpc_connection_t connection, krpc_SpaceCenter_Engine_t instance, bool value);
+
+/**
  * The specific impulse of the engine at sea level on Kerbin, in seconds.
  */
 krpc_error_t krpc_SpaceCenter_Engine_KerbinSeaLevelSpecificImpulse(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Engine_t instance);
@@ -4286,9 +4298,23 @@ krpc_error_t krpc_SpaceCenter_Engine_SpecificImpulse(krpc_connection_t connectio
  * The current throttle setting for the engine. A value between 0 and 1.
  * This is not necessarily the same as the vessel's main throttle
  * setting, as some engines take time to adjust their throttle
- * (such as jet engines).
+ * (such as jet engines), or independent throttle may be enabled.
+ *
+ * When the engine's independent throttle is enabled
+ * (see SpaceCenter::Engine::independent_throttle), can be used to set the throttle percentage.
  */
 krpc_error_t krpc_SpaceCenter_Engine_Throttle(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Engine_t instance);
+
+/**
+ * The current throttle setting for the engine. A value between 0 and 1.
+ * This is not necessarily the same as the vessel's main throttle
+ * setting, as some engines take time to adjust their throttle
+ * (such as jet engines), or independent throttle may be enabled.
+ *
+ * When the engine's independent throttle is enabled
+ * (see SpaceCenter::Engine::independent_throttle), can be used to set the throttle percentage.
+ */
+krpc_error_t krpc_SpaceCenter_Engine_set_Throttle(krpc_connection_t connection, krpc_SpaceCenter_Engine_t instance, float value);
 
 /**
  * Whether the SpaceCenter::Control::throttle affects the engine. For example,
@@ -4910,10 +4936,16 @@ krpc_error_t krpc_SpaceCenter_Light_Part(krpc_connection_t connection, krpc_Spac
 krpc_error_t krpc_SpaceCenter_Light_PowerUsage(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Light_t instance);
 
 /**
- * Returns the value of a field.
+ * Returns the value of a field with the given name.
  * @param name Name of the field.
  */
 krpc_error_t krpc_SpaceCenter_Module_GetField(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Module_t instance, const char * name);
+
+/**
+ * Returns the value of a field with the given identifier.
+ * @param id Identifier of the field.
+ */
+krpc_error_t krpc_SpaceCenter_Module_GetFieldById(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Module_t instance, const char * id);
 
 /**
  * true if the part has an action with the given name.
@@ -4922,10 +4954,22 @@ krpc_error_t krpc_SpaceCenter_Module_GetField(krpc_connection_t connection, char
 krpc_error_t krpc_SpaceCenter_Module_HasAction(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * name);
 
 /**
+ * true if the part has an action with the given identifier.
+ * @param id
+ */
+krpc_error_t krpc_SpaceCenter_Module_HasActionWithId(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * id);
+
+/**
  * true if the module has an event with the given name.
  * @param name
  */
 krpc_error_t krpc_SpaceCenter_Module_HasEvent(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * name);
+
+/**
+ * true if the module has an event with the given identifier.
+ * @param id
+ */
+krpc_error_t krpc_SpaceCenter_Module_HasEventWithId(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * id);
 
 /**
  * Returns true if the module has a field with the given name.
@@ -4934,10 +4978,22 @@ krpc_error_t krpc_SpaceCenter_Module_HasEvent(krpc_connection_t connection, bool
 krpc_error_t krpc_SpaceCenter_Module_HasField(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * name);
 
 /**
+ * Returns true if the module has a field with the given identifier.
+ * @param id Identifier of the field.
+ */
+krpc_error_t krpc_SpaceCenter_Module_HasFieldWithId(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * id);
+
+/**
  * Set the value of a field to its original value.
  * @param name Name of the field.
  */
 krpc_error_t krpc_SpaceCenter_Module_ResetField(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name);
+
+/**
+ * Set the value of a field to its original value.
+ * @param id Identifier of the field.
+ */
+krpc_error_t krpc_SpaceCenter_Module_ResetFieldById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id);
 
 /**
  * Set the value of an action with the given name.
@@ -4947,11 +5003,39 @@ krpc_error_t krpc_SpaceCenter_Module_ResetField(krpc_connection_t connection, kr
 krpc_error_t krpc_SpaceCenter_Module_SetAction(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, bool value);
 
 /**
+ * Set the value of an action with the given identifier.
+ * @param id
+ * @param value
+ */
+krpc_error_t krpc_SpaceCenter_Module_SetActionById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, bool value);
+
+/**
+ * Set the value of a field to true or false.
+ * @param name Name of the field.
+ * @param value Value to set.
+ */
+krpc_error_t krpc_SpaceCenter_Module_SetFieldBool(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, bool value);
+
+/**
+ * Set the value of a field to true or false.
+ * @param id Identifier of the field.
+ * @param value Value to set.
+ */
+krpc_error_t krpc_SpaceCenter_Module_SetFieldBoolById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, bool value);
+
+/**
  * Set the value of a field to the given floating point number.
  * @param name Name of the field.
  * @param value Value to set.
  */
 krpc_error_t krpc_SpaceCenter_Module_SetFieldFloat(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, float value);
+
+/**
+ * Set the value of a field to the given floating point number.
+ * @param id Identifier of the field.
+ * @param value Value to set.
+ */
+krpc_error_t krpc_SpaceCenter_Module_SetFieldFloatById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, float value);
 
 /**
  * Set the value of a field to the given integer number.
@@ -4961,11 +5045,25 @@ krpc_error_t krpc_SpaceCenter_Module_SetFieldFloat(krpc_connection_t connection,
 krpc_error_t krpc_SpaceCenter_Module_SetFieldInt(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, int32_t value);
 
 /**
+ * Set the value of a field to the given integer number.
+ * @param id Identifier of the field.
+ * @param value Value to set.
+ */
+krpc_error_t krpc_SpaceCenter_Module_SetFieldIntById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, int32_t value);
+
+/**
  * Set the value of a field to the given string.
  * @param name Name of the field.
  * @param value Value to set.
  */
 krpc_error_t krpc_SpaceCenter_Module_SetFieldString(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, const char * value);
+
+/**
+ * Set the value of a field to the given string.
+ * @param id Identifier of the field.
+ * @param value Value to set.
+ */
+krpc_error_t krpc_SpaceCenter_Module_SetFieldStringById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, const char * value);
 
 /**
  * Trigger the named event. Equivalent to clicking the button in the right-click menu
@@ -4975,10 +5073,23 @@ krpc_error_t krpc_SpaceCenter_Module_SetFieldString(krpc_connection_t connection
 krpc_error_t krpc_SpaceCenter_Module_TriggerEvent(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name);
 
 /**
+ * Trigger the event with the given identifier.
+ * Equivalent to clicking the button in the right-click menu of the part.
+ * @param id
+ */
+krpc_error_t krpc_SpaceCenter_Module_TriggerEventById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id);
+
+/**
  * A list of all the names of the modules actions. These are the parts actions that can
  * be assigned to action groups in the in-game editor.
  */
 krpc_error_t krpc_SpaceCenter_Module_Actions(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_Module_t instance);
+
+/**
+ * A list of all the identifiers of the modules actions. These are the parts actions
+ * that can be assigned to action groups in the in-game editor.
+ */
+krpc_error_t krpc_SpaceCenter_Module_ActionsById(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_Module_t instance);
 
 /**
  * A list of the names of all of the modules events. Events are the clickable buttons
@@ -4987,10 +5098,25 @@ krpc_error_t krpc_SpaceCenter_Module_Actions(krpc_connection_t connection, krpc_
 krpc_error_t krpc_SpaceCenter_Module_Events(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_Module_t instance);
 
 /**
+ * A list of the identifiers of all of the modules events. Events are the clickable buttons
+ * visible in the right-click menu of the part.
+ */
+krpc_error_t krpc_SpaceCenter_Module_EventsById(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_Module_t instance);
+
+/**
  * The modules field names and their associated values, as a dictionary.
  * These are the values visible in the right-click menu of the part.
+ *
+ * Throws an exception if there is more than one field with the same name.
+ * In that case, use SpaceCenter::Module::fields_by_id to get the fields by identifier.
  */
 krpc_error_t krpc_SpaceCenter_Module_Fields(krpc_connection_t connection, krpc_dictionary_string_string_t * returnValue, krpc_SpaceCenter_Module_t instance);
+
+/**
+ * The modules field identifiers and their associated values, as a dictionary.
+ * These are the values visible in the right-click menu of the part.
+ */
+krpc_error_t krpc_SpaceCenter_Module_FieldsById(krpc_connection_t connection, krpc_dictionary_string_string_t * returnValue, krpc_SpaceCenter_Module_t instance);
 
 /**
  * Name of the PartModule. For example, "ModuleEngines".
@@ -5553,7 +5679,10 @@ krpc_error_t krpc_SpaceCenter_Part_Rotation(krpc_connection_t connection, krpc_t
 krpc_error_t krpc_SpaceCenter_Part_Velocity(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Part_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame);
 
 /**
- * A SpaceCenter::Antenna if the part is an antenna, otherwise null.
+ * An SpaceCenter::Antenna if the part is an antenna, otherwise null.
+ *
+ * If RemoteTech is installed, this will always return null.
+ * To interact with RemoteTech antennas, use the RemoteTech service APIs.
  */
 krpc_error_t krpc_SpaceCenter_Part_Antenna(krpc_connection_t connection, krpc_SpaceCenter_Antenna_t * returnValue, krpc_SpaceCenter_Part_t instance);
 
@@ -6067,6 +6196,9 @@ krpc_error_t krpc_SpaceCenter_Parts_All(krpc_connection_t connection, krpc_list_
 
 /**
  * A list of all antennas in the vessel.
+ *
+ * If RemoteTech is installed, this will always return an empty list.
+ * To interact with RemoteTech antennas, use the RemoteTech service APIs.
  */
 krpc_error_t krpc_SpaceCenter_Parts_Antennas(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance);
 
@@ -15976,7 +16108,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_set_Active(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Engine_AutoModeSwitch(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 533, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 536, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -15993,7 +16125,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_AutoModeSwitch(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Engine_set_AutoModeSwitch(krpc_connection_t connection, krpc_SpaceCenter_Engine_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 534, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 537, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -16023,7 +16155,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_AvailableThrust(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Engine_AvailableTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 541, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 544, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16040,7 +16172,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_AvailableTorque(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Engine_CanRestart(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 527, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 530, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16057,7 +16189,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_CanRestart(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Engine_CanShutdown(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 528, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 531, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16074,7 +16206,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_CanShutdown(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Engine_GimbalLimit(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 539, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 542, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16091,7 +16223,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_GimbalLimit(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Engine_set_GimbalLimit(krpc_connection_t connection, krpc_SpaceCenter_Engine_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 540, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 543, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -16104,7 +16236,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_set_GimbalLimit(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Engine_GimbalLocked(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 537, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 540, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16121,7 +16253,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_GimbalLocked(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Engine_set_GimbalLocked(krpc_connection_t connection, krpc_SpaceCenter_Engine_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 538, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 541, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -16134,7 +16266,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_set_GimbalLocked(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_Engine_GimbalRange(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 536, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 539, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16151,7 +16283,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_GimbalRange(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Engine_Gimballed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 535, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 538, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16185,7 +16317,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_HasFuel(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Engine_HasModes(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 529, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 532, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16195,6 +16327,36 @@ inline krpc_error_t krpc_SpaceCenter_Engine_HasModes(krpc_connection_t connectio
     KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
     KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
   }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Engine_IndependentThrottle(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 528, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Engine_set_IndependentThrottle(krpc_connection_t connection, krpc_SpaceCenter_Engine_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 529, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
@@ -16253,7 +16415,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_MaxVacuumThrust(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Engine_Mode(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 530, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 533, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16270,7 +16432,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_Mode(krpc_connection_t connection, c
 inline krpc_error_t krpc_SpaceCenter_Engine_set_Mode(krpc_connection_t connection, krpc_SpaceCenter_Engine_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 531, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 534, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -16283,7 +16445,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_set_Mode(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Engine_Modes(krpc_connection_t connection, krpc_dictionary_string_object_t * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 532, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 535, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16399,10 +16561,23 @@ inline krpc_error_t krpc_SpaceCenter_Engine_Throttle(krpc_connection_t connectio
   return KRPC_OK;
 }
 
+inline krpc_error_t krpc_SpaceCenter_Engine_set_Throttle(krpc_connection_t connection, krpc_SpaceCenter_Engine_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 526, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
 inline krpc_error_t krpc_SpaceCenter_Engine_ThrottleLocked(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Engine_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 526, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 527, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16500,7 +16675,7 @@ inline krpc_error_t krpc_SpaceCenter_Engine_VacuumSpecificImpulse(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_Experiment_Dump(krpc_connection_t connection, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 544, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 547, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16512,7 +16687,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Dump(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Experiment_Reset(krpc_connection_t connection, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 545, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 548, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16524,7 +16699,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Reset(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Experiment_Run(krpc_connection_t connection, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 542, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 545, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16536,7 +16711,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Run(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Experiment_Transmit(krpc_connection_t connection, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 543, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 546, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16548,7 +16723,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Transmit(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Experiment_Available(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 554, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 557, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16565,7 +16740,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Available(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Experiment_Biome(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 555, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 558, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16582,7 +16757,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Biome(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Experiment_Data(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 553, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 556, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16599,7 +16774,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Data(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Experiment_Deployed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 550, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 553, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16616,7 +16791,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Deployed(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Experiment_HasData(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 552, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 555, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16633,7 +16808,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_HasData(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Experiment_Inoperable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 549, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 552, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16650,7 +16825,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Inoperable(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Experiment_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 547, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 550, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16667,7 +16842,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Name(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Experiment_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 546, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 549, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16684,7 +16859,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Part(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Experiment_Rerunnable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 551, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 554, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16701,7 +16876,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Rerunnable(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Experiment_ScienceSubject(krpc_connection_t connection, krpc_SpaceCenter_ScienceSubject_t * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 556, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 559, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16718,7 +16893,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_ScienceSubject(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_Experiment_Title(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Experiment_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 548, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 551, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16735,7 +16910,7 @@ inline krpc_error_t krpc_SpaceCenter_Experiment_Title(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Fairing_Jettison(krpc_connection_t connection, krpc_SpaceCenter_Fairing_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 557, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 560, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16747,7 +16922,7 @@ inline krpc_error_t krpc_SpaceCenter_Fairing_Jettison(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Fairing_Jettisoned(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Fairing_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 559, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 562, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -16764,7 +16939,7 @@ inline krpc_error_t krpc_SpaceCenter_Fairing_Jettisoned(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Fairing_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Fairing_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 558, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 561, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17566,7 +17741,7 @@ inline krpc_error_t krpc_SpaceCenter_Flight_VerticalSpeed(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Force_Remove(krpc_connection_t connection, krpc_SpaceCenter_Force_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 560, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 563, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17578,7 +17753,7 @@ inline krpc_error_t krpc_SpaceCenter_Force_Remove(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Force_ForceVector(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Force_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 562, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 565, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17595,7 +17770,7 @@ inline krpc_error_t krpc_SpaceCenter_Force_ForceVector(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Force_set_ForceVector(krpc_connection_t connection, krpc_SpaceCenter_Force_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 563, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 566, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -17608,7 +17783,7 @@ inline krpc_error_t krpc_SpaceCenter_Force_set_ForceVector(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Force_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Force_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 561, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 564, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17625,7 +17800,7 @@ inline krpc_error_t krpc_SpaceCenter_Force_Part(krpc_connection_t connection, kr
 inline krpc_error_t krpc_SpaceCenter_Force_Position(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Force_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 564, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 567, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17642,7 +17817,7 @@ inline krpc_error_t krpc_SpaceCenter_Force_Position(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Force_set_Position(krpc_connection_t connection, krpc_SpaceCenter_Force_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 565, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 568, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -17655,7 +17830,7 @@ inline krpc_error_t krpc_SpaceCenter_Force_set_Position(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Force_ReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_Force_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 566, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 569, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17672,7 +17847,7 @@ inline krpc_error_t krpc_SpaceCenter_Force_ReferenceFrame(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Force_set_ReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_Force_t instance, krpc_SpaceCenter_ReferenceFrame_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 567, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 570, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -17685,7 +17860,7 @@ inline krpc_error_t krpc_SpaceCenter_Force_set_ReferenceFrame(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Intake_Area(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Intake_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 573, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 576, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17702,7 +17877,7 @@ inline krpc_error_t krpc_SpaceCenter_Intake_Area(krpc_connection_t connection, f
 inline krpc_error_t krpc_SpaceCenter_Intake_Flow(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Intake_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 572, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 575, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17719,7 +17894,7 @@ inline krpc_error_t krpc_SpaceCenter_Intake_Flow(krpc_connection_t connection, f
 inline krpc_error_t krpc_SpaceCenter_Intake_Open(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Intake_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 569, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 572, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17736,7 +17911,7 @@ inline krpc_error_t krpc_SpaceCenter_Intake_Open(krpc_connection_t connection, b
 inline krpc_error_t krpc_SpaceCenter_Intake_set_Open(krpc_connection_t connection, krpc_SpaceCenter_Intake_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 570, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 573, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -17749,7 +17924,7 @@ inline krpc_error_t krpc_SpaceCenter_Intake_set_Open(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Intake_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Intake_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 568, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 571, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17766,7 +17941,7 @@ inline krpc_error_t krpc_SpaceCenter_Intake_Part(krpc_connection_t connection, k
 inline krpc_error_t krpc_SpaceCenter_Intake_Speed(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Intake_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 571, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 574, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17783,7 +17958,7 @@ inline krpc_error_t krpc_SpaceCenter_Intake_Speed(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_LaunchClamp_Release(krpc_connection_t connection, krpc_SpaceCenter_LaunchClamp_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 574, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 577, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17795,7 +17970,7 @@ inline krpc_error_t krpc_SpaceCenter_LaunchClamp_Release(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_LaunchClamp_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_LaunchClamp_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 575, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 578, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17863,7 +18038,7 @@ inline krpc_error_t krpc_SpaceCenter_LaunchSite_Name(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Leg_Deployable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Leg_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 578, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 581, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17880,7 +18055,7 @@ inline krpc_error_t krpc_SpaceCenter_Leg_Deployable(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Leg_Deployed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Leg_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 579, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 582, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17897,7 +18072,7 @@ inline krpc_error_t krpc_SpaceCenter_Leg_Deployed(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Leg_set_Deployed(krpc_connection_t connection, krpc_SpaceCenter_Leg_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 580, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 583, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -17910,7 +18085,7 @@ inline krpc_error_t krpc_SpaceCenter_Leg_set_Deployed(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Leg_IsGrounded(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Leg_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 581, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 584, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17927,7 +18102,7 @@ inline krpc_error_t krpc_SpaceCenter_Leg_IsGrounded(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Leg_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Leg_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 576, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 579, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17944,7 +18119,7 @@ inline krpc_error_t krpc_SpaceCenter_Leg_Part(krpc_connection_t connection, krpc
 inline krpc_error_t krpc_SpaceCenter_Leg_State(krpc_connection_t connection, krpc_SpaceCenter_LegState_t * returnValue, krpc_SpaceCenter_Leg_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 577, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 580, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17961,7 +18136,7 @@ inline krpc_error_t krpc_SpaceCenter_Leg_State(krpc_connection_t connection, krp
 inline krpc_error_t krpc_SpaceCenter_Light_Active(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Light_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 583, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 586, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -17978,7 +18153,7 @@ inline krpc_error_t krpc_SpaceCenter_Light_Active(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Light_set_Active(krpc_connection_t connection, krpc_SpaceCenter_Light_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 584, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 587, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -17991,7 +18166,7 @@ inline krpc_error_t krpc_SpaceCenter_Light_set_Active(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Light_Blink(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Light_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 587, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 590, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18008,7 +18183,7 @@ inline krpc_error_t krpc_SpaceCenter_Light_Blink(krpc_connection_t connection, b
 inline krpc_error_t krpc_SpaceCenter_Light_set_Blink(krpc_connection_t connection, krpc_SpaceCenter_Light_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 588, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 591, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -18021,7 +18196,7 @@ inline krpc_error_t krpc_SpaceCenter_Light_set_Blink(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Light_BlinkRate(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Light_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 589, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 592, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18038,7 +18213,7 @@ inline krpc_error_t krpc_SpaceCenter_Light_BlinkRate(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Light_set_BlinkRate(krpc_connection_t connection, krpc_SpaceCenter_Light_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 590, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 593, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -18051,7 +18226,7 @@ inline krpc_error_t krpc_SpaceCenter_Light_set_BlinkRate(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Light_Color(krpc_connection_t connection, krpc_tuple_float_float_float_t * returnValue, krpc_SpaceCenter_Light_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 585, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 588, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18068,7 +18243,7 @@ inline krpc_error_t krpc_SpaceCenter_Light_Color(krpc_connection_t connection, k
 inline krpc_error_t krpc_SpaceCenter_Light_set_Color(krpc_connection_t connection, krpc_SpaceCenter_Light_t instance, const krpc_tuple_float_float_float_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 586, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 589, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_float_float_float, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -18081,7 +18256,7 @@ inline krpc_error_t krpc_SpaceCenter_Light_set_Color(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Light_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Light_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 582, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 585, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18098,7 +18273,7 @@ inline krpc_error_t krpc_SpaceCenter_Light_Part(krpc_connection_t connection, kr
 inline krpc_error_t krpc_SpaceCenter_Light_PowerUsage(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Light_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 591, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 594, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18115,9 +18290,27 @@ inline krpc_error_t krpc_SpaceCenter_Light_PowerUsage(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Module_GetField(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Module_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 593, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 597, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_GetFieldById(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Module_t instance, const char * id) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 598, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -18133,9 +18326,27 @@ inline krpc_error_t krpc_SpaceCenter_Module_GetField(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Module_HasAction(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 600, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 613, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_HasActionWithId(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * id) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 614, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -18151,9 +18362,27 @@ inline krpc_error_t krpc_SpaceCenter_Module_HasAction(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Module_HasEvent(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 598, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 609, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_HasEventWithId(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * id) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 610, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -18169,9 +18398,27 @@ inline krpc_error_t krpc_SpaceCenter_Module_HasEvent(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Module_HasField(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 592, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 595, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_HasFieldWithId(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Module_t instance, const char * id) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 596, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -18187,9 +18434,22 @@ inline krpc_error_t krpc_SpaceCenter_Module_HasField(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Module_ResetField(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 597, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 607, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_ResetFieldById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 608, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -18200,9 +18460,51 @@ inline krpc_error_t krpc_SpaceCenter_Module_ResetField(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Module_SetAction(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 2, 601, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 615, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_SetActionById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 2, 616, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_SetFieldBool(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 2, 605, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_SetFieldBoolById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 2, 606, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18214,9 +18516,23 @@ inline krpc_error_t krpc_SpaceCenter_Module_SetAction(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Module_SetFieldFloat(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 2, 595, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 601, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_SetFieldFloatById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 2, 602, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18228,9 +18544,23 @@ inline krpc_error_t krpc_SpaceCenter_Module_SetFieldFloat(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Module_SetFieldInt(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, int32_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 2, 594, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 599, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_int32, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_SetFieldIntById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, int32_t value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 2, 600, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_int32, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18242,9 +18572,23 @@ inline krpc_error_t krpc_SpaceCenter_Module_SetFieldInt(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Module_SetFieldString(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 2, 596, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 603, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_string, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_SetFieldStringById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id, const char * value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 2, 604, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18256,9 +18600,22 @@ inline krpc_error_t krpc_SpaceCenter_Module_SetFieldString(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Module_TriggerEvent(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 599, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 611, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_TriggerEventById(krpc_connection_t connection, krpc_SpaceCenter_Module_t instance, const char * id) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 612, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &id));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -18269,7 +18626,24 @@ inline krpc_error_t krpc_SpaceCenter_Module_TriggerEvent(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Module_Actions(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_Module_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 606, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 623, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_string(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_ActionsById(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_Module_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 624, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18286,7 +18660,24 @@ inline krpc_error_t krpc_SpaceCenter_Module_Actions(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Module_Events(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_Module_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 605, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 621, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_string(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_EventsById(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_Module_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 622, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18303,7 +18694,24 @@ inline krpc_error_t krpc_SpaceCenter_Module_Events(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Module_Fields(krpc_connection_t connection, krpc_dictionary_string_string_t * returnValue, krpc_SpaceCenter_Module_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 604, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 619, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_dictionary_string_string(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Module_FieldsById(krpc_connection_t connection, krpc_dictionary_string_string_t * returnValue, krpc_SpaceCenter_Module_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 620, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18320,7 +18728,7 @@ inline krpc_error_t krpc_SpaceCenter_Module_Fields(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Module_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Module_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 602, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 617, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -18337,7 +18745,7 @@ inline krpc_error_t krpc_SpaceCenter_Module_Name(krpc_connection_t connection, c
 inline krpc_error_t krpc_SpaceCenter_Module_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Module_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 603, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 618, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19387,7 +19795,7 @@ inline krpc_error_t krpc_SpaceCenter_Orbit_ReferencePlaneNormal(krpc_connection_
 inline krpc_error_t krpc_SpaceCenter_Parachute_Arm(krpc_connection_t connection, krpc_SpaceCenter_Parachute_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 608, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 626, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19399,7 +19807,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_Arm(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Parachute_Cut(krpc_connection_t connection, krpc_SpaceCenter_Parachute_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 609, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 627, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19411,7 +19819,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_Cut(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Parachute_Deploy(krpc_connection_t connection, krpc_SpaceCenter_Parachute_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 607, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 625, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19423,7 +19831,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_Deploy(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Parachute_Armed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Parachute_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 612, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 630, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19440,7 +19848,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_Armed(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Parachute_DeployAltitude(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Parachute_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 614, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 632, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19457,7 +19865,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_DeployAltitude(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Parachute_set_DeployAltitude(krpc_connection_t connection, krpc_SpaceCenter_Parachute_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 615, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 633, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -19470,7 +19878,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_set_DeployAltitude(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_Parachute_DeployMinPressure(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Parachute_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 616, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 634, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19487,7 +19895,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_DeployMinPressure(krpc_connection
 inline krpc_error_t krpc_SpaceCenter_Parachute_set_DeployMinPressure(krpc_connection_t connection, krpc_SpaceCenter_Parachute_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 617, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 635, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -19500,7 +19908,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_set_DeployMinPressure(krpc_connec
 inline krpc_error_t krpc_SpaceCenter_Parachute_Deployed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Parachute_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 611, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 629, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19517,7 +19925,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_Deployed(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Parachute_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Parachute_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 610, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 628, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19534,7 +19942,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_Part(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Parachute_State(krpc_connection_t connection, krpc_SpaceCenter_ParachuteState_t * returnValue, krpc_SpaceCenter_Parachute_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 613, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 631, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19551,7 +19959,7 @@ inline krpc_error_t krpc_SpaceCenter_Parachute_State(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Part_AddForce(krpc_connection_t connection, krpc_SpaceCenter_Force_t * returnValue, krpc_SpaceCenter_Part_t instance, const krpc_tuple_double_double_double_t * force, const krpc_tuple_double_double_double_t * position, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[4];
-  KRPC_CHECK(krpc_call(&_call, 2, 624, 4, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 642, 4, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, force));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_tuple_double_double_double, position));
@@ -19571,7 +19979,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_AddForce(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_BoundingBox(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Part_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 620, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 638, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -19589,7 +19997,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_BoundingBox(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Part_CenterOfMass(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Part_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 619, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 637, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -19607,7 +20015,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_CenterOfMass(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Part_Direction(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Part_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 621, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 639, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -19625,7 +20033,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Direction(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Part_InstantaneousForce(krpc_connection_t connection, krpc_SpaceCenter_Part_t instance, const krpc_tuple_double_double_double_t * force, const krpc_tuple_double_double_double_t * position, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[4];
-  KRPC_CHECK(krpc_call(&_call, 2, 625, 4, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 643, 4, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, force));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_tuple_double_double_double, position));
@@ -19640,7 +20048,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_InstantaneousForce(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_Part_Position(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Part_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 618, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 636, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -19658,7 +20066,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Position(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_Rotation(krpc_connection_t connection, krpc_tuple_double_double_double_double_t * returnValue, krpc_SpaceCenter_Part_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 623, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 641, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -19676,7 +20084,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Rotation(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_Velocity(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Part_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 622, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 640, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -19694,7 +20102,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Velocity(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_Antenna(krpc_connection_t connection, krpc_SpaceCenter_Antenna_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 669, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 687, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19711,7 +20119,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Antenna(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Part_AutoStrutMode(krpc_connection_t connection, krpc_SpaceCenter_AutoStrutMode_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 702, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 720, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19728,7 +20136,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_AutoStrutMode(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Part_AvailableSeats(krpc_connection_t connection, uint32_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 663, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 681, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19745,7 +20153,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_AvailableSeats(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Part_AxiallyAttached(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 640, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 658, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19762,7 +20170,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_AxiallyAttached(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Part_CargoBay(krpc_connection_t connection, krpc_SpaceCenter_CargoBay_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 670, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 688, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19779,7 +20187,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_CargoBay(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_CenterOfMassReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 700, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 718, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19796,7 +20204,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_CenterOfMassReferenceFrame(krpc_connec
 inline krpc_error_t krpc_SpaceCenter_Part_Children(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 639, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 657, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19813,7 +20221,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Children(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_ControlSurface(krpc_connection_t connection, krpc_SpaceCenter_ControlSurface_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 671, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 689, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19830,7 +20238,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ControlSurface(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Part_Cost(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 636, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 654, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19847,7 +20255,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Cost(krpc_connection_t connection, dou
 inline krpc_error_t krpc_SpaceCenter_Part_Crossfeed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 664, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 682, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19864,7 +20272,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Crossfeed(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Part_DecoupleStage(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 643, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 661, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19881,7 +20289,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_DecoupleStage(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Part_Decoupler(krpc_connection_t connection, krpc_SpaceCenter_Decoupler_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 672, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 690, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19898,7 +20306,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Decoupler(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Part_DockingPort(krpc_connection_t connection, krpc_SpaceCenter_DockingPort_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 673, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 691, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19915,7 +20323,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_DockingPort(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Part_DryMass(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 646, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 664, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19932,7 +20340,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_DryMass(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Part_DynamicPressure(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 648, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 666, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19949,7 +20357,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_DynamicPressure(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Part_Engine(krpc_connection_t connection, krpc_SpaceCenter_Engine_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 675, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 693, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19966,7 +20374,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Engine(krpc_connection_t connection, k
 inline krpc_error_t krpc_SpaceCenter_Part_Experiment(krpc_connection_t connection, krpc_SpaceCenter_Experiment_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 676, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 694, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -19983,7 +20391,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Experiment(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Part_Experiments(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 677, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 695, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20000,7 +20408,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Experiments(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Part_Fairing(krpc_connection_t connection, krpc_SpaceCenter_Fairing_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 678, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 696, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20017,7 +20425,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Fairing(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Part_FlagURL(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 630, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 648, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20034,7 +20442,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_FlagURL(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Part_set_FlagURL(krpc_connection_t connection, krpc_SpaceCenter_Part_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 631, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 649, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -20047,7 +20455,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_set_FlagURL(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Part_FuelLinesFrom(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 666, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 684, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20064,7 +20472,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_FuelLinesFrom(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Part_FuelLinesTo(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 667, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 685, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20081,7 +20489,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_FuelLinesTo(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Part_set_Glow(krpc_connection_t connection, krpc_SpaceCenter_Part_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 701, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 719, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -20094,7 +20502,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_set_Glow(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_HighlightColor(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 634, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 652, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20111,7 +20519,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_HighlightColor(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Part_set_HighlightColor(krpc_connection_t connection, krpc_SpaceCenter_Part_t instance, const krpc_tuple_double_double_double_t * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 635, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 653, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -20124,7 +20532,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_set_HighlightColor(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_Part_Highlighted(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 632, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 650, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20141,7 +20549,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Highlighted(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Part_set_Highlighted(krpc_connection_t connection, krpc_SpaceCenter_Part_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 633, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 651, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -20154,7 +20562,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_set_Highlighted(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Part_ImpactTolerance(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 649, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 667, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20171,7 +20579,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ImpactTolerance(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Part_InertiaTensor(krpc_connection_t connection, krpc_list_double_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 698, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 716, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20188,7 +20596,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_InertiaTensor(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Part_Intake(krpc_connection_t connection, krpc_SpaceCenter_Intake_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 679, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 697, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20205,7 +20613,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Intake(krpc_connection_t connection, k
 inline krpc_error_t krpc_SpaceCenter_Part_IsFuelLine(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 665, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 683, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20222,7 +20630,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_IsFuelLine(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Part_LaunchClamp(krpc_connection_t connection, krpc_SpaceCenter_LaunchClamp_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 681, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 699, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20239,7 +20647,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_LaunchClamp(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Part_Leg(krpc_connection_t connection, krpc_SpaceCenter_Leg_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 680, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 698, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20256,7 +20664,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Leg(krpc_connection_t connection, krpc
 inline krpc_error_t krpc_SpaceCenter_Part_Light(krpc_connection_t connection, krpc_SpaceCenter_Light_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 682, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 700, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20273,7 +20681,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Light(krpc_connection_t connection, kr
 inline krpc_error_t krpc_SpaceCenter_Part_Mass(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 645, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 663, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20290,7 +20698,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Mass(krpc_connection_t connection, dou
 inline krpc_error_t krpc_SpaceCenter_Part_Massless(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 644, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 662, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20307,7 +20715,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Massless(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_MaxSkinTemperature(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 653, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 671, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20324,7 +20732,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_MaxSkinTemperature(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_Part_MaxTemperature(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 652, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 670, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20341,7 +20749,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_MaxTemperature(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Part_Modules(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 668, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 686, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20358,7 +20766,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Modules(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Part_MomentOfInertia(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 697, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 715, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20375,7 +20783,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_MomentOfInertia(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Part_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 626, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 644, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20392,7 +20800,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Name(krpc_connection_t connection, cha
 inline krpc_error_t krpc_SpaceCenter_Part_Parachute(krpc_connection_t connection, krpc_SpaceCenter_Parachute_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 683, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 701, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20409,7 +20817,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Parachute(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Part_Parent(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 638, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 656, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20426,7 +20834,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Parent(krpc_connection_t connection, k
 inline krpc_error_t krpc_SpaceCenter_Part_RCS(krpc_connection_t connection, krpc_SpaceCenter_RCS_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 685, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 703, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20443,7 +20851,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_RCS(krpc_connection_t connection, krpc
 inline krpc_error_t krpc_SpaceCenter_Part_RadiallyAttached(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 641, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 659, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20460,7 +20868,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_RadiallyAttached(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Part_Radiator(krpc_connection_t connection, krpc_SpaceCenter_Radiator_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 684, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 702, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20477,7 +20885,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Radiator(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_ReactionWheel(krpc_connection_t connection, krpc_SpaceCenter_ReactionWheel_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 686, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 704, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20494,7 +20902,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ReactionWheel(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Part_ReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 699, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 717, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20511,7 +20919,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ReferenceFrame(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Part_ResourceConverter(krpc_connection_t connection, krpc_SpaceCenter_ResourceConverter_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 687, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 705, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20528,7 +20936,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ResourceConverter(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Part_ResourceDrain(krpc_connection_t connection, krpc_SpaceCenter_ResourceDrain_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 674, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 692, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20545,7 +20953,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ResourceDrain(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Part_ResourceHarvester(krpc_connection_t connection, krpc_SpaceCenter_ResourceHarvester_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 688, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 706, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20562,7 +20970,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ResourceHarvester(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Part_Resources(krpc_connection_t connection, krpc_SpaceCenter_Resources_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 662, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 680, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20579,7 +20987,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Resources(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Part_RoboticController(krpc_connection_t connection, krpc_SpaceCenter_RoboticController_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 692, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 710, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20596,7 +21004,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_RoboticController(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Part_RoboticHinge(krpc_connection_t connection, krpc_SpaceCenter_RoboticHinge_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 693, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 711, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20613,7 +21021,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_RoboticHinge(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Part_RoboticPiston(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 694, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 712, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20630,7 +21038,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_RoboticPiston(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Part_RoboticRotation(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 695, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 713, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20647,7 +21055,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_RoboticRotation(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Part_RoboticRotor(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 696, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 714, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20664,7 +21072,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_RoboticRotor(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Part_Sensor(krpc_connection_t connection, krpc_SpaceCenter_Sensor_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 689, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 707, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20681,7 +21089,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Sensor(krpc_connection_t connection, k
 inline krpc_error_t krpc_SpaceCenter_Part_Shielded(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 647, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 665, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20698,7 +21106,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Shielded(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Part_SkinTemperature(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 651, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 669, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20715,7 +21123,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_SkinTemperature(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Part_SolarPanel(krpc_connection_t connection, krpc_SpaceCenter_SolarPanel_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 690, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 708, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20732,7 +21140,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_SolarPanel(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Part_Stage(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 642, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 660, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20749,7 +21157,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Stage(krpc_connection_t connection, in
 inline krpc_error_t krpc_SpaceCenter_Part_Tag(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 628, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 646, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20766,7 +21174,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Tag(krpc_connection_t connection, char
 inline krpc_error_t krpc_SpaceCenter_Part_set_Tag(krpc_connection_t connection, krpc_SpaceCenter_Part_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 629, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 647, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -20779,7 +21187,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_set_Tag(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Part_Temperature(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 650, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 668, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20796,7 +21204,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Temperature(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Part_ThermalConductionFlux(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 658, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 676, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20813,7 +21221,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ThermalConductionFlux(krpc_connection_
 inline krpc_error_t krpc_SpaceCenter_Part_ThermalConvectionFlux(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 659, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 677, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20830,7 +21238,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ThermalConvectionFlux(krpc_connection_
 inline krpc_error_t krpc_SpaceCenter_Part_ThermalInternalFlux(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 657, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 675, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20847,7 +21255,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ThermalInternalFlux(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Part_ThermalMass(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 654, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 672, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20864,7 +21272,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ThermalMass(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Part_ThermalRadiationFlux(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 660, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 678, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20881,7 +21289,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ThermalRadiationFlux(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_Part_ThermalResourceMass(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 656, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 674, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20898,7 +21306,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ThermalResourceMass(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Part_ThermalSkinMass(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 655, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 673, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20915,7 +21323,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ThermalSkinMass(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Part_ThermalSkinToInternalFlux(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 661, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 679, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20932,7 +21340,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_ThermalSkinToInternalFlux(krpc_connect
 inline krpc_error_t krpc_SpaceCenter_Part_Title(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 627, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 645, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20949,7 +21357,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Title(krpc_connection_t connection, ch
 inline krpc_error_t krpc_SpaceCenter_Part_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 637, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 655, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20966,7 +21374,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Vessel(krpc_connection_t connection, k
 inline krpc_error_t krpc_SpaceCenter_Part_Wheel(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t * returnValue, krpc_SpaceCenter_Part_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 691, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 709, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -20983,7 +21391,7 @@ inline krpc_error_t krpc_SpaceCenter_Part_Wheel(krpc_connection_t connection, kr
 inline krpc_error_t krpc_SpaceCenter_Parts_InDecoupleStage(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance, int32_t stage) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 708, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 726, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &stage));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21001,7 +21409,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_InDecoupleStage(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Parts_InStage(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance, int32_t stage) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 707, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 725, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &stage));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21019,7 +21427,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_InStage(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Parts_ModulesWithName(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance, const char * moduleName) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 709, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 727, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &moduleName));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21037,7 +21445,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_ModulesWithName(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Parts_WithModule(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance, const char * moduleName) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 706, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 724, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &moduleName));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21055,7 +21463,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_WithModule(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Parts_WithName(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 703, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 721, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21073,7 +21481,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_WithName(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Parts_WithTag(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance, const char * tag) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 705, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 723, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &tag));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21091,7 +21499,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_WithTag(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Parts_WithTitle(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance, const char * title) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 704, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 722, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &title));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21109,7 +21517,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_WithTitle(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Parts_All(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 710, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 728, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21126,7 +21534,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_All(krpc_connection_t connection, krp
 inline krpc_error_t krpc_SpaceCenter_Parts_Antennas(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 714, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 732, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21143,7 +21551,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_Antennas(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Parts_CargoBays(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 716, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 734, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21160,7 +21568,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_CargoBays(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Parts_ControlSurfaces(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 715, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 733, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21177,7 +21585,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_ControlSurfaces(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Parts_Controlling(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 712, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 730, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21194,7 +21602,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_Controlling(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Parts_set_Controlling(krpc_connection_t connection, krpc_SpaceCenter_Parts_t instance, krpc_SpaceCenter_Part_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 713, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 731, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21205,278 +21613,6 @@ inline krpc_error_t krpc_SpaceCenter_Parts_set_Controlling(krpc_connection_t con
 }
 
 inline krpc_error_t krpc_SpaceCenter_Parts_Decouplers(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 717, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_DockingPorts(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 718, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_Engines(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 719, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_Experiments(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 720, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_Fairings(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 721, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_Intakes(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 722, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_LaunchClamps(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 724, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_Legs(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 723, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_Lights(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 725, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_Parachutes(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 726, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_RCS(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 728, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_Radiators(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 727, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_ReactionWheels(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 729, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_ResourceConverters(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 730, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_ResourceDrains(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 739, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_ResourceHarvesters(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 731, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Parts_RoboticHinges(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 735, 1, _arguments));
@@ -21493,7 +21629,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_RoboticHinges(krpc_connection_t conne
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Parts_RoboticPistons(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+inline krpc_error_t krpc_SpaceCenter_Parts_DockingPorts(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 736, 1, _arguments));
@@ -21510,7 +21646,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_RoboticPistons(krpc_connection_t conn
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Parts_RoboticRotations(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+inline krpc_error_t krpc_SpaceCenter_Parts_Engines(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 737, 1, _arguments));
@@ -21527,7 +21663,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_RoboticRotations(krpc_connection_t co
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Parts_RoboticRotors(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+inline krpc_error_t krpc_SpaceCenter_Parts_Experiments(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 738, 1, _arguments));
@@ -21544,10 +21680,282 @@ inline krpc_error_t krpc_SpaceCenter_Parts_RoboticRotors(krpc_connection_t conne
   return KRPC_OK;
 }
 
+inline krpc_error_t krpc_SpaceCenter_Parts_Fairings(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 739, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_Intakes(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 740, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_LaunchClamps(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 742, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_Legs(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 741, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_Lights(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 743, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_Parachutes(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 744, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_RCS(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 746, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_Radiators(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 745, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_ReactionWheels(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 747, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_ResourceConverters(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 748, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_ResourceDrains(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 757, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_ResourceHarvesters(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 749, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_RoboticHinges(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 753, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_RoboticPistons(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 754, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_RoboticRotations(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 755, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Parts_RoboticRotors(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 756, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_list_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
 inline krpc_error_t krpc_SpaceCenter_Parts_Root(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 711, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 729, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21564,7 +21972,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_Root(krpc_connection_t connection, kr
 inline krpc_error_t krpc_SpaceCenter_Parts_Sensors(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 732, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 750, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21581,7 +21989,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_Sensors(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Parts_SolarPanels(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 733, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 751, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21598,7 +22006,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_SolarPanels(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Parts_Wheels(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Parts_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 734, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 752, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21615,7 +22023,7 @@ inline krpc_error_t krpc_SpaceCenter_Parts_Wheels(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Propellant_CurrentAmount(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 741, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 759, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21632,7 +22040,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_CurrentAmount(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Propellant_CurrentRequirement(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 742, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 760, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21649,7 +22057,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_CurrentRequirement(krpc_connecti
 inline krpc_error_t krpc_SpaceCenter_Propellant_DrawStackGauge(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 747, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 765, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21666,7 +22074,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_DrawStackGauge(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_Propellant_IgnoreForIsp(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 745, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 763, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21683,7 +22091,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_IgnoreForIsp(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_Propellant_IgnoreForThrustCurve(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 746, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 764, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21700,7 +22108,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_IgnoreForThrustCurve(krpc_connec
 inline krpc_error_t krpc_SpaceCenter_Propellant_IsDeprived(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 748, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 766, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21717,7 +22125,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_IsDeprived(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Propellant_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 740, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 758, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21734,7 +22142,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_Name(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Propellant_Ratio(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 749, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 767, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21751,7 +22159,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_Ratio(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Propellant_TotalResourceAvailable(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 743, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 761, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21768,7 +22176,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_TotalResourceAvailable(krpc_conn
 inline krpc_error_t krpc_SpaceCenter_Propellant_TotalResourceCapacity(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Propellant_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 744, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 762, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21785,7 +22193,7 @@ inline krpc_error_t krpc_SpaceCenter_Propellant_TotalResourceCapacity(krpc_conne
 inline krpc_error_t krpc_SpaceCenter_RCS_Active(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 751, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 769, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21802,7 +22210,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_Active(krpc_connection_t connection, bo
 inline krpc_error_t krpc_SpaceCenter_RCS_AvailableForce(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 767, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 785, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21819,7 +22227,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_AvailableForce(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_RCS_AvailableThrust(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 768, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 786, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21836,7 +22244,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_AvailableThrust(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_RCS_AvailableTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 766, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 784, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21853,7 +22261,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_AvailableTorque(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_RCS_Enabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 752, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 770, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21870,7 +22278,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_Enabled(krpc_connection_t connection, b
 inline krpc_error_t krpc_SpaceCenter_RCS_set_Enabled(krpc_connection_t connection, krpc_SpaceCenter_RCS_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 753, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 771, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21883,7 +22291,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_set_Enabled(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_RCS_ForwardEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 760, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 778, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21900,7 +22308,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_ForwardEnabled(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_RCS_set_ForwardEnabled(krpc_connection_t connection, krpc_SpaceCenter_RCS_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 761, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 779, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -21913,7 +22321,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_set_ForwardEnabled(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_RCS_HasFuel(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 779, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 797, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21930,7 +22338,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_HasFuel(krpc_connection_t connection, b
 inline krpc_error_t krpc_SpaceCenter_RCS_KerbinSeaLevelSpecificImpulse(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 776, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 794, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21947,7 +22355,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_KerbinSeaLevelSpecificImpulse(krpc_conn
 inline krpc_error_t krpc_SpaceCenter_RCS_MaxThrust(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 769, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 787, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21964,7 +22372,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_MaxThrust(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_RCS_MaxVacuumThrust(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 770, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 788, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21981,7 +22389,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_MaxVacuumThrust(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_RCS_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 750, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 768, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -21998,7 +22406,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_Part(krpc_connection_t connection, krpc
 inline krpc_error_t krpc_SpaceCenter_RCS_PitchEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 754, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 772, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22015,7 +22423,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_PitchEnabled(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_RCS_set_PitchEnabled(krpc_connection_t connection, krpc_SpaceCenter_RCS_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 755, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 773, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22028,7 +22436,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_set_PitchEnabled(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_RCS_PropellantRatios(krpc_connection_t connection, krpc_dictionary_string_float_t * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 778, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 796, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22045,7 +22453,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_PropellantRatios(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_RCS_Propellants(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 777, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 795, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22062,7 +22470,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_Propellants(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_RCS_RightEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 764, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 782, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22079,7 +22487,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_RightEnabled(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_RCS_set_RightEnabled(krpc_connection_t connection, krpc_SpaceCenter_RCS_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 765, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 783, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22092,7 +22500,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_set_RightEnabled(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_RCS_RollEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 758, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 776, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22109,7 +22517,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_RollEnabled(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_RCS_set_RollEnabled(krpc_connection_t connection, krpc_SpaceCenter_RCS_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 759, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 777, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22122,7 +22530,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_set_RollEnabled(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_RCS_SpecificImpulse(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 774, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 792, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22139,7 +22547,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_SpecificImpulse(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_RCS_ThrustLimit(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 771, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 789, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22156,7 +22564,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_ThrustLimit(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_RCS_set_ThrustLimit(krpc_connection_t connection, krpc_SpaceCenter_RCS_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 772, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 790, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22169,7 +22577,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_set_ThrustLimit(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_RCS_Thrusters(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 773, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 791, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22186,7 +22594,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_Thrusters(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_RCS_UpEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 762, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 780, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22203,7 +22611,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_UpEnabled(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_RCS_set_UpEnabled(krpc_connection_t connection, krpc_SpaceCenter_RCS_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 763, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 781, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22216,7 +22624,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_set_UpEnabled(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_RCS_VacuumSpecificImpulse(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 775, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 793, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22233,7 +22641,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_VacuumSpecificImpulse(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_RCS_YawEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RCS_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 756, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 774, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22250,7 +22658,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_YawEnabled(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_RCS_set_YawEnabled(krpc_connection_t connection, krpc_SpaceCenter_RCS_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 757, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 775, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22263,7 +22671,7 @@ inline krpc_error_t krpc_SpaceCenter_RCS_set_YawEnabled(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Radiator_Deployable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Radiator_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 781, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 799, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22280,7 +22688,7 @@ inline krpc_error_t krpc_SpaceCenter_Radiator_Deployable(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Radiator_Deployed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Radiator_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 782, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 800, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22297,7 +22705,7 @@ inline krpc_error_t krpc_SpaceCenter_Radiator_Deployed(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Radiator_set_Deployed(krpc_connection_t connection, krpc_SpaceCenter_Radiator_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 783, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 801, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22310,7 +22718,7 @@ inline krpc_error_t krpc_SpaceCenter_Radiator_set_Deployed(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Radiator_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Radiator_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 780, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 798, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22327,7 +22735,7 @@ inline krpc_error_t krpc_SpaceCenter_Radiator_Part(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Radiator_State(krpc_connection_t connection, krpc_SpaceCenter_RadiatorState_t * returnValue, krpc_SpaceCenter_Radiator_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 784, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 802, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22344,7 +22752,7 @@ inline krpc_error_t krpc_SpaceCenter_Radiator_State(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_ReactionWheel_Active(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_ReactionWheel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 786, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 804, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22361,7 +22769,7 @@ inline krpc_error_t krpc_SpaceCenter_ReactionWheel_Active(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_ReactionWheel_set_Active(krpc_connection_t connection, krpc_SpaceCenter_ReactionWheel_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 787, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 805, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22374,7 +22782,7 @@ inline krpc_error_t krpc_SpaceCenter_ReactionWheel_set_Active(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_ReactionWheel_AvailableTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_ReactionWheel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 789, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 807, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22391,7 +22799,7 @@ inline krpc_error_t krpc_SpaceCenter_ReactionWheel_AvailableTorque(krpc_connecti
 inline krpc_error_t krpc_SpaceCenter_ReactionWheel_Broken(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_ReactionWheel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 788, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 806, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22408,7 +22816,7 @@ inline krpc_error_t krpc_SpaceCenter_ReactionWheel_Broken(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_ReactionWheel_MaxTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_ReactionWheel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 790, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 808, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22425,7 +22833,7 @@ inline krpc_error_t krpc_SpaceCenter_ReactionWheel_MaxTorque(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_ReactionWheel_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_ReactionWheel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 785, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 803, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22442,7 +22850,7 @@ inline krpc_error_t krpc_SpaceCenter_ReactionWheel_Part(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_ReferenceFrame_CreateHybrid(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_ReferenceFrame_t position, krpc_SpaceCenter_ReferenceFrame_t rotation, krpc_SpaceCenter_ReferenceFrame_t velocity, krpc_SpaceCenter_ReferenceFrame_t angularVelocity) {
   krpc_call_t _call;
   krpc_argument_t _arguments[4];
-  KRPC_CHECK(krpc_call(&_call, 2, 960, 4, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 978, 4, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &position));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &rotation));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &velocity));
@@ -22462,7 +22870,7 @@ inline krpc_error_t krpc_SpaceCenter_ReferenceFrame_CreateHybrid(krpc_connection
 inline krpc_error_t krpc_SpaceCenter_ReferenceFrame_CreateRelative(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_ReferenceFrame_t referenceFrame, const krpc_tuple_double_double_double_t * position, const krpc_tuple_double_double_double_double_t * rotation, const krpc_tuple_double_double_double_t * velocity, const krpc_tuple_double_double_double_t * angularVelocity) {
   krpc_call_t _call;
   krpc_argument_t _arguments[5];
-  KRPC_CHECK(krpc_call(&_call, 2, 959, 5, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 977, 5, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &referenceFrame));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_tuple_double_double_double, position));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_tuple_double_double_double_double, rotation));
@@ -22483,7 +22891,7 @@ inline krpc_error_t krpc_SpaceCenter_ReferenceFrame_CreateRelative(krpc_connecti
 inline krpc_error_t krpc_SpaceCenter_Resource_Amount(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Resource_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 964, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 982, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22500,7 +22908,7 @@ inline krpc_error_t krpc_SpaceCenter_Resource_Amount(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Resource_Density(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Resource_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 965, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 983, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22517,7 +22925,7 @@ inline krpc_error_t krpc_SpaceCenter_Resource_Density(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Resource_Enabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Resource_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 967, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 985, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22534,7 +22942,7 @@ inline krpc_error_t krpc_SpaceCenter_Resource_Enabled(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Resource_set_Enabled(krpc_connection_t connection, krpc_SpaceCenter_Resource_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 968, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 986, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22547,7 +22955,7 @@ inline krpc_error_t krpc_SpaceCenter_Resource_set_Enabled(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Resource_FlowMode(krpc_connection_t connection, krpc_SpaceCenter_ResourceFlowMode_t * returnValue, krpc_SpaceCenter_Resource_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 966, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 984, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22564,7 +22972,7 @@ inline krpc_error_t krpc_SpaceCenter_Resource_FlowMode(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Resource_Max(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Resource_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 963, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 981, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22581,7 +22989,7 @@ inline krpc_error_t krpc_SpaceCenter_Resource_Max(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Resource_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Resource_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 961, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 979, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22598,7 +23006,7 @@ inline krpc_error_t krpc_SpaceCenter_Resource_Name(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Resource_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Resource_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 962, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 980, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22615,7 +23023,7 @@ inline krpc_error_t krpc_SpaceCenter_Resource_Part(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Active(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_ResourceConverter_t instance, int32_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 791, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 809, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22633,7 +23041,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Active(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Inputs(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_ResourceConverter_t instance, int32_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 797, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 815, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22651,7 +23059,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Inputs(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_ResourceConverter_t instance, int32_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 792, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 810, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22669,7 +23077,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Name(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Outputs(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_ResourceConverter_t instance, int32_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 798, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 816, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22687,7 +23095,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Outputs(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Start(krpc_connection_t connection, krpc_SpaceCenter_ResourceConverter_t instance, int32_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 793, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 811, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22700,7 +23108,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Start(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_State(krpc_connection_t connection, krpc_SpaceCenter_ResourceConverterState_t * returnValue, krpc_SpaceCenter_ResourceConverter_t instance, int32_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 795, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 813, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22718,7 +23126,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_State(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_StatusInfo(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_ResourceConverter_t instance, int32_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 796, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 814, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22736,7 +23144,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_StatusInfo(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Stop(krpc_connection_t connection, krpc_SpaceCenter_ResourceConverter_t instance, int32_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 794, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 812, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22749,7 +23157,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Stop(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_CoreTemperature(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceConverter_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 802, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 820, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22766,7 +23174,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_CoreTemperature(krpc_conn
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Count(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_ResourceConverter_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 800, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 818, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22783,7 +23191,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Count(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_OptimumCoreTemperature(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceConverter_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 803, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 821, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22800,7 +23208,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_OptimumCoreTemperature(kr
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_ResourceConverter_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 799, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 817, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22817,7 +23225,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_Part(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_ResourceConverter_ThermalEfficiency(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceConverter_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 801, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 819, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22834,7 +23242,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceConverter_ThermalEfficiency(krpc_co
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_CheckResource(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_ResourceDrain_t instance, krpc_SpaceCenter_Resource_t resource) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 805, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 823, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &resource));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22852,7 +23260,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_CheckResource(krpc_connection
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_SetResource(krpc_connection_t connection, krpc_SpaceCenter_ResourceDrain_t instance, krpc_SpaceCenter_Resource_t resource, bool enabled) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 2, 804, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 822, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &resource));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &enabled));
@@ -22866,7 +23274,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_SetResource(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_Start(krpc_connection_t connection, krpc_SpaceCenter_ResourceDrain_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 806, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 824, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22878,7 +23286,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_Start(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_Stop(krpc_connection_t connection, krpc_SpaceCenter_ResourceDrain_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 807, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 825, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22890,7 +23298,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_Stop(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_AvailableResources(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_ResourceDrain_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 809, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 827, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22907,7 +23315,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_AvailableResources(krpc_conne
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_DrainMode(krpc_connection_t connection, krpc_SpaceCenter_DrainMode_t * returnValue, krpc_SpaceCenter_ResourceDrain_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 810, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 828, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22924,7 +23332,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_DrainMode(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_set_DrainMode(krpc_connection_t connection, krpc_SpaceCenter_ResourceDrain_t instance, krpc_SpaceCenter_DrainMode_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 811, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 829, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -22937,7 +23345,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_set_DrainMode(krpc_connection
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_MaxRate(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceDrain_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 812, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 830, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22954,7 +23362,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_MaxRate(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_MinRate(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceDrain_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 813, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 831, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22971,7 +23379,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_MinRate(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_ResourceDrain_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 808, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 826, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -22988,7 +23396,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_Part(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_Rate(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceDrain_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 814, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 832, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23005,7 +23413,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_Rate(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_ResourceDrain_set_Rate(krpc_connection_t connection, krpc_SpaceCenter_ResourceDrain_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 815, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 833, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23018,7 +23426,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceDrain_set_Rate(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_Active(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_ResourceHarvester_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 820, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 838, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23035,7 +23443,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_Active(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_set_Active(krpc_connection_t connection, krpc_SpaceCenter_ResourceHarvester_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 821, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 839, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23048,7 +23456,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_set_Active(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_CoreTemperature(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceHarvester_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 824, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 842, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23065,7 +23473,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_CoreTemperature(krpc_conn
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_Deployed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_ResourceHarvester_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 818, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 836, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23082,7 +23490,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_Deployed(krpc_connection_
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_set_Deployed(krpc_connection_t connection, krpc_SpaceCenter_ResourceHarvester_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 819, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 837, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23095,7 +23503,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_set_Deployed(krpc_connect
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_ExtractionRate(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceHarvester_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 822, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 840, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23112,7 +23520,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_ExtractionRate(krpc_conne
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_OptimumCoreTemperature(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceHarvester_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 825, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 843, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23129,7 +23537,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_OptimumCoreTemperature(kr
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_ResourceHarvester_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 816, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 834, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23146,7 +23554,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_Part(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_State(krpc_connection_t connection, krpc_SpaceCenter_ResourceHarvesterState_t * returnValue, krpc_SpaceCenter_ResourceHarvester_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 817, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 835, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23163,7 +23571,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_State(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_ThermalEfficiency(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceHarvester_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 823, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 841, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23180,7 +23588,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceHarvester_ThermalEfficiency(krpc_co
 inline krpc_error_t krpc_SpaceCenter_ResourceTransfer_Amount(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ResourceTransfer_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 971, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 989, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23197,7 +23605,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceTransfer_Amount(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_ResourceTransfer_Complete(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_ResourceTransfer_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 970, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 988, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23214,7 +23622,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceTransfer_Complete(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_ResourceTransfer_Start(krpc_connection_t connection, krpc_SpaceCenter_ResourceTransfer_t * returnValue, krpc_SpaceCenter_Part_t fromPart, krpc_SpaceCenter_Part_t toPart, const char * resource, float maxAmount) {
   krpc_call_t _call;
   krpc_argument_t _arguments[4];
-  KRPC_CHECK(krpc_call(&_call, 2, 969, 4, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 987, 4, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &fromPart));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &toPart));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_string, &resource));
@@ -23234,7 +23642,7 @@ inline krpc_error_t krpc_SpaceCenter_ResourceTransfer_Start(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Resources_Amount(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Resources_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 975, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 993, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23252,7 +23660,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_Amount(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Resources_HasResource(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Resources_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 973, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 991, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23270,7 +23678,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_HasResource(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Resources_Max(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Resources_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 974, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 992, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23288,7 +23696,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_Max(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Resources_WithResource(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Resources_t instance, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 972, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 990, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23306,7 +23714,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_WithResource(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Resources_All(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Resources_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 978, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 996, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23323,7 +23731,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_All(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Resources_Enabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Resources_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 980, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 998, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23340,7 +23748,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_Enabled(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Resources_set_Enabled(krpc_connection_t connection, krpc_SpaceCenter_Resources_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 981, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 999, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23353,7 +23761,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_set_Enabled(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Resources_Names(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_Resources_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 979, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 997, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23370,7 +23778,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_Names(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Resources_Density(krpc_connection_t connection, float * returnValue, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 976, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 994, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23387,7 +23795,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_Density(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Resources_FlowMode(krpc_connection_t connection, krpc_SpaceCenter_ResourceFlowMode_t * returnValue, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 977, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 995, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23404,7 +23812,7 @@ inline krpc_error_t krpc_SpaceCenter_Resources_FlowMode(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_RoboticController_AddAxis(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticController_t instance, krpc_SpaceCenter_Module_t module, const char * fieldName) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 2, 828, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 846, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &module));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_string, &fieldName));
@@ -23423,7 +23831,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticController_AddAxis(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_RoboticController_AddKeyFrame(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticController_t instance, krpc_SpaceCenter_Module_t module, const char * fieldName, float time, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[5];
-  KRPC_CHECK(krpc_call(&_call, 2, 829, 5, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 847, 5, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &module));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_string, &fieldName));
@@ -23444,7 +23852,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticController_AddKeyFrame(krpc_connecti
 inline krpc_error_t krpc_SpaceCenter_RoboticController_Axes(krpc_connection_t connection, krpc_list_list_string_t * returnValue, krpc_SpaceCenter_RoboticController_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 827, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 845, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23461,7 +23869,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticController_Axes(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_RoboticController_ClearAxis(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticController_t instance, krpc_SpaceCenter_Module_t module, const char * fieldName) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 2, 830, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 848, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &module));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_string, &fieldName));
@@ -23480,7 +23888,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticController_ClearAxis(krpc_connection
 inline krpc_error_t krpc_SpaceCenter_RoboticController_HasPart(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticController_t instance, krpc_SpaceCenter_Part_t part) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 826, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 844, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &part));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23498,7 +23906,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticController_HasPart(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_RoboticController_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_RoboticController_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 831, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 849, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23515,7 +23923,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticController_Part(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_MoveHome(krpc_connection_t connection, krpc_SpaceCenter_RoboticHinge_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 832, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 850, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23527,7 +23935,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_MoveHome(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_CurrentAngle(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticHinge_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 836, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 854, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23544,7 +23952,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_CurrentAngle(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_Damping(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticHinge_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 839, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 857, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23561,7 +23969,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_Damping(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_Damping(krpc_connection_t connection, krpc_SpaceCenter_RoboticHinge_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 840, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 858, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23574,7 +23982,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_Damping(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_Locked(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticHinge_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 841, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 859, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23591,7 +23999,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_Locked(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_Locked(krpc_connection_t connection, krpc_SpaceCenter_RoboticHinge_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 842, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 860, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23604,7 +24012,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_Locked(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_MotorEngaged(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticHinge_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 843, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 861, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23621,7 +24029,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_MotorEngaged(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_MotorEngaged(krpc_connection_t connection, krpc_SpaceCenter_RoboticHinge_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 844, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 862, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23634,7 +24042,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_MotorEngaged(krpc_connecti
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_RoboticHinge_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 833, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 851, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23651,7 +24059,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_Part(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_Rate(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticHinge_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 837, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 855, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23668,7 +24076,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_Rate(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_Rate(krpc_connection_t connection, krpc_SpaceCenter_RoboticHinge_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 838, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 856, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23679,65 +24087,6 @@ inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_Rate(krpc_connection_t con
 }
 
 inline krpc_error_t krpc_SpaceCenter_RoboticHinge_TargetAngle(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticHinge_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 834, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_TargetAngle(krpc_connection_t connection, krpc_SpaceCenter_RoboticHinge_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 835, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticPiston_MoveHome(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 845, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticPiston_CurrentExtension(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticPiston_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 849, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticPiston_Damping(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticPiston_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 852, 1, _arguments));
@@ -23754,7 +24103,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticPiston_Damping(krpc_connection_t con
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_Damping(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t instance, float value) {
+inline krpc_error_t krpc_SpaceCenter_RoboticHinge_set_TargetAngle(krpc_connection_t connection, krpc_SpaceCenter_RoboticHinge_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 2, 853, 2, _arguments));
@@ -23767,10 +24116,69 @@ inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_Damping(krpc_connection_t
   return KRPC_OK;
 }
 
+inline krpc_error_t krpc_SpaceCenter_RoboticPiston_MoveHome(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 863, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticPiston_CurrentExtension(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticPiston_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 867, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticPiston_Damping(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticPiston_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 870, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_Damping(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 871, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
 inline krpc_error_t krpc_SpaceCenter_RoboticPiston_Locked(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticPiston_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 854, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 872, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23787,7 +24195,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticPiston_Locked(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_Locked(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 855, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 873, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23800,7 +24208,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_Locked(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_RoboticPiston_MotorEngaged(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticPiston_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 856, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 874, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23817,7 +24225,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticPiston_MotorEngaged(krpc_connection_
 inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_MotorEngaged(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 857, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 875, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23830,7 +24238,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_MotorEngaged(krpc_connect
 inline krpc_error_t krpc_SpaceCenter_RoboticPiston_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_RoboticPiston_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 846, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 864, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23847,7 +24255,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticPiston_Part(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_RoboticPiston_Rate(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticPiston_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 850, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 868, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -23864,7 +24272,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticPiston_Rate(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_Rate(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 851, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 869, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -23875,65 +24283,6 @@ inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_Rate(krpc_connection_t co
 }
 
 inline krpc_error_t krpc_SpaceCenter_RoboticPiston_TargetExtension(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticPiston_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 847, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_TargetExtension(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 848, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_MoveHome(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 858, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_CurrentAngle(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 862, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Damping(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 865, 1, _arguments));
@@ -23950,7 +24299,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Damping(krpc_connection_t c
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_Damping(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, float value) {
+inline krpc_error_t krpc_SpaceCenter_RoboticPiston_set_TargetExtension(krpc_connection_t connection, krpc_SpaceCenter_RoboticPiston_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 2, 866, 2, _arguments));
@@ -23963,29 +24312,11 @@ inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_Damping(krpc_connection
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Locked(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_MoveHome(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 867, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 876, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_Locked(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 868, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -23993,57 +24324,10 @@ inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_Locked(krpc_connection_
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_MotorEngaged(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_CurrentAngle(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 869, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_MotorEngaged(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 870, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 859, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Rate(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 863, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 880, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -24057,234 +24341,7 @@ inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Rate(krpc_connection_t conn
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_Rate(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 864, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_TargetAngle(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 860, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_TargetAngle(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 861, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_CurrentRPM(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 874, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_Inverted(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 875, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_Inverted(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 876, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_Locked(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 877, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_Locked(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 878, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_MotorEngaged(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 879, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_MotorEngaged(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 880, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 871, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_TargetRPM(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 872, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_TargetRPM(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 873, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_TorqueLimit(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 881, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_TorqueLimit(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 882, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_ScienceData_DataAmount(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceData_t instance) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Damping(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 883, 1, _arguments));
@@ -24301,61 +24358,23 @@ inline krpc_error_t krpc_SpaceCenter_ScienceData_DataAmount(krpc_connection_t co
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_ScienceData_ScienceValue(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceData_t instance) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_Damping(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, float value) {
   krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 884, 1, _arguments));
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 884, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_ScienceData_TransmitValue(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceData_t instance) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Locked(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 885, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_ScienceSubject_DataScale(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 889, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_ScienceSubject_IsComplete(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 888, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -24369,24 +24388,20 @@ inline krpc_error_t krpc_SpaceCenter_ScienceSubject_IsComplete(krpc_connection_t
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_ScienceSubject_Science(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_Locked(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, bool value) {
   krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 886, 1, _arguments));
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 886, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_ScienceSubject_ScienceCap(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_MotorEngaged(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 887, 1, _arguments));
@@ -24397,13 +24412,227 @@ inline krpc_error_t krpc_SpaceCenter_ScienceSubject_ScienceCap(krpc_connection_t
   if (returnValue) {
     pb_istream_t _stream;
     KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_MotorEngaged(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 888, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 877, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_Rate(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 881, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
     KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_ScienceSubject_ScientificValue(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_Rate(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 882, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_TargetAngle(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotation_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 878, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotation_set_TargetAngle(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotation_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 879, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_CurrentRPM(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 892, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_Inverted(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 893, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_Inverted(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 894, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_Locked(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 895, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_Locked(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 896, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_MotorEngaged(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 897, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_MotorEngaged(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 898, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 889, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_TargetRPM(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 890, 1, _arguments));
@@ -24420,10 +24649,23 @@ inline krpc_error_t krpc_SpaceCenter_ScienceSubject_ScientificValue(krpc_connect
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_ScienceSubject_SubjectValue(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_TargetRPM(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 891, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_TorqueLimit(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_RoboticRotor_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 891, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 899, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -24437,127 +24679,12 @@ inline krpc_error_t krpc_SpaceCenter_ScienceSubject_SubjectValue(krpc_connection
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_ScienceSubject_Title(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 892, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Sensor_Active(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Sensor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 894, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Sensor_set_Active(krpc_connection_t connection, krpc_SpaceCenter_Sensor_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 895, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Sensor_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Sensor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 893, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Sensor_Value(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Sensor_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 896, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_SolarPanel_Deployable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 898, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_SolarPanel_Deployed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 899, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_SolarPanel_set_Deployed(krpc_connection_t connection, krpc_SpaceCenter_SolarPanel_t instance, bool value) {
+inline krpc_error_t krpc_SpaceCenter_RoboticRotor_set_TorqueLimit(krpc_connection_t connection, krpc_SpaceCenter_RoboticRotor_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 2, 900, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -24565,7 +24692,24 @@ inline krpc_error_t krpc_SpaceCenter_SolarPanel_set_Deployed(krpc_connection_t c
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_SolarPanel_EnergyFlow(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
+inline krpc_error_t krpc_SpaceCenter_ScienceData_DataAmount(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceData_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 901, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_ScienceData_ScienceValue(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceData_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 902, 1, _arguments));
@@ -24582,41 +24726,7 @@ inline krpc_error_t krpc_SpaceCenter_SolarPanel_EnergyFlow(krpc_connection_t con
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_SolarPanel_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 897, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_SolarPanel_State(krpc_connection_t connection, krpc_SpaceCenter_SolarPanelState_t * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 901, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_enum(&_stream, (int*)returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_SolarPanel_SunExposure(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
+inline krpc_error_t krpc_SpaceCenter_ScienceData_TransmitValue(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceData_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 903, 1, _arguments));
@@ -24633,10 +24743,308 @@ inline krpc_error_t krpc_SpaceCenter_SolarPanel_SunExposure(krpc_connection_t co
   return KRPC_OK;
 }
 
+inline krpc_error_t krpc_SpaceCenter_ScienceSubject_DataScale(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 907, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_ScienceSubject_IsComplete(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 906, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_ScienceSubject_Science(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 904, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_ScienceSubject_ScienceCap(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 905, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_ScienceSubject_ScientificValue(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 908, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_ScienceSubject_SubjectValue(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 909, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_ScienceSubject_Title(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_ScienceSubject_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 910, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Sensor_Active(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Sensor_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 912, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Sensor_set_Active(krpc_connection_t connection, krpc_SpaceCenter_Sensor_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 913, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Sensor_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Sensor_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 911, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Sensor_Value(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Sensor_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 914, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_string(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_SolarPanel_Deployable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 916, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_SolarPanel_Deployed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 917, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_SolarPanel_set_Deployed(krpc_connection_t connection, krpc_SpaceCenter_SolarPanel_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 918, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_SolarPanel_EnergyFlow(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 920, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_SolarPanel_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 915, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_SolarPanel_State(krpc_connection_t connection, krpc_SpaceCenter_SolarPanelState_t * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 919, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_enum(&_stream, (int*)returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_SolarPanel_SunExposure(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_SolarPanel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 921, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
 inline krpc_error_t krpc_SpaceCenter_Thruster_GimbalPosition(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Thruster_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 908, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 926, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24654,7 +25062,7 @@ inline krpc_error_t krpc_SpaceCenter_Thruster_GimbalPosition(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_Thruster_InitialThrustDirection(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Thruster_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 907, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 925, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24672,7 +25080,7 @@ inline krpc_error_t krpc_SpaceCenter_Thruster_InitialThrustDirection(krpc_connec
 inline krpc_error_t krpc_SpaceCenter_Thruster_InitialThrustPosition(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Thruster_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 906, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 924, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24690,7 +25098,7 @@ inline krpc_error_t krpc_SpaceCenter_Thruster_InitialThrustPosition(krpc_connect
 inline krpc_error_t krpc_SpaceCenter_Thruster_ThrustDirection(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Thruster_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 905, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 923, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24708,7 +25116,7 @@ inline krpc_error_t krpc_SpaceCenter_Thruster_ThrustDirection(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Thruster_ThrustPosition(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Thruster_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 904, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 922, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24726,7 +25134,7 @@ inline krpc_error_t krpc_SpaceCenter_Thruster_ThrustPosition(krpc_connection_t c
 inline krpc_error_t krpc_SpaceCenter_Thruster_GimbalAngle(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Thruster_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 912, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 930, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -24743,7 +25151,7 @@ inline krpc_error_t krpc_SpaceCenter_Thruster_GimbalAngle(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Thruster_Gimballed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Thruster_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 911, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 929, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -24760,7 +25168,7 @@ inline krpc_error_t krpc_SpaceCenter_Thruster_Gimballed(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Thruster_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Thruster_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 909, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 927, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -24777,7 +25185,7 @@ inline krpc_error_t krpc_SpaceCenter_Thruster_Part(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Thruster_ThrustReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_Thruster_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 910, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 928, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -24794,7 +25202,7 @@ inline krpc_error_t krpc_SpaceCenter_Thruster_ThrustReferenceFrame(krpc_connecti
 inline krpc_error_t krpc_SpaceCenter_Vessel_AngularVelocity(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 993, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1011, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24812,7 +25220,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AngularVelocity(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableThrustAt(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance, double pressure) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 985, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1003, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &pressure));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24830,7 +25238,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableThrustAt(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Vessel_BoundingBox(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 989, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1007, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24848,7 +25256,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_BoundingBox(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Vessel_Direction(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 992, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1010, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24866,7 +25274,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Direction(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Vessel_Flight(krpc_connection_t connection, krpc_SpaceCenter_Flight_t * returnValue, krpc_SpaceCenter_Vessel_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 983, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1001, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24884,7 +25292,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Flight(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Vessel_MaxThrustAt(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance, double pressure) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 986, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1004, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &pressure));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24902,7 +25310,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_MaxThrustAt(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Vessel_Position(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 988, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1006, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24920,7 +25328,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Position(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Vessel_Recover(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 982, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1000, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -24932,7 +25340,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Recover(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Vessel_ResourcesInDecoupleStage(krpc_connection_t connection, krpc_SpaceCenter_Resources_t * returnValue, krpc_SpaceCenter_Vessel_t instance, int32_t stage, bool cumulative) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 2, 984, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1002, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &stage));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_bool, &cumulative));
@@ -24951,7 +25359,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_ResourcesInDecoupleStage(krpc_connec
 inline krpc_error_t krpc_SpaceCenter_Vessel_Rotation(krpc_connection_t connection, krpc_tuple_double_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 991, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1009, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24969,7 +25377,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Rotation(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Vessel_SpecificImpulseAt(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance, double pressure) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 987, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1005, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &pressure));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -24987,7 +25395,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_SpecificImpulseAt(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Vessel_Velocity(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance, krpc_SpaceCenter_ReferenceFrame_t referenceFrame) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 990, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1008, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &referenceFrame));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25005,7 +25413,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Velocity(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Vessel_AutoPilot(krpc_connection_t connection, krpc_SpaceCenter_AutoPilot_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1005, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1023, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25022,7 +25430,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AutoPilot(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableControlSurfaceTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1027, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1045, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25039,7 +25447,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableControlSurfaceTorque(krpc_c
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableEngineTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1026, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1044, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25056,7 +25464,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableEngineTorque(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableOtherTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1028, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1046, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25073,7 +25481,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableOtherTorque(krpc_connection
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableRCSForce(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1025, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1043, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25090,7 +25498,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableRCSForce(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableRCSTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1024, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1042, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25107,7 +25515,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableRCSTorque(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableReactionWheelTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1023, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1041, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25124,7 +25532,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableReactionWheelTorque(krpc_co
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableThrust(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1014, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1032, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25141,7 +25549,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableThrust(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableTorque(krpc_connection_t connection, krpc_tuple_tuple_double_double_double_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1022, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1040, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25158,7 +25566,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_AvailableTorque(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Vessel_Biome(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1001, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1019, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25175,7 +25583,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Biome(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Vessel_Comms(krpc_connection_t connection, krpc_SpaceCenter_Comms_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1004, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1022, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25192,7 +25600,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Comms(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Vessel_Control(krpc_connection_t connection, krpc_SpaceCenter_Control_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1003, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1021, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25209,7 +25617,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Control(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Vessel_Crew(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1008, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1026, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25226,7 +25634,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Crew(krpc_connection_t connection, k
 inline krpc_error_t krpc_SpaceCenter_Vessel_CrewCapacity(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1006, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1024, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25243,7 +25651,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_CrewCapacity(krpc_connection_t conne
 inline krpc_error_t krpc_SpaceCenter_Vessel_CrewCount(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1007, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1025, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25260,7 +25668,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_CrewCount(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Vessel_DryMass(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1012, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1030, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25277,7 +25685,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_DryMass(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Vessel_InertiaTensor(krpc_connection_t connection, krpc_list_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1021, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1039, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25294,7 +25702,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_InertiaTensor(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Vessel_KerbinSeaLevelSpecificImpulse(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1019, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1037, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25311,7 +25719,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_KerbinSeaLevelSpecificImpulse(krpc_c
 inline krpc_error_t krpc_SpaceCenter_Vessel_MET(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1000, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1018, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25328,7 +25736,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_MET(krpc_connection_t connection, do
 inline krpc_error_t krpc_SpaceCenter_Vessel_Mass(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1011, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1029, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25345,7 +25753,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Mass(krpc_connection_t connection, f
 inline krpc_error_t krpc_SpaceCenter_Vessel_MaxThrust(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1015, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1033, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25362,7 +25770,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_MaxThrust(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Vessel_MaxVacuumThrust(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1016, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1034, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25379,7 +25787,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_MaxVacuumThrust(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Vessel_MomentOfInertia(krpc_connection_t connection, krpc_tuple_double_double_double_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1020, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1038, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25396,7 +25804,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_MomentOfInertia(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Vessel_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 994, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1012, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25413,7 +25821,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Name(krpc_connection_t connection, c
 inline krpc_error_t krpc_SpaceCenter_Vessel_set_Name(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 995, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1013, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25426,7 +25834,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_set_Name(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Vessel_Orbit(krpc_connection_t connection, krpc_SpaceCenter_Orbit_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1002, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1020, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25443,7 +25851,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Orbit(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Vessel_OrbitalReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1030, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1048, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25460,7 +25868,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_OrbitalReferenceFrame(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_Vessel_Parts(krpc_connection_t connection, krpc_SpaceCenter_Parts_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1010, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1028, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25477,7 +25885,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Parts(krpc_connection_t connection, 
 inline krpc_error_t krpc_SpaceCenter_Vessel_Recoverable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 999, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1017, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25494,7 +25902,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Recoverable(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Vessel_ReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1029, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1047, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25511,7 +25919,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_ReferenceFrame(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Vessel_Resources(krpc_connection_t connection, krpc_SpaceCenter_Resources_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1009, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1027, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25528,7 +25936,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Resources(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Vessel_Situation(krpc_connection_t connection, krpc_SpaceCenter_VesselSituation_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 998, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1016, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25545,7 +25953,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Situation(krpc_connection_t connecti
 inline krpc_error_t krpc_SpaceCenter_Vessel_SpecificImpulse(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1017, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1035, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25562,7 +25970,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_SpecificImpulse(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Vessel_SurfaceReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1031, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1049, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25579,7 +25987,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_SurfaceReferenceFrame(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_Vessel_SurfaceVelocityReferenceFrame(krpc_connection_t connection, krpc_SpaceCenter_ReferenceFrame_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1032, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1050, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25596,7 +26004,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_SurfaceVelocityReferenceFrame(krpc_c
 inline krpc_error_t krpc_SpaceCenter_Vessel_Thrust(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1013, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1031, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25613,7 +26021,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Thrust(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Vessel_Type(krpc_connection_t connection, krpc_SpaceCenter_VesselType_t * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 996, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1014, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25630,7 +26038,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_Type(krpc_connection_t connection, k
 inline krpc_error_t krpc_SpaceCenter_Vessel_set_Type(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t instance, krpc_SpaceCenter_VesselType_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 997, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1015, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25643,7 +26051,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_set_Type(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Vessel_VacuumSpecificImpulse(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Vessel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1018, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1036, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25660,7 +26068,7 @@ inline krpc_error_t krpc_SpaceCenter_Vessel_VacuumSpecificImpulse(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Remove(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1033, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1051, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25672,7 +26080,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Remove(krpc_connection_t connectio
 inline krpc_error_t krpc_SpaceCenter_Waypoint_BedrockAltitude(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1050, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1068, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25689,7 +26097,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_BedrockAltitude(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Waypoint_set_BedrockAltitude(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 1051, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1069, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25702,7 +26110,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_set_BedrockAltitude(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Body(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1034, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1052, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25719,7 +26127,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Body(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Body(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance, krpc_SpaceCenter_CelestialBody_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 1035, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1053, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25732,7 +26140,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Body(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Clustered(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1055, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1073, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25749,7 +26157,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Clustered(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Color(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1038, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1056, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25766,7 +26174,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Color(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Color(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance, int32_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 1039, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1057, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25779,7 +26187,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Color(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Contract(krpc_connection_t connection, krpc_SpaceCenter_Contract_t * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1057, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1075, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25796,7 +26204,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Contract(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Grounded(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1053, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1071, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25813,7 +26221,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Grounded(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Waypoint_HasContract(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1056, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1074, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25830,7 +26238,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_HasContract(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Icon(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1040, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1058, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25847,7 +26255,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Icon(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Icon(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 1041, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1059, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25860,7 +26268,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Icon(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Index(krpc_connection_t connection, int32_t * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1054, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1072, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25877,7 +26285,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Index(krpc_connection_t connection
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Latitude(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1042, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1060, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25894,7 +26302,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Latitude(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Latitude(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 1043, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1061, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25907,7 +26315,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Latitude(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Longitude(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1044, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1062, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25924,7 +26332,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Longitude(krpc_connection_t connec
 inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Longitude(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 1045, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1063, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25937,7 +26345,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Longitude(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_Waypoint_MeanAltitude(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1046, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1064, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25954,7 +26362,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_MeanAltitude(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_Waypoint_set_MeanAltitude(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 1047, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1065, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25967,7 +26375,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_set_MeanAltitude(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_Waypoint_Name(krpc_connection_t connection, char * * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1036, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1054, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -25984,7 +26392,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_Name(krpc_connection_t connection,
 inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Name(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 1037, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1055, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -25997,7 +26405,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_set_Name(krpc_connection_t connect
 inline krpc_error_t krpc_SpaceCenter_Waypoint_NearSurface(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1052, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1070, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -26014,7 +26422,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_NearSurface(krpc_connection_t conn
 inline krpc_error_t krpc_SpaceCenter_Waypoint_SurfaceAltitude(krpc_connection_t connection, double * returnValue, krpc_SpaceCenter_Waypoint_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1048, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1066, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -26031,7 +26439,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_SurfaceAltitude(krpc_connection_t 
 inline krpc_error_t krpc_SpaceCenter_Waypoint_set_SurfaceAltitude(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t instance, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 1049, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1067, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -26044,7 +26452,7 @@ inline krpc_error_t krpc_SpaceCenter_Waypoint_set_SurfaceAltitude(krpc_connectio
 inline krpc_error_t krpc_SpaceCenter_WaypointManager_AddWaypoint(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t * returnValue, krpc_SpaceCenter_WaypointManager_t instance, double latitude, double longitude, krpc_SpaceCenter_CelestialBody_t body, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[5];
-  KRPC_CHECK(krpc_call(&_call, 2, 1058, 5, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1076, 5, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &latitude));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_double, &longitude));
@@ -26065,7 +26473,7 @@ inline krpc_error_t krpc_SpaceCenter_WaypointManager_AddWaypoint(krpc_connection
 inline krpc_error_t krpc_SpaceCenter_WaypointManager_AddWaypointAtAltitude(krpc_connection_t connection, krpc_SpaceCenter_Waypoint_t * returnValue, krpc_SpaceCenter_WaypointManager_t instance, double latitude, double longitude, double altitude, krpc_SpaceCenter_CelestialBody_t body, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[6];
-  KRPC_CHECK(krpc_call(&_call, 2, 1059, 6, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1077, 6, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &latitude));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_double, &longitude));
@@ -26087,7 +26495,7 @@ inline krpc_error_t krpc_SpaceCenter_WaypointManager_AddWaypointAtAltitude(krpc_
 inline krpc_error_t krpc_SpaceCenter_WaypointManager_Colors(krpc_connection_t connection, krpc_dictionary_string_int32_t * returnValue, krpc_SpaceCenter_WaypointManager_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1062, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1080, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -26104,7 +26512,7 @@ inline krpc_error_t krpc_SpaceCenter_WaypointManager_Colors(krpc_connection_t co
 inline krpc_error_t krpc_SpaceCenter_WaypointManager_Icons(krpc_connection_t connection, krpc_list_string_t * returnValue, krpc_SpaceCenter_WaypointManager_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1061, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1079, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -26121,7 +26529,7 @@ inline krpc_error_t krpc_SpaceCenter_WaypointManager_Icons(krpc_connection_t con
 inline krpc_error_t krpc_SpaceCenter_WaypointManager_Waypoints(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_SpaceCenter_WaypointManager_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 1060, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 1078, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -26138,7 +26546,7 @@ inline krpc_error_t krpc_SpaceCenter_WaypointManager_Waypoints(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_Wheel_AutoFrictionControl(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 920, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 938, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -26155,7 +26563,7 @@ inline krpc_error_t krpc_SpaceCenter_Wheel_AutoFrictionControl(krpc_connection_t
 inline krpc_error_t krpc_SpaceCenter_Wheel_set_AutoFrictionControl(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 921, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 939, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -26166,646 +26574,6 @@ inline krpc_error_t krpc_SpaceCenter_Wheel_set_AutoFrictionControl(krpc_connecti
 }
 
 inline krpc_error_t krpc_SpaceCenter_Wheel_Brakes(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 918, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_Brakes(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 919, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Broken(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 952, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Deflection(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 957, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Deployable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 924, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Deployed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 925, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_Deployed(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 926, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_DriveLimiter(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 938, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_DriveLimiter(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 939, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Grounded(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 916, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_HasBrakes(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 917, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_HasSuspension(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 949, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_ManualFrictionControl(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 922, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_ManualFrictionControl(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 923, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_MotorEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 928, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_MotorEnabled(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 929, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_MotorInverted(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 930, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_MotorInverted(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 931, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_MotorOutput(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 933, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_MotorState(krpc_connection_t connection, krpc_SpaceCenter_MotorState_t * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 932, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_enum(&_stream, (int*)returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 913, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Powered(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 927, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Radius(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 915, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Repairable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 953, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Slip(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 958, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_State(krpc_connection_t connection, krpc_SpaceCenter_WheelState_t * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 914, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_enum(&_stream, (int*)returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Steerable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 940, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_SteeringAngleLimit(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 945, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_SteeringAngleLimit(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 946, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_SteeringEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 941, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_SteeringEnabled(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 942, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_SteeringInverted(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 943, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_SteeringInverted(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 944, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_SteeringResponseTime(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 947, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_SteeringResponseTime(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 948, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_Stress(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 954, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_StressPercentage(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 956, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_StressTolerance(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 955, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_SuspensionDamperStrength(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 951, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_SuspensionSpringStrength(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 2, 950, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-inline krpc_error_t krpc_SpaceCenter_Wheel_TractionControl(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 936, 1, _arguments));
@@ -26822,7 +26590,7 @@ inline krpc_error_t krpc_SpaceCenter_Wheel_TractionControl(krpc_connection_t con
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Wheel_set_TractionControl(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_Brakes(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 2, 937, 2, _arguments));
@@ -26835,7 +26603,118 @@ inline krpc_error_t krpc_SpaceCenter_Wheel_set_TractionControl(krpc_connection_t
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_SpaceCenter_Wheel_TractionControlEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+inline krpc_error_t krpc_SpaceCenter_Wheel_Broken(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 970, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Deflection(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 975, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Deployable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 942, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Deployed(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 943, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_Deployed(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 944, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_DriveLimiter(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 956, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_DriveLimiter(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 957, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Grounded(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 2, 934, 1, _arguments));
@@ -26852,10 +26731,539 @@ inline krpc_error_t krpc_SpaceCenter_Wheel_TractionControlEnabled(krpc_connectio
   return KRPC_OK;
 }
 
+inline krpc_error_t krpc_SpaceCenter_Wheel_HasBrakes(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 935, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_HasSuspension(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 967, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_ManualFrictionControl(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 940, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_ManualFrictionControl(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 941, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_MotorEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 946, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_MotorEnabled(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 947, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_MotorInverted(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 948, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_MotorInverted(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 949, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_MotorOutput(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 951, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_MotorState(krpc_connection_t connection, krpc_SpaceCenter_MotorState_t * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 950, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_enum(&_stream, (int*)returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 931, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Powered(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 945, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Radius(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 933, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Repairable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 971, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Slip(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 976, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_State(krpc_connection_t connection, krpc_SpaceCenter_WheelState_t * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 932, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_enum(&_stream, (int*)returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Steerable(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 958, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_SteeringAngleLimit(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 963, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_SteeringAngleLimit(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 964, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_SteeringEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 959, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_SteeringEnabled(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 960, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_SteeringInverted(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 961, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_SteeringInverted(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 962, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_SteeringResponseTime(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 965, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_SteeringResponseTime(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 966, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_Stress(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 972, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_StressPercentage(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 974, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_StressTolerance(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 973, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_SuspensionDamperStrength(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 969, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_SuspensionSpringStrength(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 968, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_TractionControl(krpc_connection_t connection, float * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 954, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_float(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_set_TractionControl(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, float value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 2, 955, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+inline krpc_error_t krpc_SpaceCenter_Wheel_TractionControlEnabled(krpc_connection_t connection, bool * returnValue, krpc_SpaceCenter_Wheel_t instance) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[1];
+  KRPC_CHECK(krpc_call(&_call, 2, 952, 1, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_bool(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
 inline krpc_error_t krpc_SpaceCenter_Wheel_set_TractionControlEnabled(krpc_connection_t connection, krpc_SpaceCenter_Wheel_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 2, 935, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 2, 953, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;

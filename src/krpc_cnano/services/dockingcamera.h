@@ -1,12 +1,12 @@
 #pragma once
 
-#include <krpc/decoder.h>
-#include <krpc/encoder.h>
-#include <krpc/error.h>
-#include <krpc/memory.h>
-#include <krpc/pb_decode.h>
-#include <krpc/pb_encode.h>
-#include <krpc/types.h>
+#include <krpc_cnano/decoder.h>
+#include <krpc_cnano/encoder.h>
+#include <krpc_cnano/error.h>
+#include <krpc_cnano/memory.h>
+#include <krpc_cnano/pb_decode.h>
+#include <krpc_cnano/pb_encode.h>
+#include <krpc_cnano/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,12 +18,12 @@ extern "C" {
 typedef krpc_object_t krpc_DockingCamera_Camera_t;
 
 /**
- * Get a Camera part
+ * Get a Camera part.
  */
 krpc_error_t krpc_DockingCamera_Camera(krpc_connection_t connection, krpc_DockingCamera_Camera_t * returnValue, krpc_SpaceCenter_Part_t part);
 
 /**
- * Check if the Camera API is avaiable
+ * Check if the Camera API is available.
  */
 krpc_error_t krpc_DockingCamera_Available(krpc_connection_t connection, bool * returnValue);
 

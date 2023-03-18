@@ -1,12 +1,12 @@
 #pragma once
 
-#include <krpc/decoder.h>
-#include <krpc/encoder.h>
-#include <krpc/error.h>
-#include <krpc/memory.h>
-#include <krpc/pb_decode.h>
-#include <krpc/pb_encode.h>
-#include <krpc/types.h>
+#include <krpc_cnano/decoder.h>
+#include <krpc_cnano/encoder.h>
+#include <krpc_cnano/error.h>
+#include <krpc_cnano/memory.h>
+#include <krpc_cnano/pb_decode.h>
+#include <krpc_cnano/pb_encode.h>
+#include <krpc_cnano/types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,12 +38,12 @@ krpc_error_t krpc_decode_list_double(
 #endif  // KRPC_TYPE_LIST_DOUBLE
 
 /**
- * Get a LaserDist part
+ * Get a LaserDist part.
  */
 krpc_error_t krpc_LiDAR_Laser(krpc_connection_t connection, krpc_LiDAR_Laser_t * returnValue, krpc_SpaceCenter_Part_t part);
 
 /**
- * Check if the LaserDist API is avaiable
+ * Check if the LaserDist API is available.
  */
 krpc_error_t krpc_LiDAR_Available(krpc_connection_t connection, bool * returnValue);
 

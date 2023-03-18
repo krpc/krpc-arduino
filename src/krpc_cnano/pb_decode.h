@@ -6,7 +6,7 @@
 #ifndef PB_DECODE_H_INCLUDED
 #define PB_DECODE_H_INCLUDED
 
-#include "krpc/pb.h"
+#include "pb.h"
 
 #ifdef __cplusplus
 extern "C" {

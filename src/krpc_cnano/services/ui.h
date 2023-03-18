@@ -1,12 +1,12 @@
 #pragma once
 
-#include <krpc/decoder.h>
-#include <krpc/encoder.h>
-#include <krpc/error.h>
-#include <krpc/memory.h>
-#include <krpc/pb_decode.h>
-#include <krpc/pb_encode.h>
-#include <krpc/types.h>
+#include <krpc_cnano/decoder.h>
+#include <krpc_cnano/encoder.h>
+#include <krpc_cnano/error.h>
+#include <krpc_cnano/memory.h>
+#include <krpc_cnano/pb_decode.h>
+#include <krpc_cnano/pb_encode.h>
+#include <krpc_cnano/types.h>
 
 #ifdef __cplusplus
 extern "C" {

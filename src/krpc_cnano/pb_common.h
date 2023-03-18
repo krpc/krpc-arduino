@@ -5,7 +5,7 @@
 #ifndef PB_COMMON_H_INCLUDED
 #define PB_COMMON_H_INCLUDED
 
-#include "krpc/pb.h"
+#include "pb.h"
 
 #ifdef __cplusplus
 extern "C" {
