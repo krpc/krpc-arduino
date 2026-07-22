@@ -1,6 +1,7 @@
 #pragma once
 
 #include <krpc_cnano/decoder.h>
+#include <krpc_cnano/deprecated.h>
 #include <krpc_cnano/encoder.h>
 #include <krpc_cnano/error.h>
 #include <krpc_cnano/memory.h>
@@ -30,13 +31,13 @@ struct krpc_list_object_s {
   krpc_object_t * items;
 };
 
-krpc_error_t krpc_encode_list_object(
+static inline krpc_error_t krpc_encode_list_object(
   pb_ostream_t * stream, const krpc_list_object_t * value);
-krpc_error_t krpc_encode_size_list_object(
+static inline krpc_error_t krpc_encode_size_list_object(
   size_t * size, const krpc_list_object_t * value);
-bool krpc_encode_callback_list_object(
+static inline bool krpc_encode_callback_list_object(
   pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
-krpc_error_t krpc_decode_list_object(
+static inline krpc_error_t krpc_decode_list_object(
   pb_istream_t * stream, krpc_list_object_t * value);
 
 #endif  // KRPC_TYPE_LIST_OBJECT
@@ -50,13 +51,13 @@ struct krpc_list_string_s {
   char * * items;
 };
 
-krpc_error_t krpc_encode_list_string(
+static inline krpc_error_t krpc_encode_list_string(
   pb_ostream_t * stream, const krpc_list_string_t * value);
-krpc_error_t krpc_encode_size_list_string(
+static inline krpc_error_t krpc_encode_size_list_string(
   size_t * size, const krpc_list_string_t * value);
-bool krpc_encode_callback_list_string(
+static inline bool krpc_encode_callback_list_string(
   pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
-krpc_error_t krpc_decode_list_string(
+static inline krpc_error_t krpc_decode_list_string(
   pb_istream_t * stream, krpc_list_string_t * value);
 
 #endif  // KRPC_TYPE_LIST_STRING
@@ -91,32 +92,32 @@ typedef enum {
 /**
  * Get the antenna object for a particular part.
  */
-krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection, krpc_RemoteTech_Antenna_t * returnValue, krpc_SpaceCenter_Part_t part);
+static inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection, krpc_RemoteTech_Antenna_t * returnValue, krpc_SpaceCenter_Part_t part);
 
 /**
  * Get a communications object, representing the communication capability of a particular vessel.
  */
-krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, krpc_RemoteTech_Comms_t * returnValue, krpc_SpaceCenter_Vessel_t vessel);
+static inline krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, krpc_RemoteTech_Comms_t * returnValue, krpc_SpaceCenter_Vessel_t vessel);
 
 /**
  * Whether RemoteTech is installed.
  */
-krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connection, bool * returnValue);
+static inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connection, bool * returnValue);
 
 /**
  * The names of the ground stations.
  */
-krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t connection, krpc_list_string_t * returnValue);
+static inline krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t connection, krpc_list_string_t * returnValue);
 
 /**
  * Whether the antenna has a connection.
  */
-krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Antenna_t instance);
+static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
  * Get the part containing this antenna.
  */
-krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_RemoteTech_Antenna_t instance);
+static inline krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
  * The object that the antenna is targetting.
@@ -124,7 +125,7 @@ krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, krpc_Spa
  * To set the target to a celestial body, ground station or vessel see RemoteTech::Antenna::target_body,
  * RemoteTech::Antenna::target_ground_station and RemoteTech::Antenna::target_vessel.
  */
-krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection, krpc_RemoteTech_Target_t * returnValue, krpc_RemoteTech_Antenna_t instance);
+static inline krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection, krpc_RemoteTech_Target_t * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
  * The object that the antenna is targetting.
@@ -132,90 +133,90 @@ krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection, krpc_R
  * To set the target to a celestial body, ground station or vessel see RemoteTech::Antenna::target_body,
  * RemoteTech::Antenna::target_ground_station and RemoteTech::Antenna::target_vessel.
  */
-krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_RemoteTech_Target_t value);
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_RemoteTech_Target_t value);
 
 /**
  * The celestial body the antenna is targetting.
  */
-krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_RemoteTech_Antenna_t instance);
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
  * The celestial body the antenna is targetting.
  */
-krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_CelestialBody_t value);
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_CelestialBody_t value);
 
 /**
  * The ground station the antenna is targetting.
  */
-krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_connection_t connection, char * * returnValue, krpc_RemoteTech_Antenna_t instance);
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_connection_t connection, char * * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
  * The ground station the antenna is targetting.
  */
-krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, const char * value);
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, const char * value);
 
 /**
  * The vessel the antenna is targetting.
  */
-krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Antenna_t instance);
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
  * The vessel the antenna is targetting.
  */
-krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_Vessel_t value);
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_Vessel_t value);
 
 /**
  * The signal delay between the this vessel and another vessel, in seconds.
  * @param other
  */
-krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance, krpc_SpaceCenter_Vessel_t other);
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance, krpc_SpaceCenter_Vessel_t other);
 
 /**
  * The antennas for this vessel.
  */
-krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_RemoteTech_Comms_t instance);
+static inline krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
  * Whether the vessel has any connection.
  */
-krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
  * Whether the vessel has a connection to a ground station.
  */
-krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
  * Whether the vessel has a flight computer on board.
  */
-krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
+static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
  * Whether the vessel can be controlled locally.
  */
-krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
+static inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
  * The shortest signal delay to the vessel, in seconds.
  */
-krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance);
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
  * The signal delay between the vessel and the closest ground station, in seconds.
  */
-krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance);
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
  * Get the vessel.
  */
-krpc_error_t krpc_RemoteTech_Comms_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Comms_t instance);
+static inline krpc_error_t krpc_RemoteTech_Comms_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Comms_t instance);
 
 // Implementation
 
 #ifndef KRPC_IMPL_TYPE_LIST_OBJECT
 #define KRPC_IMPL_TYPE_LIST_OBJECT
 
-static bool krpc_encode_callback_items_list_object(
+static inline bool krpc_encode_callback_items_list_object(
   pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
   const krpc_list_object_t * value = (const krpc_list_object_t*)(*arg);
   size_t i = 0;
@@ -231,7 +232,7 @@ static bool krpc_encode_callback_items_list_object(
   return true;
 }
 
-inline krpc_error_t krpc_encode_list_object(
+static inline krpc_error_t krpc_encode_list_object(
   pb_ostream_t * stream, const krpc_list_object_t * value) {
   krpc_schema_List message = krpc_schema_List_init_default;
   message.items.funcs.encode = &krpc_encode_callback_items_list_object;
@@ -240,7 +241,7 @@ inline krpc_error_t krpc_encode_list_object(
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_encode_size_list_object(
+static inline krpc_error_t krpc_encode_size_list_object(
   size_t * size, const krpc_list_object_t * value) {
   pb_ostream_t stream = PB_OSTREAM_SIZING;
   KRPC_RETURN_ON_ERROR(krpc_encode_list_object(&stream, value));
@@ -248,7 +249,7 @@ inline krpc_error_t krpc_encode_size_list_object(
   return KRPC_OK;
 }
 
-inline bool krpc_encode_callback_list_object(
+static inline bool krpc_encode_callback_list_object(
   pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
   if (!pb_encode_tag_for_field(stream, field))
     KRPC_CALLBACK_RETURN_ERROR("encoding tag for list_object");
@@ -261,9 +262,9 @@ inline bool krpc_encode_callback_list_object(
   return true;
 }
 
-static bool krpc_decode_callback_item_list_object(
+static inline bool krpc_decode_callback_item_list_object(
   pb_istream_t * stream, const pb_field_t * field, void ** arg) {
-  typedef struct { size_t capacity; krpc_list_object_t * value; } State;
+  typedef struct State { size_t capacity; krpc_list_object_t * value; } State;
   State * state = (State*)(*arg);
   size_t i = state->value->size;
   state->value->size++;
@@ -275,9 +276,9 @@ static bool krpc_decode_callback_item_list_object(
   return true;
 }
 
-inline krpc_error_t krpc_decode_list_object(
+static inline krpc_error_t krpc_decode_list_object(
   pb_istream_t * stream, krpc_list_object_t * value) {
-  typedef struct { size_t capacity; krpc_list_object_t * value; } State;
+  typedef struct State { size_t capacity; krpc_list_object_t * value; } State;
   State state = { 0, value };
   value->size = 0;
   if (value->items == NULL) {
@@ -296,7 +297,7 @@ inline krpc_error_t krpc_decode_list_object(
 #ifndef KRPC_IMPL_TYPE_LIST_STRING
 #define KRPC_IMPL_TYPE_LIST_STRING
 
-static bool krpc_encode_callback_items_list_string(
+static inline bool krpc_encode_callback_items_list_string(
   pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
   const krpc_list_string_t * value = (const krpc_list_string_t*)(*arg);
   size_t i = 0;
@@ -312,7 +313,7 @@ static bool krpc_encode_callback_items_list_string(
   return true;
 }
 
-inline krpc_error_t krpc_encode_list_string(
+static inline krpc_error_t krpc_encode_list_string(
   pb_ostream_t * stream, const krpc_list_string_t * value) {
   krpc_schema_List message = krpc_schema_List_init_default;
   message.items.funcs.encode = &krpc_encode_callback_items_list_string;
@@ -321,7 +322,7 @@ inline krpc_error_t krpc_encode_list_string(
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_encode_size_list_string(
+static inline krpc_error_t krpc_encode_size_list_string(
   size_t * size, const krpc_list_string_t * value) {
   pb_ostream_t stream = PB_OSTREAM_SIZING;
   KRPC_RETURN_ON_ERROR(krpc_encode_list_string(&stream, value));
@@ -329,7 +330,7 @@ inline krpc_error_t krpc_encode_size_list_string(
   return KRPC_OK;
 }
 
-inline bool krpc_encode_callback_list_string(
+static inline bool krpc_encode_callback_list_string(
   pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
   if (!pb_encode_tag_for_field(stream, field))
     KRPC_CALLBACK_RETURN_ERROR("encoding tag for list_string");
@@ -342,9 +343,9 @@ inline bool krpc_encode_callback_list_string(
   return true;
 }
 
-static bool krpc_decode_callback_item_list_string(
+static inline bool krpc_decode_callback_item_list_string(
   pb_istream_t * stream, const pb_field_t * field, void ** arg) {
-  typedef struct { size_t capacity; krpc_list_string_t * value; } State;
+  typedef struct State { size_t capacity; krpc_list_string_t * value; } State;
   State * state = (State*)(*arg);
   size_t i = state->value->size;
   state->value->size++;
@@ -356,9 +357,9 @@ static bool krpc_decode_callback_item_list_string(
   return true;
 }
 
-inline krpc_error_t krpc_decode_list_string(
+static inline krpc_error_t krpc_decode_list_string(
   pb_istream_t * stream, krpc_list_string_t * value) {
-  typedef struct { size_t capacity; krpc_list_string_t * value; } State;
+  typedef struct State { size_t capacity; krpc_list_string_t * value; } State;
   State state = { 0, value };
   value->size = 0;
   if (value->items == NULL) {
@@ -374,7 +375,7 @@ inline krpc_error_t krpc_decode_list_string(
 
 #endif  // KRPC_IMPL_TYPE_LIST_STRING
 
-inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection, krpc_RemoteTech_Antenna_t * returnValue, krpc_SpaceCenter_Part_t part) {
+static inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection, krpc_RemoteTech_Antenna_t * returnValue, krpc_SpaceCenter_Part_t part) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 2, 1, _arguments));
@@ -391,7 +392,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection, krpc_R
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, krpc_RemoteTech_Comms_t * returnValue, krpc_SpaceCenter_Vessel_t vessel) {
+static inline krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, krpc_RemoteTech_Comms_t * returnValue, krpc_SpaceCenter_Vessel_t vessel) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 1, 1, _arguments));
@@ -408,10 +409,9 @@ inline krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, krpc_Rem
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connection, bool * returnValue) {
+static inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
-  krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, 6, 3, 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 3, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -424,10 +424,9 @@ inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connection, bool
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t connection, krpc_list_string_t * returnValue) {
+static inline krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t connection, krpc_list_string_t * returnValue) {
   krpc_call_t _call;
-  krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, 6, 4, 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 4, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -440,7 +439,7 @@ inline krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t connection,
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Antenna_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 6, 1, _arguments));
@@ -457,7 +456,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection_t conn
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 5, 1, _arguments));
@@ -474,7 +473,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, k
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection, krpc_RemoteTech_Target_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection, krpc_RemoteTech_Target_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 7, 1, _arguments));
@@ -491,7 +490,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection,
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_RemoteTech_Target_t value) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_RemoteTech_Target_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 6, 8, 2, _arguments));
@@ -504,7 +503,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t connect
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 9, 1, _arguments));
@@ -521,7 +520,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t connect
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_CelestialBody_t value) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_CelestialBody_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 6, 10, 2, _arguments));
@@ -534,7 +533,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connection_t con
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_connection_t connection, char * * returnValue, krpc_RemoteTech_Antenna_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_connection_t connection, char * * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 11, 1, _arguments));
@@ -551,7 +550,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_connection_
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, const char * value) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 6, 12, 2, _arguments));
@@ -564,7 +563,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_connect
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 13, 1, _arguments));
@@ -581,7 +580,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_t conne
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_Vessel_t value) {
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_Vessel_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 6, 14, 2, _arguments));
@@ -594,7 +593,7 @@ inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connection_t c
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance, krpc_SpaceCenter_Vessel_t other) {
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance, krpc_SpaceCenter_Vessel_t other) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
   KRPC_CHECK(krpc_call(&_call, 6, 15, 2, _arguments));
@@ -612,7 +611,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connection_t 
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_RemoteTech_Comms_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 23, 1, _arguments));
@@ -629,7 +628,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t connection,
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 19, 1, _arguments));
@@ -646,7 +645,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t connec
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 20, 1, _arguments));
@@ -663,7 +662,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(krpc_conn
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 18, 1, _arguments));
@@ -680,7 +679,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connection_t co
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 17, 1, _arguments));
@@ -697,7 +696,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection_t conn
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 21, 1, _arguments));
@@ -714,7 +713,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t connecti
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 22, 1, _arguments));
@@ -731,7 +730,7 @@ inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc_connec
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_RemoteTech_Comms_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Comms_t instance) {
+static inline krpc_error_t krpc_RemoteTech_Comms_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 6, 16, 1, _arguments));

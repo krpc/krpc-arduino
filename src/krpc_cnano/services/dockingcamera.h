@@ -1,6 +1,7 @@
 #pragma once
 
 #include <krpc_cnano/decoder.h>
+#include <krpc_cnano/deprecated.h>
 #include <krpc_cnano/encoder.h>
 #include <krpc_cnano/error.h>
 #include <krpc_cnano/memory.h>
@@ -20,27 +21,27 @@ typedef krpc_object_t krpc_DockingCamera_Camera_t;
 /**
  * Get a Camera part.
  */
-krpc_error_t krpc_DockingCamera_Camera(krpc_connection_t connection, krpc_DockingCamera_Camera_t * returnValue, krpc_SpaceCenter_Part_t part);
+static inline krpc_error_t krpc_DockingCamera_Camera(krpc_connection_t connection, krpc_DockingCamera_Camera_t * returnValue, krpc_SpaceCenter_Part_t part);
 
 /**
  * Check if the Camera API is available.
  */
-krpc_error_t krpc_DockingCamera_Available(krpc_connection_t connection, bool * returnValue);
+static inline krpc_error_t krpc_DockingCamera_Available(krpc_connection_t connection, bool * returnValue);
 
 /**
  * Get an image.
  * Returns an empty byte array on failure.
  */
-krpc_error_t krpc_DockingCamera_Camera_Image(krpc_connection_t connection, krpc_bytes_t * returnValue, krpc_DockingCamera_Camera_t instance);
+static inline krpc_error_t krpc_DockingCamera_Camera_Image(krpc_connection_t connection, krpc_bytes_t * returnValue, krpc_DockingCamera_Camera_t instance);
 
 /**
  * Get the part containing this camera.
  */
-krpc_error_t krpc_DockingCamera_Camera_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_DockingCamera_Camera_t instance);
+static inline krpc_error_t krpc_DockingCamera_Camera_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_DockingCamera_Camera_t instance);
 
 // Implementation
 
-inline krpc_error_t krpc_DockingCamera_Camera(krpc_connection_t connection, krpc_DockingCamera_Camera_t * returnValue, krpc_SpaceCenter_Part_t part) {
+static inline krpc_error_t krpc_DockingCamera_Camera(krpc_connection_t connection, krpc_DockingCamera_Camera_t * returnValue, krpc_SpaceCenter_Part_t part) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 11, 1, 1, _arguments));
@@ -57,10 +58,9 @@ inline krpc_error_t krpc_DockingCamera_Camera(krpc_connection_t connection, krpc
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_DockingCamera_Available(krpc_connection_t connection, bool * returnValue) {
+static inline krpc_error_t krpc_DockingCamera_Available(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
-  krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, 11, 2, 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 11, 2, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -73,7 +73,7 @@ inline krpc_error_t krpc_DockingCamera_Available(krpc_connection_t connection, b
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_DockingCamera_Camera_Image(krpc_connection_t connection, krpc_bytes_t * returnValue, krpc_DockingCamera_Camera_t instance) {
+static inline krpc_error_t krpc_DockingCamera_Camera_Image(krpc_connection_t connection, krpc_bytes_t * returnValue, krpc_DockingCamera_Camera_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 11, 4, 1, _arguments));
@@ -90,7 +90,7 @@ inline krpc_error_t krpc_DockingCamera_Camera_Image(krpc_connection_t connection
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_DockingCamera_Camera_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_DockingCamera_Camera_t instance) {
+static inline krpc_error_t krpc_DockingCamera_Camera_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_DockingCamera_Camera_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 11, 3, 1, _arguments));

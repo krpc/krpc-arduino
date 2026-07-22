@@ -1,6 +1,7 @@
 #pragma once
 
 #include <krpc_cnano/decoder.h>
+#include <krpc_cnano/deprecated.h>
 #include <krpc_cnano/encoder.h>
 #include <krpc_cnano/error.h>
 #include <krpc_cnano/memory.h>
@@ -26,13 +27,13 @@ struct krpc_list_double_s {
   double * items;
 };
 
-krpc_error_t krpc_encode_list_double(
+static inline krpc_error_t krpc_encode_list_double(
   pb_ostream_t * stream, const krpc_list_double_t * value);
-krpc_error_t krpc_encode_size_list_double(
+static inline krpc_error_t krpc_encode_size_list_double(
   size_t * size, const krpc_list_double_t * value);
-bool krpc_encode_callback_list_double(
+static inline bool krpc_encode_callback_list_double(
   pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
-krpc_error_t krpc_decode_list_double(
+static inline krpc_error_t krpc_decode_list_double(
   pb_istream_t * stream, krpc_list_double_t * value);
 
 #endif  // KRPC_TYPE_LIST_DOUBLE
@@ -40,30 +41,30 @@ krpc_error_t krpc_decode_list_double(
 /**
  * Get a LaserDist part.
  */
-krpc_error_t krpc_LiDAR_Laser(krpc_connection_t connection, krpc_LiDAR_Laser_t * returnValue, krpc_SpaceCenter_Part_t part);
+static inline krpc_error_t krpc_LiDAR_Laser(krpc_connection_t connection, krpc_LiDAR_Laser_t * returnValue, krpc_SpaceCenter_Part_t part);
 
 /**
  * Check if the LaserDist API is available.
  */
-krpc_error_t krpc_LiDAR_Available(krpc_connection_t connection, bool * returnValue);
+static inline krpc_error_t krpc_LiDAR_Available(krpc_connection_t connection, bool * returnValue);
 
 /**
  * Get the point cloud from the LiDAR.
  * Returns an empty list on failure.
  */
-krpc_error_t krpc_LiDAR_Laser_Cloud(krpc_connection_t connection, krpc_list_double_t * returnValue, krpc_LiDAR_Laser_t instance);
+static inline krpc_error_t krpc_LiDAR_Laser_Cloud(krpc_connection_t connection, krpc_list_double_t * returnValue, krpc_LiDAR_Laser_t instance);
 
 /**
  * Get the part containing this LiDAR.
  */
-krpc_error_t krpc_LiDAR_Laser_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_LiDAR_Laser_t instance);
+static inline krpc_error_t krpc_LiDAR_Laser_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_LiDAR_Laser_t instance);
 
 // Implementation
 
 #ifndef KRPC_IMPL_TYPE_LIST_DOUBLE
 #define KRPC_IMPL_TYPE_LIST_DOUBLE
 
-static bool krpc_encode_callback_items_list_double(
+static inline bool krpc_encode_callback_items_list_double(
   pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
   const krpc_list_double_t * value = (const krpc_list_double_t*)(*arg);
   size_t i = 0;
@@ -79,7 +80,7 @@ static bool krpc_encode_callback_items_list_double(
   return true;
 }
 
-inline krpc_error_t krpc_encode_list_double(
+static inline krpc_error_t krpc_encode_list_double(
   pb_ostream_t * stream, const krpc_list_double_t * value) {
   krpc_schema_List message = krpc_schema_List_init_default;
   message.items.funcs.encode = &krpc_encode_callback_items_list_double;
@@ -88,7 +89,7 @@ inline krpc_error_t krpc_encode_list_double(
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_encode_size_list_double(
+static inline krpc_error_t krpc_encode_size_list_double(
   size_t * size, const krpc_list_double_t * value) {
   pb_ostream_t stream = PB_OSTREAM_SIZING;
   KRPC_RETURN_ON_ERROR(krpc_encode_list_double(&stream, value));
@@ -96,7 +97,7 @@ inline krpc_error_t krpc_encode_size_list_double(
   return KRPC_OK;
 }
 
-inline bool krpc_encode_callback_list_double(
+static inline bool krpc_encode_callback_list_double(
   pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
   if (!pb_encode_tag_for_field(stream, field))
     KRPC_CALLBACK_RETURN_ERROR("encoding tag for list_double");
@@ -109,9 +110,9 @@ inline bool krpc_encode_callback_list_double(
   return true;
 }
 
-static bool krpc_decode_callback_item_list_double(
+static inline bool krpc_decode_callback_item_list_double(
   pb_istream_t * stream, const pb_field_t * field, void ** arg) {
-  typedef struct { size_t capacity; krpc_list_double_t * value; } State;
+  typedef struct State { size_t capacity; krpc_list_double_t * value; } State;
   State * state = (State*)(*arg);
   size_t i = state->value->size;
   state->value->size++;
@@ -123,9 +124,9 @@ static bool krpc_decode_callback_item_list_double(
   return true;
 }
 
-inline krpc_error_t krpc_decode_list_double(
+static inline krpc_error_t krpc_decode_list_double(
   pb_istream_t * stream, krpc_list_double_t * value) {
-  typedef struct { size_t capacity; krpc_list_double_t * value; } State;
+  typedef struct State { size_t capacity; krpc_list_double_t * value; } State;
   State state = { 0, value };
   value->size = 0;
   if (value->items == NULL) {
@@ -141,7 +142,7 @@ inline krpc_error_t krpc_decode_list_double(
 
 #endif  // KRPC_IMPL_TYPE_LIST_DOUBLE
 
-inline krpc_error_t krpc_LiDAR_Laser(krpc_connection_t connection, krpc_LiDAR_Laser_t * returnValue, krpc_SpaceCenter_Part_t part) {
+static inline krpc_error_t krpc_LiDAR_Laser(krpc_connection_t connection, krpc_LiDAR_Laser_t * returnValue, krpc_SpaceCenter_Part_t part) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 10, 1, 1, _arguments));
@@ -158,10 +159,9 @@ inline krpc_error_t krpc_LiDAR_Laser(krpc_connection_t connection, krpc_LiDAR_La
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_LiDAR_Available(krpc_connection_t connection, bool * returnValue) {
+static inline krpc_error_t krpc_LiDAR_Available(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
-  krpc_argument_t _arguments[0];
-  KRPC_CHECK(krpc_call(&_call, 10, 2, 0, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 10, 2, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -174,7 +174,7 @@ inline krpc_error_t krpc_LiDAR_Available(krpc_connection_t connection, bool * re
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_LiDAR_Laser_Cloud(krpc_connection_t connection, krpc_list_double_t * returnValue, krpc_LiDAR_Laser_t instance) {
+static inline krpc_error_t krpc_LiDAR_Laser_Cloud(krpc_connection_t connection, krpc_list_double_t * returnValue, krpc_LiDAR_Laser_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 10, 4, 1, _arguments));
@@ -191,7 +191,7 @@ inline krpc_error_t krpc_LiDAR_Laser_Cloud(krpc_connection_t connection, krpc_li
   return KRPC_OK;
 }
 
-inline krpc_error_t krpc_LiDAR_Laser_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_LiDAR_Laser_t instance) {
+static inline krpc_error_t krpc_LiDAR_Laser_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_LiDAR_Laser_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
   KRPC_CHECK(krpc_call(&_call, 10, 3, 1, _arguments));
