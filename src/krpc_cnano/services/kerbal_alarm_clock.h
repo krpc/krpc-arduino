@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string.h>
+
 #include <krpc_cnano/decoder.h>
 #include <krpc_cnano/deprecated.h>
 #include <krpc_cnano/encoder.h>
@@ -8,6 +10,8 @@
 #include <krpc_cnano/pb_decode.h>
 #include <krpc_cnano/pb_encode.h>
 #include <krpc_cnano/types.h>
+
+#include <krpc_cnano/services/space_center.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -205,6 +209,8 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Available(krpc_connection_t con
 
 /**
  * Removes the alarm. Any further use of this object throws an exception.
+ *
+ * Any further use of this object throws an exception.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance);
 
@@ -462,9 +468,13 @@ static inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName(krpc_connection_t
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+    if (_result.message.is_null) {
+      *returnValue = KRPC_NULL;
+    } else {
+      pb_istream_t _stream;
+      KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+      KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+    }
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;

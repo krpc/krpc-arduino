@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string.h>
+
 #include <krpc_cnano/decoder.h>
 #include <krpc_cnano/deprecated.h>
 #include <krpc_cnano/encoder.h>
@@ -8,6 +10,8 @@
 #include <krpc_cnano/pb_decode.h>
 #include <krpc_cnano/pb_encode.h>
 #include <krpc_cnano/types.h>
+
+#include <krpc_cnano/services/space_center.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -509,11 +513,19 @@ static inline krpc_error_t krpc_InfernalRobotics_ServoGroup_MovingDirection(krpc
 
 /**
  * The name of the group.
+ *
+ * Renaming a group renames it for every servo in it. This object identifies the
+ * group by its name, so a rename destroys every object for the group, including the
+ * one the rename was made through. Obtain the group again under the new name.
  */
 static inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Name(krpc_connection_t connection, char * * returnValue, krpc_InfernalRobotics_ServoGroup_t instance);
 
 /**
  * The name of the group.
+ *
+ * Renaming a group renames it for every servo in it. This object identifies the
+ * group by its name, so a rename destroys every object for the group, including the
+ * one the rename was made through. Obtain the group again under the new name.
  */
 static inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_Name(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance, const char * value);
 
@@ -548,7 +560,7 @@ static inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Speed(krpc_connectio
 static inline krpc_error_t krpc_InfernalRobotics_ServoGroup_set_Speed(krpc_connection_t connection, krpc_InfernalRobotics_ServoGroup_t instance, float value);
 
 /**
- * The vessel the group belongs to, or null if it is not available.
+ * The vessel the group belongs to.
  */
 static inline krpc_error_t krpc_InfernalRobotics_ServoGroup_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_InfernalRobotics_ServoGroup_t instance);
 
@@ -726,9 +738,13 @@ static inline krpc_error_t krpc_InfernalRobotics_ServoGroupWithName(krpc_connect
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+    if (_result.message.is_null) {
+      *returnValue = KRPC_NULL;
+    } else {
+      pb_istream_t _stream;
+      KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+      KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+    }
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
@@ -761,9 +777,13 @@ static inline krpc_error_t krpc_InfernalRobotics_ServoWithName(krpc_connection_t
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+    if (_result.message.is_null) {
+      *returnValue = KRPC_NULL;
+    } else {
+      pb_istream_t _stream;
+      KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+      KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+    }
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
@@ -1750,9 +1770,13 @@ static inline krpc_error_t krpc_InfernalRobotics_ServoGroup_ServoWithName(krpc_c
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+    if (_result.message.is_null) {
+      *returnValue = KRPC_NULL;
+    } else {
+      pb_istream_t _stream;
+      KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+      KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+    }
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;

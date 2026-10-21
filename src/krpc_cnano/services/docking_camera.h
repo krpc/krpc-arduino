@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string.h>
+
 #include <krpc_cnano/decoder.h>
 #include <krpc_cnano/deprecated.h>
 #include <krpc_cnano/encoder.h>
@@ -8,6 +10,8 @@
 #include <krpc_cnano/pb_decode.h>
 #include <krpc_cnano/pb_encode.h>
 #include <krpc_cnano/types.h>
+
+#include <krpc_cnano/services/space_center.h>
 
 #ifdef __cplusplus
 extern "C" {
