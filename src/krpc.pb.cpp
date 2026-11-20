@@ -6,6 +6,12 @@
 #error Regenerate this file with the current version of nanopb generator.
 #endif
 
+PB_BIND(krpc_schema_Message, krpc_schema_Message, AUTO)
+
+
+PB_BIND(krpc_schema_Disconnect, krpc_schema_Disconnect, AUTO)
+
+
 PB_BIND(krpc_schema_ConnectionRequest, krpc_schema_ConnectionRequest, AUTO)
 
 
@@ -82,21 +88,6 @@ PB_BIND(krpc_schema_Dictionary, krpc_schema_Dictionary, AUTO)
 
 
 PB_BIND(krpc_schema_DictionaryEntry, krpc_schema_DictionaryEntry, AUTO)
-
-
-PB_BIND(krpc_schema_Stream, krpc_schema_Stream, AUTO)
-
-
-PB_BIND(krpc_schema_Event, krpc_schema_Event, AUTO)
-
-
-PB_BIND(krpc_schema_Status, krpc_schema_Status, AUTO)
-
-
-PB_BIND(krpc_schema_MultiplexedRequest, krpc_schema_MultiplexedRequest, AUTO)
-
-
-PB_BIND(krpc_schema_MultiplexedResponse, krpc_schema_MultiplexedResponse, AUTO)
 
 
 

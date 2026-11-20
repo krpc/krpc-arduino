@@ -10,17 +10,21 @@
 #endif
 
 /* Enum definitions */
-typedef enum _krpc_schema_ConnectionRequest_Type {
-    krpc_schema_ConnectionRequest_Type_RPC = 0,
-    krpc_schema_ConnectionRequest_Type_STREAM = 1
-} krpc_schema_ConnectionRequest_Type;
+typedef enum _krpc_schema_Disconnect_Reason {
+    krpc_schema_Disconnect_Reason_CLOSED = 0,
+    krpc_schema_Disconnect_Reason_SERVER_STOPPED = 1,
+    krpc_schema_Disconnect_Reason_REMOVED = 2,
+    krpc_schema_Disconnect_Reason_MALFORMED_MESSAGE = 3,
+    krpc_schema_Disconnect_Reason_PROTOCOL_ERROR = 4,
+    krpc_schema_Disconnect_Reason_TIMEOUT = 5
+} krpc_schema_Disconnect_Reason;
 
 typedef enum _krpc_schema_ConnectionResponse_Status {
     krpc_schema_ConnectionResponse_Status_OK = 0,
     krpc_schema_ConnectionResponse_Status_MALFORMED_MESSAGE = 1,
     krpc_schema_ConnectionResponse_Status_TIMEOUT = 2,
-    krpc_schema_ConnectionResponse_Status_WRONG_TYPE = 3,
-    krpc_schema_ConnectionResponse_Status_WRONG_PROTOCOL_VERSION = 4
+    krpc_schema_ConnectionResponse_Status_WRONG_PROTOCOL_VERSION = 4,
+    krpc_schema_ConnectionResponse_Status_DENIED = 5
 } krpc_schema_ConnectionResponse_Status;
 
 typedef enum _krpc_schema_Procedure_GameScene {
@@ -52,11 +56,10 @@ typedef enum _krpc_schema_Type_TypeCode {
     krpc_schema_Type_TypeCode_CLASS = 100,
     krpc_schema_Type_TypeCode_ENUMERATION = 101,
     krpc_schema_Type_TypeCode_STRUCT = 102,
-    /* Messages */
+    /* Messages, except an EVENT or STREAM value, which is the uint64 id of its stream */
     krpc_schema_Type_TypeCode_EVENT = 200,
     krpc_schema_Type_TypeCode_PROCEDURE_CALL = 201,
     krpc_schema_Type_TypeCode_STREAM = 202,
-    krpc_schema_Type_TypeCode_STATUS = 203,
     krpc_schema_Type_TypeCode_SERVICES = 204,
     /* Collections */
     krpc_schema_Type_TypeCode_TUPLE = 300,
@@ -66,10 +69,13 @@ typedef enum _krpc_schema_Type_TypeCode {
 } krpc_schema_Type_TypeCode;
 
 /* Struct definitions */
+typedef struct _krpc_schema_Disconnect {
+    krpc_schema_Disconnect_Reason reason;
+    pb_callback_t message;
+} krpc_schema_Disconnect;
+
 typedef struct _krpc_schema_ConnectionRequest {
-    krpc_schema_ConnectionRequest_Type type;
     pb_callback_t client_name;
-    pb_callback_t client_identifier;
     uint32_t protocol_version;
 } krpc_schema_ConnectionRequest;
 
@@ -89,6 +95,7 @@ typedef struct _krpc_schema_ProcedureCall {
 typedef struct _krpc_schema_Request {
     pb_size_t calls_count;
     krpc_schema_ProcedureCall calls[1];
+    uint64_t id;
 } krpc_schema_Request;
 
 typedef struct _krpc_schema_Argument {
@@ -107,18 +114,34 @@ typedef struct _krpc_schema_Response {
     pb_callback_t error;
     pb_size_t results_count;
     krpc_schema_ProcedureResult results[1];
+    uint64_t id;
 } krpc_schema_Response;
 
 typedef struct _krpc_schema_Error {
     pb_callback_t service;
-    pb_callback_t name;
+    pb_callback_t exception;
     pb_callback_t description;
     pb_callback_t stack_trace;
+    uint32_t service_id;
+    uint32_t exception_id;
 } krpc_schema_Error;
 
 typedef struct _krpc_schema_StreamUpdate {
     pb_callback_t results;
 } krpc_schema_StreamUpdate;
+
+typedef struct _krpc_schema_Message {
+    pb_callback_t cb_content;
+    pb_size_t which_content;
+    union {
+        krpc_schema_Request request;
+        krpc_schema_Response response;
+        krpc_schema_StreamUpdate stream_update;
+        krpc_schema_ConnectionRequest connection_request;
+        krpc_schema_ConnectionResponse connection_response;
+        krpc_schema_Disconnect disconnect;
+    } content;
+} krpc_schema_Message;
 
 typedef struct _krpc_schema_StreamResult {
     uint64_t id;
@@ -140,6 +163,7 @@ typedef struct _krpc_schema_Service {
     bool deprecated;
     pb_callback_t deprecated_reason;
     pb_callback_t structs;
+    uint32_t id;
 } krpc_schema_Service;
 
 typedef struct _krpc_schema_Class {
@@ -147,6 +171,7 @@ typedef struct _krpc_schema_Class {
     pb_callback_t documentation;
     bool deprecated;
     pb_callback_t deprecated_reason;
+    uint32_t id;
 } krpc_schema_Class;
 
 typedef struct _krpc_schema_Enumeration {
@@ -155,6 +180,8 @@ typedef struct _krpc_schema_Enumeration {
     pb_callback_t documentation;
     bool deprecated;
     pb_callback_t deprecated_reason;
+    bool flags;
+    uint32_t id;
 } krpc_schema_Enumeration;
 
 typedef struct _krpc_schema_EnumerationValue {
@@ -170,6 +197,8 @@ typedef struct _krpc_schema_Exception {
     pb_callback_t documentation;
     bool deprecated;
     pb_callback_t deprecated_reason;
+    pb_callback_t mapped_type;
+    uint32_t id;
 } krpc_schema_Exception;
 
 typedef struct _krpc_schema_Struct {
@@ -178,6 +207,7 @@ typedef struct _krpc_schema_Struct {
     pb_callback_t documentation;
     bool deprecated;
     pb_callback_t deprecated_reason;
+    uint32_t id;
 } krpc_schema_Struct;
 
 typedef struct _krpc_schema_Type {
@@ -186,6 +216,8 @@ typedef struct _krpc_schema_Type {
     pb_callback_t name;
     pb_callback_t types;
     bool nullable;
+    uint32_t service_id;
+    uint32_t id;
 } krpc_schema_Type;
 
 typedef struct _krpc_schema_Procedure {
@@ -197,6 +229,8 @@ typedef struct _krpc_schema_Procedure {
     pb_callback_t game_scenes;
     bool deprecated;
     pb_callback_t deprecated_reason;
+    uint32_t id;
+    bool internal;
 } krpc_schema_Procedure;
 
 typedef struct _krpc_schema_Parameter {
@@ -238,65 +272,19 @@ typedef struct _krpc_schema_DictionaryEntry {
     pb_callback_t value;
 } krpc_schema_DictionaryEntry;
 
-typedef struct _krpc_schema_Stream {
-    uint64_t id;
-} krpc_schema_Stream;
-
-typedef struct _krpc_schema_Event {
-    bool has_stream;
-    krpc_schema_Stream stream;
-} krpc_schema_Event;
-
-typedef struct _krpc_schema_Status {
-    char version[16];
-    uint64_t bytes_read;
-    uint64_t bytes_written;
-    float bytes_read_rate;
-    float bytes_written_rate;
-    uint64_t rpcs_executed;
-    float rpc_rate;
-    bool one_rpc_per_update;
-    uint32_t max_time_per_update;
-    bool adaptive_rate_control;
-    bool blocking_recv;
-    uint32_t recv_timeout;
-    float time_per_rpc_update;
-    float poll_time_per_rpc_update;
-    float exec_time_per_rpc_update;
-    uint32_t stream_rpcs;
-    uint64_t stream_rpcs_executed;
-    float stream_rpc_rate;
-    float time_per_stream_update;
-    uint32_t protocol_version;
-} krpc_schema_Status;
-
-typedef struct _krpc_schema_MultiplexedRequest {
-    bool has_connection_request;
-    krpc_schema_ConnectionRequest connection_request;
-    bool has_request;
-    krpc_schema_Request request;
-} krpc_schema_MultiplexedRequest;
-
-typedef struct _krpc_schema_MultiplexedResponse {
-    bool has_response;
-    krpc_schema_Response response;
-    bool has_stream_update;
-    krpc_schema_StreamUpdate stream_update;
-} krpc_schema_MultiplexedResponse;
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Helper constants for enums */
-#define _krpc_schema_ConnectionRequest_Type_MIN krpc_schema_ConnectionRequest_Type_RPC
-#define _krpc_schema_ConnectionRequest_Type_MAX krpc_schema_ConnectionRequest_Type_STREAM
-#define _krpc_schema_ConnectionRequest_Type_ARRAYSIZE ((krpc_schema_ConnectionRequest_Type)(krpc_schema_ConnectionRequest_Type_STREAM+1))
+#define _krpc_schema_Disconnect_Reason_MIN krpc_schema_Disconnect_Reason_CLOSED
+#define _krpc_schema_Disconnect_Reason_MAX krpc_schema_Disconnect_Reason_TIMEOUT
+#define _krpc_schema_Disconnect_Reason_ARRAYSIZE ((krpc_schema_Disconnect_Reason)(krpc_schema_Disconnect_Reason_TIMEOUT+1))
 
 #define _krpc_schema_ConnectionResponse_Status_MIN krpc_schema_ConnectionResponse_Status_OK
-#define _krpc_schema_ConnectionResponse_Status_MAX krpc_schema_ConnectionResponse_Status_WRONG_PROTOCOL_VERSION
-#define _krpc_schema_ConnectionResponse_Status_ARRAYSIZE ((krpc_schema_ConnectionResponse_Status)(krpc_schema_ConnectionResponse_Status_WRONG_PROTOCOL_VERSION+1))
+#define _krpc_schema_ConnectionResponse_Status_MAX krpc_schema_ConnectionResponse_Status_DENIED
+#define _krpc_schema_ConnectionResponse_Status_ARRAYSIZE ((krpc_schema_ConnectionResponse_Status)(krpc_schema_ConnectionResponse_Status_DENIED+1))
 
 #define _krpc_schema_Procedure_GameScene_MIN krpc_schema_Procedure_GameScene_SPACE_CENTER
 #define _krpc_schema_Procedure_GameScene_MAX krpc_schema_Procedure_GameScene_ADMINISTRATION
@@ -306,7 +294,9 @@ extern "C" {
 #define _krpc_schema_Type_TypeCode_MAX krpc_schema_Type_TypeCode_DICTIONARY
 #define _krpc_schema_Type_TypeCode_ARRAYSIZE ((krpc_schema_Type_TypeCode)(krpc_schema_Type_TypeCode_DICTIONARY+1))
 
-#define krpc_schema_ConnectionRequest_type_ENUMTYPE krpc_schema_ConnectionRequest_Type
+
+#define krpc_schema_Disconnect_reason_ENUMTYPE krpc_schema_Disconnect_Reason
+
 
 #define krpc_schema_ConnectionResponse_status_ENUMTYPE krpc_schema_ConnectionResponse_Status
 
@@ -337,79 +327,68 @@ extern "C" {
 
 
 
-
-
-
-
-
 /* Initializer values for message structs */
-#define krpc_schema_ConnectionRequest_init_default {_krpc_schema_ConnectionRequest_Type_MIN, {{NULL}, NULL}, {{NULL}, NULL}, 0}
+#define krpc_schema_Message_init_default         {{{NULL}, NULL}, 0, {krpc_schema_Request_init_default}}
+#define krpc_schema_Disconnect_init_default      {_krpc_schema_Disconnect_Reason_MIN, {{NULL}, NULL}}
+#define krpc_schema_ConnectionRequest_init_default {{{NULL}, NULL}, 0}
 #define krpc_schema_ConnectionResponse_init_default {_krpc_schema_ConnectionResponse_Status_MIN, {{NULL}, NULL}, {{NULL}, NULL}, 0}
-#define krpc_schema_Request_init_default         {0, {krpc_schema_ProcedureCall_init_default}}
+#define krpc_schema_Request_init_default         {0, {krpc_schema_ProcedureCall_init_default}, 0}
 #define krpc_schema_ProcedureCall_init_default   {{{NULL}, NULL}, 0, 0}
 #define krpc_schema_Argument_init_default        {0, {{NULL}, NULL}, 0}
-#define krpc_schema_Response_init_default        {{{NULL}, NULL}, 0, {krpc_schema_ProcedureResult_init_default}}
+#define krpc_schema_Response_init_default        {{{NULL}, NULL}, 0, {krpc_schema_ProcedureResult_init_default}, 0}
 #define krpc_schema_ProcedureResult_init_default {{{NULL}, NULL}, {{NULL}, NULL}, 0}
-#define krpc_schema_Error_init_default           {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
+#define krpc_schema_Error_init_default           {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, 0}
 #define krpc_schema_StreamUpdate_init_default    {{{NULL}, NULL}}
 #define krpc_schema_StreamResult_init_default    {0, false, krpc_schema_ProcedureResult_init_default}
 #define krpc_schema_Services_init_default        {{{NULL}, NULL}}
-#define krpc_schema_Service_init_default         {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, {{NULL}, NULL}}
-#define krpc_schema_Procedure_init_default       {{{NULL}, NULL}, {{NULL}, NULL}, false, krpc_schema_Type_init_default, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
+#define krpc_schema_Service_init_default         {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, {{NULL}, NULL}, 0}
+#define krpc_schema_Procedure_init_default       {{{NULL}, NULL}, {{NULL}, NULL}, false, krpc_schema_Type_init_default, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, 0, 0}
 #define krpc_schema_Parameter_init_default       {{{NULL}, NULL}, false, krpc_schema_Type_init_default, {{NULL}, NULL}, 0, 0}
-#define krpc_schema_Class_init_default           {{{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
-#define krpc_schema_Enumeration_init_default     {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
+#define krpc_schema_Class_init_default           {{{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, 0}
+#define krpc_schema_Enumeration_init_default     {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, 0, 0}
 #define krpc_schema_EnumerationValue_init_default {{{NULL}, NULL}, 0, {{NULL}, NULL}, 0, {{NULL}, NULL}}
-#define krpc_schema_Exception_init_default       {{{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
-#define krpc_schema_Struct_init_default          {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
+#define krpc_schema_Exception_init_default       {{{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, {{NULL}, NULL}, 0}
+#define krpc_schema_Struct_init_default          {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, 0}
 #define krpc_schema_StructField_init_default     {{{NULL}, NULL}, false, krpc_schema_Type_init_default, {{NULL}, NULL}, 0, {{NULL}, NULL}}
-#define krpc_schema_Type_init_default            {_krpc_schema_Type_TypeCode_MIN, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0}
+#define krpc_schema_Type_init_default            {_krpc_schema_Type_TypeCode_MIN, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, 0, 0}
 #define krpc_schema_Tuple_init_default           {{{NULL}, NULL}}
 #define krpc_schema_List_init_default            {{{NULL}, NULL}}
 #define krpc_schema_Set_init_default             {{{NULL}, NULL}}
 #define krpc_schema_Dictionary_init_default      {{{NULL}, NULL}}
 #define krpc_schema_DictionaryEntry_init_default {{{NULL}, NULL}, {{NULL}, NULL}}
-#define krpc_schema_Stream_init_default          {0}
-#define krpc_schema_Event_init_default           {false, krpc_schema_Stream_init_default}
-#define krpc_schema_Status_init_default          {"", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-#define krpc_schema_MultiplexedRequest_init_default {false, krpc_schema_ConnectionRequest_init_default, false, krpc_schema_Request_init_default}
-#define krpc_schema_MultiplexedResponse_init_default {false, krpc_schema_Response_init_default, false, krpc_schema_StreamUpdate_init_default}
-#define krpc_schema_ConnectionRequest_init_zero  {_krpc_schema_ConnectionRequest_Type_MIN, {{NULL}, NULL}, {{NULL}, NULL}, 0}
+#define krpc_schema_Message_init_zero            {{{NULL}, NULL}, 0, {krpc_schema_Request_init_zero}}
+#define krpc_schema_Disconnect_init_zero         {_krpc_schema_Disconnect_Reason_MIN, {{NULL}, NULL}}
+#define krpc_schema_ConnectionRequest_init_zero  {{{NULL}, NULL}, 0}
 #define krpc_schema_ConnectionResponse_init_zero {_krpc_schema_ConnectionResponse_Status_MIN, {{NULL}, NULL}, {{NULL}, NULL}, 0}
-#define krpc_schema_Request_init_zero            {0, {krpc_schema_ProcedureCall_init_zero}}
+#define krpc_schema_Request_init_zero            {0, {krpc_schema_ProcedureCall_init_zero}, 0}
 #define krpc_schema_ProcedureCall_init_zero      {{{NULL}, NULL}, 0, 0}
 #define krpc_schema_Argument_init_zero           {0, {{NULL}, NULL}, 0}
-#define krpc_schema_Response_init_zero           {{{NULL}, NULL}, 0, {krpc_schema_ProcedureResult_init_zero}}
+#define krpc_schema_Response_init_zero           {{{NULL}, NULL}, 0, {krpc_schema_ProcedureResult_init_zero}, 0}
 #define krpc_schema_ProcedureResult_init_zero    {{{NULL}, NULL}, {{NULL}, NULL}, 0}
-#define krpc_schema_Error_init_zero              {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
+#define krpc_schema_Error_init_zero              {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, 0}
 #define krpc_schema_StreamUpdate_init_zero       {{{NULL}, NULL}}
 #define krpc_schema_StreamResult_init_zero       {0, false, krpc_schema_ProcedureResult_init_zero}
 #define krpc_schema_Services_init_zero           {{{NULL}, NULL}}
-#define krpc_schema_Service_init_zero            {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, {{NULL}, NULL}}
-#define krpc_schema_Procedure_init_zero          {{{NULL}, NULL}, {{NULL}, NULL}, false, krpc_schema_Type_init_zero, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
+#define krpc_schema_Service_init_zero            {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, {{NULL}, NULL}, 0}
+#define krpc_schema_Procedure_init_zero          {{{NULL}, NULL}, {{NULL}, NULL}, false, krpc_schema_Type_init_zero, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, 0, 0}
 #define krpc_schema_Parameter_init_zero          {{{NULL}, NULL}, false, krpc_schema_Type_init_zero, {{NULL}, NULL}, 0, 0}
-#define krpc_schema_Class_init_zero              {{{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
-#define krpc_schema_Enumeration_init_zero        {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
+#define krpc_schema_Class_init_zero              {{{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, 0}
+#define krpc_schema_Enumeration_init_zero        {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, 0, 0}
 #define krpc_schema_EnumerationValue_init_zero   {{{NULL}, NULL}, 0, {{NULL}, NULL}, 0, {{NULL}, NULL}}
-#define krpc_schema_Exception_init_zero          {{{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
-#define krpc_schema_Struct_init_zero             {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}}
+#define krpc_schema_Exception_init_zero          {{{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, {{NULL}, NULL}, 0}
+#define krpc_schema_Struct_init_zero             {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, {{NULL}, NULL}, 0}
 #define krpc_schema_StructField_init_zero        {{{NULL}, NULL}, false, krpc_schema_Type_init_zero, {{NULL}, NULL}, 0, {{NULL}, NULL}}
-#define krpc_schema_Type_init_zero               {_krpc_schema_Type_TypeCode_MIN, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0}
+#define krpc_schema_Type_init_zero               {_krpc_schema_Type_TypeCode_MIN, {{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}, 0, 0, 0}
 #define krpc_schema_Tuple_init_zero              {{{NULL}, NULL}}
 #define krpc_schema_List_init_zero               {{{NULL}, NULL}}
 #define krpc_schema_Set_init_zero                {{{NULL}, NULL}}
 #define krpc_schema_Dictionary_init_zero         {{{NULL}, NULL}}
 #define krpc_schema_DictionaryEntry_init_zero    {{{NULL}, NULL}, {{NULL}, NULL}}
-#define krpc_schema_Stream_init_zero             {0}
-#define krpc_schema_Event_init_zero              {false, krpc_schema_Stream_init_zero}
-#define krpc_schema_Status_init_zero             {"", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-#define krpc_schema_MultiplexedRequest_init_zero {false, krpc_schema_ConnectionRequest_init_zero, false, krpc_schema_Request_init_zero}
-#define krpc_schema_MultiplexedResponse_init_zero {false, krpc_schema_Response_init_zero, false, krpc_schema_StreamUpdate_init_zero}
 
 /* Field tags (for use in manual encoding/decoding) */
-#define krpc_schema_ConnectionRequest_type_tag   1
+#define krpc_schema_Disconnect_reason_tag        1
+#define krpc_schema_Disconnect_message_tag       2
 #define krpc_schema_ConnectionRequest_client_name_tag 2
-#define krpc_schema_ConnectionRequest_client_identifier_tag 3
 #define krpc_schema_ConnectionRequest_protocol_version_tag 4
 #define krpc_schema_ConnectionResponse_status_tag 1
 #define krpc_schema_ConnectionResponse_message_tag 2
@@ -419,6 +398,7 @@ extern "C" {
 #define krpc_schema_ProcedureCall_service_id_tag 4
 #define krpc_schema_ProcedureCall_procedure_id_tag 5
 #define krpc_schema_Request_calls_tag            1
+#define krpc_schema_Request_id_tag               2
 #define krpc_schema_Argument_position_tag        1
 #define krpc_schema_Argument_value_tag           2
 #define krpc_schema_Argument_is_null_tag         3
@@ -427,11 +407,20 @@ extern "C" {
 #define krpc_schema_ProcedureResult_is_null_tag  3
 #define krpc_schema_Response_error_tag           1
 #define krpc_schema_Response_results_tag         2
+#define krpc_schema_Response_id_tag              3
 #define krpc_schema_Error_service_tag            1
-#define krpc_schema_Error_name_tag               2
+#define krpc_schema_Error_exception_tag          2
 #define krpc_schema_Error_description_tag        3
 #define krpc_schema_Error_stack_trace_tag        4
+#define krpc_schema_Error_service_id_tag         5
+#define krpc_schema_Error_exception_id_tag       6
 #define krpc_schema_StreamUpdate_results_tag     1
+#define krpc_schema_Message_request_tag          1
+#define krpc_schema_Message_response_tag         2
+#define krpc_schema_Message_stream_update_tag    3
+#define krpc_schema_Message_connection_request_tag 4
+#define krpc_schema_Message_connection_response_tag 5
+#define krpc_schema_Message_disconnect_tag       6
 #define krpc_schema_StreamResult_id_tag          1
 #define krpc_schema_StreamResult_result_tag      2
 #define krpc_schema_Services_services_tag        1
@@ -444,15 +433,19 @@ extern "C" {
 #define krpc_schema_Service_deprecated_tag       7
 #define krpc_schema_Service_deprecated_reason_tag 8
 #define krpc_schema_Service_structs_tag          9
+#define krpc_schema_Service_id_tag               10
 #define krpc_schema_Class_name_tag               1
 #define krpc_schema_Class_documentation_tag      2
 #define krpc_schema_Class_deprecated_tag         3
 #define krpc_schema_Class_deprecated_reason_tag  4
+#define krpc_schema_Class_id_tag                 5
 #define krpc_schema_Enumeration_name_tag         1
 #define krpc_schema_Enumeration_values_tag       2
 #define krpc_schema_Enumeration_documentation_tag 3
 #define krpc_schema_Enumeration_deprecated_tag   4
 #define krpc_schema_Enumeration_deprecated_reason_tag 5
+#define krpc_schema_Enumeration_flags_tag        6
+#define krpc_schema_Enumeration_id_tag           7
 #define krpc_schema_EnumerationValue_name_tag    1
 #define krpc_schema_EnumerationValue_value_tag   2
 #define krpc_schema_EnumerationValue_documentation_tag 3
@@ -462,16 +455,21 @@ extern "C" {
 #define krpc_schema_Exception_documentation_tag  2
 #define krpc_schema_Exception_deprecated_tag     3
 #define krpc_schema_Exception_deprecated_reason_tag 4
+#define krpc_schema_Exception_mapped_type_tag    5
+#define krpc_schema_Exception_id_tag             6
 #define krpc_schema_Struct_name_tag              1
 #define krpc_schema_Struct_fields_tag            2
 #define krpc_schema_Struct_documentation_tag     3
 #define krpc_schema_Struct_deprecated_tag        4
 #define krpc_schema_Struct_deprecated_reason_tag 5
+#define krpc_schema_Struct_id_tag                6
 #define krpc_schema_Type_code_tag                1
 #define krpc_schema_Type_service_tag             2
 #define krpc_schema_Type_name_tag                3
 #define krpc_schema_Type_types_tag               4
 #define krpc_schema_Type_nullable_tag            5
+#define krpc_schema_Type_service_id_tag          6
+#define krpc_schema_Type_id_tag                  7
 #define krpc_schema_Procedure_name_tag           1
 #define krpc_schema_Procedure_parameters_tag     2
 #define krpc_schema_Procedure_return_type_tag    3
@@ -479,6 +477,8 @@ extern "C" {
 #define krpc_schema_Procedure_game_scenes_tag    6
 #define krpc_schema_Procedure_deprecated_tag     7
 #define krpc_schema_Procedure_deprecated_reason_tag 8
+#define krpc_schema_Procedure_id_tag             9
+#define krpc_schema_Procedure_internal_tag       10
 #define krpc_schema_Parameter_name_tag           1
 #define krpc_schema_Parameter_type_tag           2
 #define krpc_schema_Parameter_default_value_tag  3
@@ -495,38 +495,32 @@ extern "C" {
 #define krpc_schema_Dictionary_entries_tag       1
 #define krpc_schema_DictionaryEntry_key_tag      1
 #define krpc_schema_DictionaryEntry_value_tag    2
-#define krpc_schema_Stream_id_tag                1
-#define krpc_schema_Event_stream_tag             1
-#define krpc_schema_Status_version_tag           1
-#define krpc_schema_Status_bytes_read_tag        2
-#define krpc_schema_Status_bytes_written_tag     3
-#define krpc_schema_Status_bytes_read_rate_tag   4
-#define krpc_schema_Status_bytes_written_rate_tag 5
-#define krpc_schema_Status_rpcs_executed_tag     6
-#define krpc_schema_Status_rpc_rate_tag          7
-#define krpc_schema_Status_one_rpc_per_update_tag 8
-#define krpc_schema_Status_max_time_per_update_tag 9
-#define krpc_schema_Status_adaptive_rate_control_tag 10
-#define krpc_schema_Status_blocking_recv_tag     11
-#define krpc_schema_Status_recv_timeout_tag      12
-#define krpc_schema_Status_time_per_rpc_update_tag 13
-#define krpc_schema_Status_poll_time_per_rpc_update_tag 14
-#define krpc_schema_Status_exec_time_per_rpc_update_tag 15
-#define krpc_schema_Status_stream_rpcs_tag       16
-#define krpc_schema_Status_stream_rpcs_executed_tag 17
-#define krpc_schema_Status_stream_rpc_rate_tag   18
-#define krpc_schema_Status_time_per_stream_update_tag 19
-#define krpc_schema_Status_protocol_version_tag  20
-#define krpc_schema_MultiplexedRequest_connection_request_tag 1
-#define krpc_schema_MultiplexedRequest_request_tag 2
-#define krpc_schema_MultiplexedResponse_response_tag 1
-#define krpc_schema_MultiplexedResponse_stream_update_tag 2
 
 /* Struct field encoding specification for nanopb */
+#define krpc_schema_Message_FIELDLIST(X, a) \
+X(a, STATIC,   ONEOF,    MSG_W_CB, (content,request,content.request),   1) \
+X(a, STATIC,   ONEOF,    MSG_W_CB, (content,response,content.response),   2) \
+X(a, STATIC,   ONEOF,    MSG_W_CB, (content,stream_update,content.stream_update),   3) \
+X(a, STATIC,   ONEOF,    MSG_W_CB, (content,connection_request,content.connection_request),   4) \
+X(a, STATIC,   ONEOF,    MSG_W_CB, (content,connection_response,content.connection_response),   5) \
+X(a, STATIC,   ONEOF,    MSG_W_CB, (content,disconnect,content.disconnect),   6)
+#define krpc_schema_Message_CALLBACK NULL
+#define krpc_schema_Message_DEFAULT NULL
+#define krpc_schema_Message_content_request_MSGTYPE krpc_schema_Request
+#define krpc_schema_Message_content_response_MSGTYPE krpc_schema_Response
+#define krpc_schema_Message_content_stream_update_MSGTYPE krpc_schema_StreamUpdate
+#define krpc_schema_Message_content_connection_request_MSGTYPE krpc_schema_ConnectionRequest
+#define krpc_schema_Message_content_connection_response_MSGTYPE krpc_schema_ConnectionResponse
+#define krpc_schema_Message_content_disconnect_MSGTYPE krpc_schema_Disconnect
+
+#define krpc_schema_Disconnect_FIELDLIST(X, a) \
+X(a, STATIC,   SINGULAR, UENUM,    reason,            1) \
+X(a, CALLBACK, SINGULAR, STRING,   message,           2)
+#define krpc_schema_Disconnect_CALLBACK pb_default_field_callback
+#define krpc_schema_Disconnect_DEFAULT NULL
+
 #define krpc_schema_ConnectionRequest_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, UENUM,    type,              1) \
 X(a, CALLBACK, SINGULAR, STRING,   client_name,       2) \
-X(a, CALLBACK, SINGULAR, BYTES,    client_identifier,   3) \
 X(a, STATIC,   SINGULAR, UINT32,   protocol_version,   4)
 #define krpc_schema_ConnectionRequest_CALLBACK pb_default_field_callback
 #define krpc_schema_ConnectionRequest_DEFAULT NULL
@@ -540,7 +534,8 @@ X(a, STATIC,   SINGULAR, UINT32,   protocol_version,   4)
 #define krpc_schema_ConnectionResponse_DEFAULT NULL
 
 #define krpc_schema_Request_FIELDLIST(X, a) \
-X(a, STATIC,   REPEATED, MESSAGE,  calls,             1)
+X(a, STATIC,   REPEATED, MESSAGE,  calls,             1) \
+X(a, STATIC,   SINGULAR, UINT64,   id,                2)
 #define krpc_schema_Request_CALLBACK NULL
 #define krpc_schema_Request_DEFAULT NULL
 #define krpc_schema_Request_calls_MSGTYPE krpc_schema_ProcedureCall
@@ -562,7 +557,8 @@ X(a, STATIC,   SINGULAR, BOOL,     is_null,           3)
 
 #define krpc_schema_Response_FIELDLIST(X, a) \
 X(a, CALLBACK, OPTIONAL, MESSAGE,  error,             1) \
-X(a, STATIC,   REPEATED, MESSAGE,  results,           2)
+X(a, STATIC,   REPEATED, MESSAGE,  results,           2) \
+X(a, STATIC,   SINGULAR, UINT64,   id,                3)
 #define krpc_schema_Response_CALLBACK pb_default_field_callback
 #define krpc_schema_Response_DEFAULT NULL
 #define krpc_schema_Response_error_MSGTYPE krpc_schema_Error
@@ -578,9 +574,11 @@ X(a, STATIC,   SINGULAR, BOOL,     is_null,           3)
 
 #define krpc_schema_Error_FIELDLIST(X, a) \
 X(a, CALLBACK, SINGULAR, STRING,   service,           1) \
-X(a, CALLBACK, SINGULAR, STRING,   name,              2) \
+X(a, CALLBACK, SINGULAR, STRING,   exception,         2) \
 X(a, CALLBACK, SINGULAR, STRING,   description,       3) \
-X(a, CALLBACK, SINGULAR, STRING,   stack_trace,       4)
+X(a, CALLBACK, SINGULAR, STRING,   stack_trace,       4) \
+X(a, STATIC,   SINGULAR, UINT32,   service_id,        5) \
+X(a, STATIC,   SINGULAR, UINT32,   exception_id,      6)
 #define krpc_schema_Error_CALLBACK pb_default_field_callback
 #define krpc_schema_Error_DEFAULT NULL
 
@@ -612,7 +610,8 @@ X(a, CALLBACK, REPEATED, MESSAGE,  exceptions,        5) \
 X(a, CALLBACK, SINGULAR, STRING,   documentation,     6) \
 X(a, STATIC,   SINGULAR, BOOL,     deprecated,        7) \
 X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   8) \
-X(a, CALLBACK, REPEATED, MESSAGE,  structs,           9)
+X(a, CALLBACK, REPEATED, MESSAGE,  structs,           9) \
+X(a, STATIC,   SINGULAR, UINT32,   id,               10)
 #define krpc_schema_Service_CALLBACK pb_default_field_callback
 #define krpc_schema_Service_DEFAULT NULL
 #define krpc_schema_Service_procedures_MSGTYPE krpc_schema_Procedure
@@ -628,7 +627,9 @@ X(a, STATIC,   OPTIONAL, MESSAGE,  return_type,       3) \
 X(a, CALLBACK, SINGULAR, STRING,   documentation,     5) \
 X(a, CALLBACK, REPEATED, UENUM,    game_scenes,       6) \
 X(a, STATIC,   SINGULAR, BOOL,     deprecated,        7) \
-X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   8)
+X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   8) \
+X(a, STATIC,   SINGULAR, UINT32,   id,                9) \
+X(a, STATIC,   SINGULAR, BOOL,     internal,         10)
 #define krpc_schema_Procedure_CALLBACK pb_default_field_callback
 #define krpc_schema_Procedure_DEFAULT NULL
 #define krpc_schema_Procedure_parameters_MSGTYPE krpc_schema_Parameter
@@ -648,7 +649,8 @@ X(a, STATIC,   SINGULAR, BOOL,     default_value_is_null,   6)
 X(a, CALLBACK, SINGULAR, STRING,   name,              1) \
 X(a, CALLBACK, SINGULAR, STRING,   documentation,     2) \
 X(a, STATIC,   SINGULAR, BOOL,     deprecated,        3) \
-X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   4)
+X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   4) \
+X(a, STATIC,   SINGULAR, UINT32,   id,                5)
 #define krpc_schema_Class_CALLBACK pb_default_field_callback
 #define krpc_schema_Class_DEFAULT NULL
 
@@ -657,7 +659,9 @@ X(a, CALLBACK, SINGULAR, STRING,   name,              1) \
 X(a, CALLBACK, REPEATED, MESSAGE,  values,            2) \
 X(a, CALLBACK, SINGULAR, STRING,   documentation,     3) \
 X(a, STATIC,   SINGULAR, BOOL,     deprecated,        4) \
-X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   5)
+X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   5) \
+X(a, STATIC,   SINGULAR, BOOL,     flags,             6) \
+X(a, STATIC,   SINGULAR, UINT32,   id,                7)
 #define krpc_schema_Enumeration_CALLBACK pb_default_field_callback
 #define krpc_schema_Enumeration_DEFAULT NULL
 #define krpc_schema_Enumeration_values_MSGTYPE krpc_schema_EnumerationValue
@@ -675,7 +679,9 @@ X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   5)
 X(a, CALLBACK, SINGULAR, STRING,   name,              1) \
 X(a, CALLBACK, SINGULAR, STRING,   documentation,     2) \
 X(a, STATIC,   SINGULAR, BOOL,     deprecated,        3) \
-X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   4)
+X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   4) \
+X(a, CALLBACK, SINGULAR, STRING,   mapped_type,       5) \
+X(a, STATIC,   SINGULAR, UINT32,   id,                6)
 #define krpc_schema_Exception_CALLBACK pb_default_field_callback
 #define krpc_schema_Exception_DEFAULT NULL
 
@@ -684,7 +690,8 @@ X(a, CALLBACK, SINGULAR, STRING,   name,              1) \
 X(a, CALLBACK, REPEATED, MESSAGE,  fields,            2) \
 X(a, CALLBACK, SINGULAR, STRING,   documentation,     3) \
 X(a, STATIC,   SINGULAR, BOOL,     deprecated,        4) \
-X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   5)
+X(a, CALLBACK, SINGULAR, STRING,   deprecated_reason,   5) \
+X(a, STATIC,   SINGULAR, UINT32,   id,                6)
 #define krpc_schema_Struct_CALLBACK pb_default_field_callback
 #define krpc_schema_Struct_DEFAULT NULL
 #define krpc_schema_Struct_fields_MSGTYPE krpc_schema_StructField
@@ -704,7 +711,9 @@ X(a, STATIC,   SINGULAR, UENUM,    code,              1) \
 X(a, CALLBACK, SINGULAR, STRING,   service,           2) \
 X(a, CALLBACK, SINGULAR, STRING,   name,              3) \
 X(a, CALLBACK, REPEATED, MESSAGE,  types,             4) \
-X(a, STATIC,   SINGULAR, BOOL,     nullable,          5)
+X(a, STATIC,   SINGULAR, BOOL,     nullable,          5) \
+X(a, STATIC,   SINGULAR, UINT32,   service_id,        6) \
+X(a, STATIC,   SINGULAR, UINT32,   id,                7)
 #define krpc_schema_Type_CALLBACK pb_default_field_callback
 #define krpc_schema_Type_DEFAULT NULL
 #define krpc_schema_Type_types_MSGTYPE krpc_schema_Type
@@ -736,57 +745,8 @@ X(a, CALLBACK, SINGULAR, BYTES,    value,             2)
 #define krpc_schema_DictionaryEntry_CALLBACK pb_default_field_callback
 #define krpc_schema_DictionaryEntry_DEFAULT NULL
 
-#define krpc_schema_Stream_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, UINT64,   id,                1)
-#define krpc_schema_Stream_CALLBACK NULL
-#define krpc_schema_Stream_DEFAULT NULL
-
-#define krpc_schema_Event_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  stream,            1)
-#define krpc_schema_Event_CALLBACK NULL
-#define krpc_schema_Event_DEFAULT NULL
-#define krpc_schema_Event_stream_MSGTYPE krpc_schema_Stream
-
-#define krpc_schema_Status_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, STRING,   version,           1) \
-X(a, STATIC,   SINGULAR, UINT64,   bytes_read,        2) \
-X(a, STATIC,   SINGULAR, UINT64,   bytes_written,     3) \
-X(a, STATIC,   SINGULAR, FLOAT,    bytes_read_rate,   4) \
-X(a, STATIC,   SINGULAR, FLOAT,    bytes_written_rate,   5) \
-X(a, STATIC,   SINGULAR, UINT64,   rpcs_executed,     6) \
-X(a, STATIC,   SINGULAR, FLOAT,    rpc_rate,          7) \
-X(a, STATIC,   SINGULAR, BOOL,     one_rpc_per_update,   8) \
-X(a, STATIC,   SINGULAR, UINT32,   max_time_per_update,   9) \
-X(a, STATIC,   SINGULAR, BOOL,     adaptive_rate_control,  10) \
-X(a, STATIC,   SINGULAR, BOOL,     blocking_recv,    11) \
-X(a, STATIC,   SINGULAR, UINT32,   recv_timeout,     12) \
-X(a, STATIC,   SINGULAR, FLOAT,    time_per_rpc_update,  13) \
-X(a, STATIC,   SINGULAR, FLOAT,    poll_time_per_rpc_update,  14) \
-X(a, STATIC,   SINGULAR, FLOAT,    exec_time_per_rpc_update,  15) \
-X(a, STATIC,   SINGULAR, UINT32,   stream_rpcs,      16) \
-X(a, STATIC,   SINGULAR, UINT64,   stream_rpcs_executed,  17) \
-X(a, STATIC,   SINGULAR, FLOAT,    stream_rpc_rate,  18) \
-X(a, STATIC,   SINGULAR, FLOAT,    time_per_stream_update,  19) \
-X(a, STATIC,   SINGULAR, UINT32,   protocol_version,  20)
-#define krpc_schema_Status_CALLBACK NULL
-#define krpc_schema_Status_DEFAULT NULL
-
-#define krpc_schema_MultiplexedRequest_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  connection_request,   1) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  request,           2)
-#define krpc_schema_MultiplexedRequest_CALLBACK NULL
-#define krpc_schema_MultiplexedRequest_DEFAULT NULL
-#define krpc_schema_MultiplexedRequest_connection_request_MSGTYPE krpc_schema_ConnectionRequest
-#define krpc_schema_MultiplexedRequest_request_MSGTYPE krpc_schema_Request
-
-#define krpc_schema_MultiplexedResponse_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  response,          1) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  stream_update,     2)
-#define krpc_schema_MultiplexedResponse_CALLBACK NULL
-#define krpc_schema_MultiplexedResponse_DEFAULT NULL
-#define krpc_schema_MultiplexedResponse_response_MSGTYPE krpc_schema_Response
-#define krpc_schema_MultiplexedResponse_stream_update_MSGTYPE krpc_schema_StreamUpdate
-
+extern const pb_msgdesc_t krpc_schema_Message_msg;
+extern const pb_msgdesc_t krpc_schema_Disconnect_msg;
 extern const pb_msgdesc_t krpc_schema_ConnectionRequest_msg;
 extern const pb_msgdesc_t krpc_schema_ConnectionResponse_msg;
 extern const pb_msgdesc_t krpc_schema_Request_msg;
@@ -813,13 +773,10 @@ extern const pb_msgdesc_t krpc_schema_List_msg;
 extern const pb_msgdesc_t krpc_schema_Set_msg;
 extern const pb_msgdesc_t krpc_schema_Dictionary_msg;
 extern const pb_msgdesc_t krpc_schema_DictionaryEntry_msg;
-extern const pb_msgdesc_t krpc_schema_Stream_msg;
-extern const pb_msgdesc_t krpc_schema_Event_msg;
-extern const pb_msgdesc_t krpc_schema_Status_msg;
-extern const pb_msgdesc_t krpc_schema_MultiplexedRequest_msg;
-extern const pb_msgdesc_t krpc_schema_MultiplexedResponse_msg;
 
 /* Defines for backwards compatibility with code written before nanopb-0.4.0 */
+#define krpc_schema_Message_fields &krpc_schema_Message_msg
+#define krpc_schema_Disconnect_fields &krpc_schema_Disconnect_msg
 #define krpc_schema_ConnectionRequest_fields &krpc_schema_ConnectionRequest_msg
 #define krpc_schema_ConnectionResponse_fields &krpc_schema_ConnectionResponse_msg
 #define krpc_schema_Request_fields &krpc_schema_Request_msg
@@ -846,13 +803,10 @@ extern const pb_msgdesc_t krpc_schema_MultiplexedResponse_msg;
 #define krpc_schema_Set_fields &krpc_schema_Set_msg
 #define krpc_schema_Dictionary_fields &krpc_schema_Dictionary_msg
 #define krpc_schema_DictionaryEntry_fields &krpc_schema_DictionaryEntry_msg
-#define krpc_schema_Stream_fields &krpc_schema_Stream_msg
-#define krpc_schema_Event_fields &krpc_schema_Event_msg
-#define krpc_schema_Status_fields &krpc_schema_Status_msg
-#define krpc_schema_MultiplexedRequest_fields &krpc_schema_MultiplexedRequest_msg
-#define krpc_schema_MultiplexedResponse_fields &krpc_schema_MultiplexedResponse_msg
 
 /* Maximum encoded size of messages (where known) */
+/* krpc_schema_Message_size depends on runtime parameters */
+/* krpc_schema_Disconnect_size depends on runtime parameters */
 /* krpc_schema_ConnectionRequest_size depends on runtime parameters */
 /* krpc_schema_ConnectionResponse_size depends on runtime parameters */
 /* krpc_schema_Request_size depends on runtime parameters */
@@ -879,12 +833,6 @@ extern const pb_msgdesc_t krpc_schema_MultiplexedResponse_msg;
 /* krpc_schema_Set_size depends on runtime parameters */
 /* krpc_schema_Dictionary_size depends on runtime parameters */
 /* krpc_schema_DictionaryEntry_size depends on runtime parameters */
-/* krpc_schema_MultiplexedRequest_size depends on runtime parameters */
-/* krpc_schema_MultiplexedResponse_size depends on runtime parameters */
-#define KRPC_SCHEMA_BAZEL_OUT_K8_FASTBUILD_BIN_CLIENT_CNANO_SRC_KRPC_PB_C_SRC_PROTO_NANOPB_KRPC_PB_H_MAX_SIZE krpc_schema_Status_size
-#define krpc_schema_Event_size                   13
-#define krpc_schema_Status_size                  136
-#define krpc_schema_Stream_size                  11
 
 #ifdef __cplusplus
 } /* extern "C" */

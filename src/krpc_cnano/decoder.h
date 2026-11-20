@@ -23,6 +23,8 @@ typedef struct {
 krpc_error_t krpc_init_result(krpc_result_t* result);
 krpc_error_t krpc_free_result(krpc_result_t* result);
 krpc_error_t krpc_get_return_value(krpc_result_t* result, pb_istream_t* stream);
+/* Whether a result whose value krpc_init_result's callback decodes holds a value */
+bool krpc_result_has_value(const krpc_schema_ProcedureResult* message);
 
 /*[[[cog
 types = [
@@ -56,7 +58,7 @@ krpc_error_t krpc_decode_enum(pb_istream_t* stream, krpc_enum_t* value);
 
 /*[[[cog
 types = ['Tuple', 'List', 'Set', 'Dictionary', 'DictionaryEntry',
-         'Event', 'Stream', 'Services', 'Status']
+         'Services']
 for typ in types:
   cog.outl("""krpc_error_t krpc_decode_message_%s(
   pb_istream_t * stream, krpc_schema_%s * value);""" % (typ, typ))
@@ -67,10 +69,7 @@ krpc_error_t krpc_decode_message_Set(pb_istream_t* stream, krpc_schema_Set* valu
 krpc_error_t krpc_decode_message_Dictionary(pb_istream_t* stream, krpc_schema_Dictionary* value);
 krpc_error_t krpc_decode_message_DictionaryEntry(pb_istream_t* stream,
                                                  krpc_schema_DictionaryEntry* value);
-krpc_error_t krpc_decode_message_Event(pb_istream_t* stream, krpc_schema_Event* value);
-krpc_error_t krpc_decode_message_Stream(pb_istream_t* stream, krpc_schema_Stream* value);
 krpc_error_t krpc_decode_message_Services(pb_istream_t* stream, krpc_schema_Services* value);
-krpc_error_t krpc_decode_message_Status(pb_istream_t* stream, krpc_schema_Status* value);
 // [[[end]]]
 
 #ifdef __cplusplus

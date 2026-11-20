@@ -17,8 +17,10 @@
 extern "C" {
 #endif
 
+KRPC_DEPRECATED_USES_BEGIN
+
 /**
- * A RemoteTech antenna. Obtained by calling RemoteTech::Comms::antennas or RemoteTech::antenna.
+ * A RemoteTech antenna. Obtained by calling krpc_RemoteTech_Comms_Antennas() or krpc_RemoteTech_Antenna().
  */
 typedef krpc_object_t krpc_RemoteTech_Antenna_t;
 /**
@@ -68,7 +70,7 @@ static inline krpc_error_t krpc_decode_list_string(
 
 /**
  * The type of object an antenna is targetting.
- * See RemoteTech::Antenna::target.
+ * See krpc_RemoteTech_Antenna_Target().
  */
 typedef enum {
   /**
@@ -93,10 +95,27 @@ typedef enum {
   KRPC_REMOTETECH_TARGET_NONE = 4
 } krpc_RemoteTech_Target_t;
 
+#define KRPC_CLASS_REMOTETECH_ANTENNA 6u, 90975867u
+#define KRPC_CLASS_REMOTETECH_COMMS 6u, 2704736000u
+#define KRPC_ENUMERATION_REMOTETECH_TARGET 6u, 3679749015u
+
 /**
  * Get the antenna object for a particular part.
  */
 static inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection, krpc_RemoteTech_Antenna_t * returnValue, krpc_SpaceCenter_Part_t part);
+
+/**
+ * Fills in the call krpc_RemoteTech_Antenna() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_call(krpc_schema_ProcedureCall * procedureCall, krpc_SpaceCenter_Part_t part);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Get a communications object, representing the communication capability of a particular vessel.
@@ -104,9 +123,35 @@ static inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection,
 static inline krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, krpc_RemoteTech_Comms_t * returnValue, krpc_SpaceCenter_Vessel_t vessel);
 
 /**
+ * Fills in the call krpc_RemoteTech_Comms() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_call(krpc_schema_ProcedureCall * procedureCall, krpc_SpaceCenter_Vessel_t vessel);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether RemoteTech is installed.
  */
 static inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connection, bool * returnValue);
+
+/**
+ * Fills in the call krpc_RemoteTech_Available() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Available_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Available(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Available_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The names of the ground stations.
@@ -114,9 +159,35 @@ static inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connectio
 static inline krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t connection, krpc_list_string_t * returnValue);
 
 /**
+ * Fills in the call krpc_RemoteTech_GroundStations() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_GroundStations_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_GroundStations(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_GroundStations_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the antenna has a connection.
  */
 static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Antenna_t instance);
+
+/**
+ * Fills in the call krpc_RemoteTech_Antenna_HasConnection() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_HasConnection(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Get the part containing this antenna.
@@ -124,20 +195,59 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection
 static inline krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
+ * Fills in the call krpc_RemoteTech_Antenna_Part() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_Part_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_Part(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_Part_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The object that the antenna is targetting.
- * This property can be used to set the target to RemoteTech::Target::none or RemoteTech::Target::active_vessel.
- * To set the target to a celestial body, ground station or vessel see RemoteTech::Antenna::target_body,
- * RemoteTech::Antenna::target_ground_station and RemoteTech::Antenna::target_vessel.
+ * This property can be used to set the target to #KRPC_REMOTETECH_TARGET_NONE or #KRPC_REMOTETECH_TARGET_ACTIVEVESSEL.
+ * To set the target to a celestial body, ground station or vessel see krpc_RemoteTech_Antenna_TargetBody(),
+ * krpc_RemoteTech_Antenna_TargetGroundStation() and krpc_RemoteTech_Antenna_TargetVessel().
  */
 static inline krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection, krpc_RemoteTech_Target_t * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
+ * Fills in the call krpc_RemoteTech_Antenna_Target() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_Target_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_Target(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_Target_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The object that the antenna is targetting.
- * This property can be used to set the target to RemoteTech::Target::none or RemoteTech::Target::active_vessel.
- * To set the target to a celestial body, ground station or vessel see RemoteTech::Antenna::target_body,
- * RemoteTech::Antenna::target_ground_station and RemoteTech::Antenna::target_vessel.
+ * This property can be used to set the target to #KRPC_REMOTETECH_TARGET_NONE or #KRPC_REMOTETECH_TARGET_ACTIVEVESSEL.
+ * To set the target to a celestial body, ground station or vessel see krpc_RemoteTech_Antenna_TargetBody(),
+ * krpc_RemoteTech_Antenna_TargetGroundStation() and krpc_RemoteTech_Antenna_TargetVessel().
  */
 static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_RemoteTech_Target_t value);
+
+/**
+ * Fills in the call krpc_RemoteTech_Antenna_set_Target() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance, krpc_RemoteTech_Target_t value);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_set_Target(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The celestial body the antenna is targetting.
@@ -145,9 +255,35 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t 
 static inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
+ * Fills in the call krpc_RemoteTech_Antenna_TargetBody() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_TargetBody(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The celestial body the antenna is targetting.
  */
 static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_CelestialBody_t value);
+
+/**
+ * Fills in the call krpc_RemoteTech_Antenna_set_TargetBody() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_CelestialBody_t value);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_set_TargetBody(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The ground station the antenna is targetting.
@@ -155,9 +291,35 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connectio
 static inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_connection_t connection, char * * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
+ * Fills in the call krpc_RemoteTech_Antenna_TargetGroundStation() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_TargetGroundStation(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The ground station the antenna is targetting.
  */
 static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, const char * value);
+
+/**
+ * Fills in the call krpc_RemoteTech_Antenna_set_TargetGroundStation() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance, const char * value);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_set_TargetGroundStation(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The vessel the antenna is targetting.
@@ -165,15 +327,57 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_
 static inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Antenna_t instance);
 
 /**
+ * Fills in the call krpc_RemoteTech_Antenna_TargetVessel() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_TargetVessel(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The vessel the antenna is targetting.
  */
 static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_Vessel_t value);
 
 /**
+ * Fills in the call krpc_RemoteTech_Antenna_set_TargetVessel() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_Vessel_t value);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Antenna_set_TargetVessel(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The signal delay between the this vessel and another vessel, in seconds.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param instance The object to call the method on.
  * @param other
  */
 static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance, krpc_SpaceCenter_Vessel_t other);
+
+/**
+ * Fills in the call krpc_RemoteTech_Comms_SignalDelayToVessel() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance, krpc_SpaceCenter_Vessel_t other);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms_SignalDelayToVessel(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The antennas for this vessel.
@@ -181,9 +385,35 @@ static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connec
 static inline krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
+ * Fills in the call krpc_RemoteTech_Comms_Antennas() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_Antennas_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms_Antennas(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_Antennas_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the vessel has any connection.
  */
 static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call krpc_RemoteTech_Comms_HasConnection() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms_HasConnection(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Whether the vessel has a connection to a ground station.
@@ -191,9 +421,35 @@ static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t
 static inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
+ * Fills in the call krpc_RemoteTech_Comms_HasConnectionToGroundStation() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms_HasConnectionToGroundStation(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the vessel has a flight computer on board.
  */
 static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call krpc_RemoteTech_Comms_HasFlightComputer() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms_HasFlightComputer(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Whether the vessel can be controlled locally.
@@ -201,9 +457,35 @@ static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connecti
 static inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
+ * Fills in the call krpc_RemoteTech_Comms_HasLocalControl() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms_HasLocalControl(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The shortest signal delay to the vessel, in seconds.
  */
 static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call krpc_RemoteTech_Comms_SignalDelay() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms_SignalDelay(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The signal delay between the vessel and the closest ground station, in seconds.
@@ -211,9 +493,35 @@ static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t c
 static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance);
 
 /**
+ * Fills in the call krpc_RemoteTech_Comms_SignalDelayToGroundStation() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms_SignalDelayToGroundStation(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Get the vessel.
  */
 static inline krpc_error_t krpc_RemoteTech_Comms_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call krpc_RemoteTech_Comms_Vessel() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_Vessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance);
+
+/**
+ * Fills in the call template of krpc_RemoteTech_Comms_Vessel(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_RemoteTech_Comms_Vessel_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 // Implementation
 
@@ -382,7 +690,7 @@ static inline krpc_error_t krpc_decode_list_string(
 static inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection, krpc_RemoteTech_Antenna_t * returnValue, krpc_SpaceCenter_Part_t part) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 2, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 90975867, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &part));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -396,10 +704,20 @@ static inline krpc_error_t krpc_RemoteTech_Antenna(krpc_connection_t connection,
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_call(krpc_schema_ProcedureCall * procedureCall, krpc_SpaceCenter_Part_t part) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 90975867, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &part));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 90975867, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, krpc_RemoteTech_Comms_t * returnValue, krpc_SpaceCenter_Vessel_t vessel) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 1, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 2704736000, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &vessel));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -413,9 +731,19 @@ static inline krpc_error_t krpc_RemoteTech_Comms(krpc_connection_t connection, k
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Comms_call(krpc_schema_ProcedureCall * procedureCall, krpc_SpaceCenter_Vessel_t vessel) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 2704736000, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &vessel));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 2704736000, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 6, 3, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 6, 265274134, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -428,9 +756,18 @@ static inline krpc_error_t krpc_RemoteTech_Available(krpc_connection_t connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Available_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 265274134, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Available_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 265274134, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t connection, krpc_list_string_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 6, 4, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 6, 4210187787, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -443,10 +780,19 @@ static inline krpc_error_t krpc_RemoteTech_GroundStations(krpc_connection_t conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_GroundStations_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 4210187787, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_GroundStations_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 4210187787, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 6, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 2756202687, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -460,10 +806,20 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection(krpc_connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 2756202687, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_HasConnection_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 2756202687, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 5, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 3299023893, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -477,10 +833,20 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_Part(krpc_connection_t connec
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_Part_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 3299023893, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_Part_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 3299023893, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t connection, krpc_RemoteTech_Target_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 7, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 368954199, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -494,10 +860,20 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_Target(krpc_connection_t conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_Target_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 368954199, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_Target_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 368954199, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_RemoteTech_Target_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 6, 8, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 3385968638, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -507,10 +883,21 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance, krpc_RemoteTech_Target_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 3385968638, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_enum, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_Target_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 3385968638, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 9, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 4001250977, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -524,10 +911,20 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 4001250977, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetBody_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 4001250977, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_CelestialBody_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 6, 10, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 3867630114, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -537,10 +934,21 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody(krpc_connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_CelestialBody_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 3867630114, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetBody_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 3867630114, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_connection_t connection, char * * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 11, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 265169964, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -554,10 +962,20 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation(krpc_conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 265169964, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetGroundStation_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 265169964, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 6, 12, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 3249822409, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -567,10 +985,21 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation(krpc_
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance, const char * value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 3249822409, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetGroundStation_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 3249822409, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Antenna_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 13, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 3600431310, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -584,10 +1013,20 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel(krpc_connection_
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 3600431310, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_TargetVessel_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 3600431310, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connection_t connection, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_Vessel_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 6, 14, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 4215079514, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -597,10 +1036,21 @@ static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel(krpc_connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Antenna_t instance, krpc_SpaceCenter_Vessel_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 4215079514, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Antenna_set_TargetVessel_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 4215079514, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance, krpc_SpaceCenter_Vessel_t other) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 6, 15, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 1529379322, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &other));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -615,10 +1065,21 @@ static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel(krpc_connec
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance, krpc_SpaceCenter_Vessel_t other) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 1529379322, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &other));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToVessel_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 1529379322, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 23, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 4092151210, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -632,10 +1093,20 @@ static inline krpc_error_t krpc_RemoteTech_Comms_Antennas(krpc_connection_t conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Comms_Antennas_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 4092151210, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_Antennas_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 4092151210, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 19, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 2597482700, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -647,12 +1118,22 @@ static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection(krpc_connection_t
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 2597482700, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnection_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 2597482700, 0);
 }
 
 static inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 20, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 4070021703, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -664,12 +1145,22 @@ static inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation(kr
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 4070021703, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_HasConnectionToGroundStation_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 4070021703, 0);
 }
 
 static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 18, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 49020657, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -681,12 +1172,22 @@ static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer(krpc_connecti
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 49020657, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_HasFlightComputer_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 49020657, 0);
 }
 
 static inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection_t connection, bool * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 17, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 2422974080, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -700,10 +1201,20 @@ static inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl(krpc_connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 2422974080, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_HasLocalControl_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 2422974080, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 21, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 739601261, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -715,12 +1226,22 @@ static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay(krpc_connection_t c
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 739601261, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelay_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 739601261, 0);
 }
 
 static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc_connection_t connection, double * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 22, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 381115479, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -734,10 +1255,20 @@ static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation(krpc
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 381115479, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_SignalDelayToGroundStation_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 381115479, 0);
+}
+
 static inline krpc_error_t krpc_RemoteTech_Comms_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_RemoteTech_Comms_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 6, 16, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 6, 1331193400, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -750,6 +1281,18 @@ static inline krpc_error_t krpc_RemoteTech_Comms_Vessel(krpc_connection_t connec
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
+
+static inline krpc_error_t krpc_RemoteTech_Comms_Vessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_RemoteTech_Comms_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 6, 1331193400, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_RemoteTech_Comms_Vessel_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 6, 1331193400, 0);
+}
+
+KRPC_DEPRECATED_USES_END
 
 #ifdef __cplusplus
 }  // extern "C"

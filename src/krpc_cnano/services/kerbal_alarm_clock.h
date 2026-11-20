@@ -17,11 +17,13 @@
 extern "C" {
 #endif
 
+KRPC_DEPRECATED_USES_BEGIN
+
 /**
  * Represents an alarm. Obtained by calling
- * KerbalAlarmClock::alarms,
- * KerbalAlarmClock::alarm_with_name or
- * KerbalAlarmClock::alarms_with_type.
+ * krpc_KerbalAlarmClock_Alarms(),
+ * krpc_KerbalAlarmClock_AlarmWithName() or
+ * krpc_KerbalAlarmClock_AlarmsWithType().
  */
 typedef krpc_object_t krpc_KerbalAlarmClock_Alarm_t;
 
@@ -101,7 +103,7 @@ typedef enum {
    */
   KRPC_KERBALALARMCLOCK_ALARMTYPE_MANEUVER = 1,
   /**
-   * See KerbalAlarmClock::AlarmType::maneuver.
+   * See #KRPC_KERBALALARMCLOCK_ALARMTYPE_MANEUVER.
    */
   KRPC_KERBALALARMCLOCK_ALARMTYPE_MANEUVERAUTO = 2,
   /**
@@ -130,7 +132,7 @@ typedef enum {
    */
   KRPC_KERBALALARMCLOCK_ALARMTYPE_CONTRACT = 8,
   /**
-   * See KerbalAlarmClock::AlarmType::contract.
+   * See #KRPC_KERBALALARMCLOCK_ALARMTYPE_CONTRACT.
    */
   KRPC_KERBALALARMCLOCK_ALARMTYPE_CONTRACTAUTO = 9,
   /**
@@ -156,7 +158,7 @@ typedef enum {
    */
   KRPC_KERBALALARMCLOCK_ALARMTYPE_SOICHANGE = 14,
   /**
-   * See KerbalAlarmClock::AlarmType::soi_change.
+   * See #KRPC_KERBALALARMCLOCK_ALARMTYPE_SOICHANGE.
    */
   KRPC_KERBALALARMCLOCK_ALARMTYPE_SOICHANGEAUTO = 15,
   /**
@@ -166,7 +168,7 @@ typedef enum {
    */
   KRPC_KERBALALARMCLOCK_ALARMTYPE_TRANSFER = 16,
   /**
-   * See KerbalAlarmClock::AlarmType::transfer.
+   * See #KRPC_KERBALALARMCLOCK_ALARMTYPE_TRANSFER.
    */
   KRPC_KERBALALARMCLOCK_ALARMTYPE_TRANSFERMODELLED = 17,
   /**
@@ -175,22 +177,58 @@ typedef enum {
   KRPC_KERBALALARMCLOCK_ALARMTYPE_SCIENCELAB = 18
 } krpc_KerbalAlarmClock_AlarmType_t;
 
+#define KRPC_CLASS_KERBALALARMCLOCK_ALARM 5u, 1467594483u
+#define KRPC_ENUMERATION_KERBALALARMCLOCK_ALARMACTION 5u, 2642665552u
+#define KRPC_ENUMERATION_KERBALALARMCLOCK_ALARMTYPE 5u, 465921516u
+
 /**
- * Get the alarm with the given name, or null
+ * Get the alarm with the given name, or `null`
  * if no alarms have that name. If more than one alarm has the name,
  * only returns one of them.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param name Name of the alarm to search for.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t * returnValue, const char * name);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_AlarmWithName() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName_call(krpc_schema_ProcedureCall * procedureCall, const char * name);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_AlarmWithName(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Get a list of alarms of the specified type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param type Type of alarm to return.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_KerbalAlarmClock_AlarmType_t type);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_AlarmsWithType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_AlarmType_t type);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_AlarmsWithType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Create a new alarm and return it.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param type Type of the new alarm.
  * @param name Name of the new alarm.
  * @param ut Time at which the new alarm should trigger.
@@ -198,14 +236,53 @@ static inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType(krpc_connection_
 static inline krpc_error_t krpc_KerbalAlarmClock_CreateAlarm(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t * returnValue, krpc_KerbalAlarmClock_AlarmType_t type, const char * name, double ut);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_CreateAlarm() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_CreateAlarm_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_AlarmType_t type, const char * name, double ut);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_CreateAlarm(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_CreateAlarm_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A list of all the alarms.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarms(krpc_connection_t connection, krpc_list_object_t * returnValue);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarms() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarms_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarms(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarms_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether Kerbal Alarm Clock is available.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Available(krpc_connection_t connection, bool * returnValue);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Available() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Available_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Available(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Available_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Removes the alarm. Any further use of this object throws an exception.
@@ -215,14 +292,59 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Available(krpc_connection_t con
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Remove() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Remove(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The action that the alarm triggers.
+ *
+ * An alarm that plays a sound has the action #KRPC_KERBALALARMCLOCK_ALARMACTION_CUSTOM.
+ * See krpc_KerbalAlarmClock_Alarm_PlaySound().
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmAction_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Action() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Action(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The action that the alarm triggers.
+ *
+ * An alarm that plays a sound has the action #KRPC_KERBALALARMCLOCK_ALARMACTION_CUSTOM.
+ * See krpc_KerbalAlarmClock_Alarm_PlaySound().
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_KerbalAlarmClock_AlarmAction_t value);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_Action() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, krpc_KerbalAlarmClock_AlarmAction_t value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_Action(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Whether the alarm is enabled. A disabled alarm does not fire.
@@ -230,9 +352,35 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action(krpc_connectio
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Enabled(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Enabled() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Enabled_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Enabled(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Enabled_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the alarm is enabled. A disabled alarm does not fire.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Enabled(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, bool value);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_Enabled() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Enabled_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, bool value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_Enabled(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Enabled_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The unique identifier for the alarm.
@@ -240,9 +388,35 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Enabled(krpc_connecti
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_ID(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_ID() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_ID_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_ID(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_ID_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The number of seconds before the event that the alarm will fire.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Margin() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Margin(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The number of seconds before the event that the alarm will fire.
@@ -250,9 +424,35 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin(krpc_connection_t 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_Margin() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, double value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_Margin(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The short name of the alarm.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Name() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Name(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The short name of the alarm.
@@ -260,9 +460,35 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name(krpc_connection_t co
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_Name() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, const char * value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_Name(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The long description of the alarm.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Notes() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Notes(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The long description of the alarm.
@@ -270,14 +496,59 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes(krpc_connection_t c
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_Notes() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, const char * value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_Notes(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the alarm plays a sound when it fires.
+ *
+ * An alarm that plays a sound has the action #KRPC_KERBALALARMCLOCK_ALARMACTION_CUSTOM.
+ * Setting krpc_KerbalAlarmClock_Alarm_Action() to any other value turns the sound off.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_PlaySound(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_PlaySound() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_PlaySound_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_PlaySound(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_PlaySound_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the alarm plays a sound when it fires.
+ *
+ * An alarm that plays a sound has the action #KRPC_KERBALALARMCLOCK_ALARMACTION_CUSTOM.
+ * Setting krpc_KerbalAlarmClock_Alarm_Action() to any other value turns the sound off.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_PlaySound(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, bool value);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_PlaySound() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_PlaySound_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, bool value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_PlaySound(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_PlaySound_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The number of seconds until the alarm will fire.
@@ -285,44 +556,135 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_PlaySound(krpc_connec
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remaining(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Remaining() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remaining_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Remaining(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remaining_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the alarm will be repeated after it has fired.
  * Only has an effect for alarm types that support repeating
- * (see KerbalAlarmClock::Alarm::supports_repeat).
+ * (see krpc_KerbalAlarmClock_Alarm_SupportsRepeat()).
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Repeat() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Repeat(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the alarm will be repeated after it has fired.
  * Only has an effect for alarm types that support repeating
- * (see KerbalAlarmClock::Alarm::supports_repeat).
+ * (see krpc_KerbalAlarmClock_Alarm_SupportsRepeat()).
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, bool value);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_Repeat() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, bool value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_Repeat(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The time delay to automatically create an alarm after it has fired.
  * Only has an effect for alarm types that support a repeat period
- * (see KerbalAlarmClock::Alarm::supports_repeat_period).
+ * (see krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod()).
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_RepeatPeriod() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_RepeatPeriod(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The time delay to automatically create an alarm after it has fired.
  * Only has an effect for alarm types that support a repeat period
- * (see KerbalAlarmClock::Alarm::supports_repeat_period).
+ * (see krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod()).
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, double value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether this alarm's type supports repeating
- * (see KerbalAlarmClock::Alarm::repeat).
+ * (see krpc_KerbalAlarmClock_Alarm_Repeat()).
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeat(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_SupportsRepeat() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeat_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_SupportsRepeat(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeat_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether this alarm's type supports a repeat period
- * (see KerbalAlarmClock::Alarm::repeat_period).
+ * (see krpc_KerbalAlarmClock_Alarm_RepeatPeriod()).
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The time at which the alarm will fire.
@@ -330,9 +692,35 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod(krpc
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Time(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Time() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Time_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Time(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Time_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The time at which the alarm will fire.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_Time() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, double value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_Time(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Whether the alarm has fired. Remains true once the alarm has fired;
@@ -342,9 +730,35 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time(krpc_connection_
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Triggered(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Triggered() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Triggered_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Triggered(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Triggered_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The type of the alarm.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmType_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Type() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Type(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The vessel that the alarm is attached to.
@@ -352,9 +766,35 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type(krpc_connection_t co
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_Vessel() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_Vessel(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The vessel that the alarm is attached to.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_Vessel_t value);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_Vessel() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_Vessel_t value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_Vessel(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The celestial body the vessel is departing from.
@@ -362,9 +802,35 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel(krpc_connectio
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_XferOriginBody() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_XferOriginBody(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The celestial body the vessel is departing from.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_XferOriginBody() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_XferOriginBody(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The celestial body the vessel is arriving at.
@@ -372,9 +838,35 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody(krpc_c
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance);
 
 /**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_XferTargetBody() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_XferTargetBody(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The celestial body the vessel is arriving at.
  */
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value);
+
+/**
+ * Fills in the call krpc_KerbalAlarmClock_Alarm_set_XferTargetBody() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value);
+
+/**
+ * Fills in the call template of krpc_KerbalAlarmClock_Alarm_set_XferTargetBody(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 // Implementation
 
@@ -462,7 +954,7 @@ static inline krpc_error_t krpc_decode_list_object(
 static inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t * returnValue, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 1, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3729363774, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -480,10 +972,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName(krpc_connection_t
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName_call(krpc_schema_ProcedureCall * procedureCall, const char * name) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3729363774, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &name));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_AlarmWithName_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3729363774, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_KerbalAlarmClock_AlarmType_t type) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 2, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2140180822, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_enum, &type));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -497,10 +999,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType(krpc_connection_
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_AlarmType_t type) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2140180822, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_enum, &type));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_AlarmsWithType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2140180822, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_CreateAlarm(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t * returnValue, krpc_KerbalAlarmClock_AlarmType_t type, const char * name, double ut) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 5, 3, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3906561953, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_enum, &type));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_double, &ut));
@@ -516,9 +1028,21 @@ static inline krpc_error_t krpc_KerbalAlarmClock_CreateAlarm(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_CreateAlarm_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_AlarmType_t type, const char * name, double ut) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3906561953, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_enum, &type));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_double, &ut));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_CreateAlarm_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3906561953, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarms(krpc_connection_t connection, krpc_list_object_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 5, 5, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 5, 1321064488, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -531,9 +1055,18 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarms(krpc_connection_t connec
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarms_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 1321064488, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarms_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 1321064488, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Available(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 5, 4, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 5, 265274134, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -546,10 +1079,19 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Available(krpc_connection_t con
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Available_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 265274134, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Available_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 265274134, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 6, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 249926927, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -558,10 +1100,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 249926927, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remove_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 249926927, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmAction_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 7, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 4154109548, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -575,10 +1127,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 4154109548, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Action_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 4154109548, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_KerbalAlarmClock_AlarmAction_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 8, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 4041864534, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -588,10 +1150,21 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action(krpc_connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, krpc_KerbalAlarmClock_AlarmAction_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 4041864534, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_enum, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Action_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 4041864534, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Enabled(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 20, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3949777468, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -603,12 +1176,22 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Enabled(krpc_connection_t
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Enabled_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3949777468, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Enabled_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3949777468, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Enabled(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 21, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 864677575, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -616,12 +1199,23 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Enabled(krpc_connecti
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Enabled_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, bool value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 864677575, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_bool, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Enabled_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 864677575, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_ID(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 14, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2843815609, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -633,12 +1227,22 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_ID(krpc_connection_t conn
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_ID_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2843815609, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_ID_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2843815609, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 9, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2220540399, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -650,12 +1254,22 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin(krpc_connection_t 
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2220540399, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Margin_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2220540399, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 10, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 1640019728, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -663,12 +1277,23 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin(krpc_connectio
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 1640019728, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_double, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Margin_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 1640019728, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 15, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 31720482, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -680,12 +1305,22 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name(krpc_connection_t co
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 31720482, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Name_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 31720482, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 16, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 958350250, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -695,10 +1330,21 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name(krpc_connection_
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, const char * value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 958350250, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Name_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 958350250, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes(krpc_connection_t connection, char * * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 17, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2685765964, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -712,10 +1358,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2685765964, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Notes_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2685765964, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 18, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3699963018, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -725,10 +1381,21 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes(krpc_connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, const char * value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3699963018, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Notes_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3699963018, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_PlaySound(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 22, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 639764460, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -740,12 +1407,22 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_PlaySound(krpc_connection
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_PlaySound_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 639764460, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_PlaySound_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 639764460, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_PlaySound(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 23, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 1396104664, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -753,12 +1430,23 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_PlaySound(krpc_connec
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_PlaySound_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, bool value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 1396104664, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_bool, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_PlaySound_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 1396104664, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remaining(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 19, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 1446877472, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -772,10 +1460,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remaining(krpc_connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remaining_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 1446877472, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Remaining_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 1446877472, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 25, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 1950233385, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -789,10 +1487,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 1950233385, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Repeat_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 1950233385, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 26, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 235057737, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -802,10 +1510,21 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat(krpc_connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, bool value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 235057737, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_bool, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Repeat_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 235057737, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 28, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2239964374, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -817,12 +1536,22 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod(krpc_connect
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2239964374, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_RepeatPeriod_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2239964374, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 29, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2075552561, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -832,10 +1561,21 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod(krpc_con
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2075552561, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_double, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_RepeatPeriod_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2075552561, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeat(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 27, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 1762252320, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -847,12 +1587,22 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeat(krpc_conne
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeat_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 1762252320, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeat_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 1762252320, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 30, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3040693138, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -866,10 +1616,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod(krpc
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3040693138, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_SupportsRepeatPeriod_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3040693138, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Time(krpc_connection_t connection, double * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 11, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3838325530, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -883,10 +1643,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Time(krpc_connection_t co
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Time_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3838325530, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Time_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3838325530, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 12, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3579348862, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -896,10 +1666,21 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time(krpc_connection_
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, double value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3579348862, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_double, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Time_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3579348862, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Triggered(krpc_connection_t connection, bool * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 24, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2433817354, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -913,10 +1694,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Triggered(krpc_connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Triggered_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2433817354, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Triggered_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2433817354, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type(krpc_connection_t connection, krpc_KerbalAlarmClock_AlarmType_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 13, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 59608276, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -930,10 +1721,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type(krpc_connection_t co
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 59608276, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Type_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 59608276, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel(krpc_connection_t connection, krpc_SpaceCenter_Vessel_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 31, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3968101467, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -945,12 +1746,22 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel(krpc_connection_t 
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3968101467, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_Vessel_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3968101467, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_Vessel_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 32, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2748543587, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -958,12 +1769,23 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel(krpc_connectio
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_Vessel_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2748543587, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_Vessel_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2748543587, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 33, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2779397156, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -975,12 +1797,22 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody(krpc_conne
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2779397156, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferOriginBody_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2779397156, 0);
 }
 
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 34, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3160166465, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -990,10 +1822,21 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody(krpc_c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3160166465, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferOriginBody_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3160166465, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody(krpc_connection_t connection, krpc_SpaceCenter_CelestialBody_t * returnValue, krpc_KerbalAlarmClock_Alarm_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 5, 35, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 3877845033, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -1007,10 +1850,20 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody(krpc_conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 3877845033, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_XferTargetBody_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 3877845033, 0);
+}
+
 static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody(krpc_connection_t connection, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 5, 36, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 5, 2167673950, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -1019,6 +1872,19 @@ static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody(krpc_c
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody_call(krpc_schema_ProcedureCall * procedureCall, krpc_KerbalAlarmClock_Alarm_t instance, krpc_SpaceCenter_CelestialBody_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 5, 2167673950, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KerbalAlarmClock_Alarm_set_XferTargetBody_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 5, 2167673950, 0);
+}
+
+KRPC_DEPRECATED_USES_END
 
 #ifdef __cplusplus
 }  // extern "C"

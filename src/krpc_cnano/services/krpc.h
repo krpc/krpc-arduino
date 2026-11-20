@@ -15,6 +15,8 @@
 extern "C" {
 #endif
 
+KRPC_DEPRECATED_USES_BEGIN
+
 /**
  * A server side expression.
  *
@@ -25,6 +27,87 @@ typedef krpc_object_t krpc_KRPC_Expression_t;
  * The type of a value a procedure takes or returns.
  */
 typedef krpc_object_t krpc_KRPC_Type_t;
+
+#ifndef KRPC_TYPE_KRPC_SERVERSETTINGS
+#define KRPC_TYPE_KRPC_SERVERSETTINGS
+
+typedef struct krpc_KRPC_ServerSettings_s krpc_KRPC_ServerSettings_t;
+struct krpc_KRPC_ServerSettings_s {
+  bool adaptive_rate_control;
+  uint32_t target_frame_rate;
+  uint32_t max_time_per_frame;
+  uint32_t max_call_wait;
+  uint32_t tick_hold_timeout;
+};
+
+static inline krpc_error_t krpc_encode_KRPC_ServerSettings(
+  pb_ostream_t * stream, const krpc_KRPC_ServerSettings_t * value);
+static inline krpc_error_t krpc_encode_size_KRPC_ServerSettings(
+  size_t * size, const krpc_KRPC_ServerSettings_t * value);
+static inline bool krpc_encode_callback_KRPC_ServerSettings(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
+static inline krpc_error_t krpc_decode_KRPC_ServerSettings(
+  pb_istream_t * stream, krpc_KRPC_ServerSettings_t * value);
+
+#endif  // KRPC_TYPE_KRPC_SERVERSETTINGS
+
+#ifndef KRPC_TYPE_KRPC_SERVERSTATISTICS
+#define KRPC_TYPE_KRPC_SERVERSTATISTICS
+
+typedef struct krpc_KRPC_ServerStatistics_s krpc_KRPC_ServerStatistics_t;
+struct krpc_KRPC_ServerStatistics_s {
+  uint64_t bytes_read;
+  uint64_t bytes_written;
+  float bytes_read_rate;
+  float bytes_written_rate;
+  uint64_t rpcs_executed;
+  float rpc_rate;
+  float frame_rate;
+  float time_per_frame;
+  float exec_time_per_frame;
+  float wait_time_per_frame;
+  float stream_time_per_frame;
+  float budget_per_frame;
+  float median_turnaround;
+  uint32_t deferred_calls;
+  uint32_t streams;
+  uint64_t stream_evaluations;
+  float stream_evaluation_rate;
+  uint64_t stream_updates_sent;
+};
+
+static inline krpc_error_t krpc_encode_KRPC_ServerStatistics(
+  pb_ostream_t * stream, const krpc_KRPC_ServerStatistics_t * value);
+static inline krpc_error_t krpc_encode_size_KRPC_ServerStatistics(
+  size_t * size, const krpc_KRPC_ServerStatistics_t * value);
+static inline bool krpc_encode_callback_KRPC_ServerStatistics(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
+static inline krpc_error_t krpc_decode_KRPC_ServerStatistics(
+  pb_istream_t * stream, krpc_KRPC_ServerStatistics_t * value);
+
+#endif  // KRPC_TYPE_KRPC_SERVERSTATISTICS
+
+#ifndef KRPC_TYPE_KRPC_SERVERSTATUS
+#define KRPC_TYPE_KRPC_SERVERSTATUS
+
+typedef struct krpc_KRPC_ServerStatus_s krpc_KRPC_ServerStatus_t;
+struct krpc_KRPC_ServerStatus_s {
+  char * version;
+  uint32_t protocol_version;
+  krpc_KRPC_ServerSettings_t settings;
+  krpc_KRPC_ServerStatistics_t statistics;
+};
+
+static inline krpc_error_t krpc_encode_KRPC_ServerStatus(
+  pb_ostream_t * stream, const krpc_KRPC_ServerStatus_t * value);
+static inline krpc_error_t krpc_encode_size_KRPC_ServerStatus(
+  size_t * size, const krpc_KRPC_ServerStatus_t * value);
+static inline bool krpc_encode_callback_KRPC_ServerStatus(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
+static inline krpc_error_t krpc_decode_KRPC_ServerStatus(
+  pb_istream_t * stream, krpc_KRPC_ServerStatus_t * value);
+
+#endif  // KRPC_TYPE_KRPC_SERVERSTATUS
 
 #ifndef KRPC_TYPE_DICTIONARY_INT32_OBJECT
 #define KRPC_TYPE_DICTIONARY_INT32_OBJECT
@@ -119,6 +202,46 @@ static inline krpc_error_t krpc_decode_list_KRPC_ClientInfo(
 
 #endif  // KRPC_TYPE_LIST_KRPC_CLIENTINFO
 
+#ifndef KRPC_TYPE_LIST_OBJECT
+#define KRPC_TYPE_LIST_OBJECT
+
+typedef struct krpc_list_object_s krpc_list_object_t;
+struct krpc_list_object_s {
+  size_t size;
+  krpc_object_t * items;
+};
+
+static inline krpc_error_t krpc_encode_list_object(
+  pb_ostream_t * stream, const krpc_list_object_t * value);
+static inline krpc_error_t krpc_encode_size_list_object(
+  size_t * size, const krpc_list_object_t * value);
+static inline bool krpc_encode_callback_list_object(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
+static inline krpc_error_t krpc_decode_list_object(
+  pb_istream_t * stream, krpc_list_object_t * value);
+
+#endif  // KRPC_TYPE_LIST_OBJECT
+
+#ifndef KRPC_TYPE_LIST_LIST_OBJECT
+#define KRPC_TYPE_LIST_LIST_OBJECT
+
+typedef struct krpc_list_list_object_s krpc_list_list_object_t;
+struct krpc_list_list_object_s {
+  size_t size;
+  krpc_list_object_t * items;
+};
+
+static inline krpc_error_t krpc_encode_list_list_object(
+  pb_ostream_t * stream, const krpc_list_list_object_t * value);
+static inline krpc_error_t krpc_encode_size_list_list_object(
+  size_t * size, const krpc_list_list_object_t * value);
+static inline bool krpc_encode_callback_list_list_object(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
+static inline krpc_error_t krpc_decode_list_list_object(
+  pb_istream_t * stream, krpc_list_list_object_t * value);
+
+#endif  // KRPC_TYPE_LIST_LIST_OBJECT
+
 #ifndef KRPC_TYPE_NULLABLE_BYTES
 #define KRPC_TYPE_NULLABLE_BYTES
 
@@ -159,26 +282,6 @@ static inline krpc_error_t krpc_decode_list_nullable_bytes(
 
 #endif  // KRPC_TYPE_LIST_NULLABLE_BYTES
 
-#ifndef KRPC_TYPE_LIST_OBJECT
-#define KRPC_TYPE_LIST_OBJECT
-
-typedef struct krpc_list_object_s krpc_list_object_t;
-struct krpc_list_object_s {
-  size_t size;
-  krpc_object_t * items;
-};
-
-static inline krpc_error_t krpc_encode_list_object(
-  pb_ostream_t * stream, const krpc_list_object_t * value);
-static inline krpc_error_t krpc_encode_size_list_object(
-  size_t * size, const krpc_list_object_t * value);
-static inline bool krpc_encode_callback_list_object(
-  pb_ostream_t * stream, const pb_field_t * field, void * const * arg);
-static inline krpc_error_t krpc_decode_list_object(
-  pb_istream_t * stream, krpc_list_object_t * value);
-
-#endif  // KRPC_TYPE_LIST_OBJECT
-
 #ifndef KRPC_TYPE_SET_OBJECT
 #define KRPC_TYPE_SET_OBJECT
 
@@ -200,7 +303,7 @@ static inline krpc_error_t krpc_decode_set_object(
 #endif  // KRPC_TYPE_SET_OBJECT
 
 /**
- * The game scene. See KRPC::game_scene.
+ * The game scene. See krpc_KRPC_GameScene().
  */
 typedef enum {
   /**
@@ -302,63 +405,169 @@ typedef enum {
    */
   KRPC_KRPC_TYPECODE_STRUCT = 102,
   /**
-   * A tuple, with the types of its values in KRPC::Type::types.
+   * A tuple, with the types of its values in krpc_KRPC_Type_Types().
    */
   KRPC_KRPC_TYPECODE_TUPLE = 300,
   /**
-   * A list, with the type of its values in KRPC::Type::types.
+   * A list, with the type of its values in krpc_KRPC_Type_Types().
    */
   KRPC_KRPC_TYPECODE_LIST = 301,
   /**
-   * A set, with the type of its values in KRPC::Type::types.
+   * A set, with the type of its values in krpc_KRPC_Type_Types().
    */
   KRPC_KRPC_TYPECODE_SET = 302,
   /**
-   * A dictionary, with the types of its keys and values in KRPC::Type::types.
+   * A dictionary, with the types of its keys and values in krpc_KRPC_Type_Types().
    */
   KRPC_KRPC_TYPECODE_DICTIONARY = 303
 } krpc_KRPC_TypeCode_t;
 
-/**
- * Create an event from a server side function that evaluates to a boolean value.
- *
- * The function is evaluated on each update, and each call adds a new event. Any
- * exception from the function ends the event, including one for an object that is not
- * loaded. A procedure that pauses execution to resume on a later tick produces an
- * error on the event's stream.
- */
-static inline krpc_error_t krpc_KRPC_AddEvent(krpc_connection_t connection, krpc_schema_Event * returnValue, krpc_KRPC_Expression_t function);
+#define KRPC_CLASS_KRPC_EXPRESSION 1u, 3155522758u
+#define KRPC_CLASS_KRPC_TYPE 1u, 1893707194u
+#define KRPC_ENUMERATION_KRPC_GAMESCENE 1u, 4251095244u
+#define KRPC_ENUMERATION_KRPC_TYPECODE 1u, 1337448176u
+#define KRPC_STRUCT_KRPC_CLIENTINFO 1u, 1266781925u
+#define KRPC_FIELD_KRPC_CLIENTINFO_ID 0
+#define KRPC_FIELD_KRPC_CLIENTINFO_NAME 1
+#define KRPC_FIELD_KRPC_CLIENTINFO_ADDRESS 2
+#define KRPC_STRUCT_KRPC_SERVERSETTINGS 1u, 1855283781u
+#define KRPC_FIELD_KRPC_SERVERSETTINGS_ADAPTIVERATECONTROL 0
+#define KRPC_FIELD_KRPC_SERVERSETTINGS_TARGETFRAMERATE 1
+#define KRPC_FIELD_KRPC_SERVERSETTINGS_MAXTIMEPERFRAME 2
+#define KRPC_FIELD_KRPC_SERVERSETTINGS_MAXCALLWAIT 3
+#define KRPC_FIELD_KRPC_SERVERSETTINGS_TICKHOLDTIMEOUT 4
+#define KRPC_STRUCT_KRPC_SERVERSTATISTICS 1u, 3770033598u
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_BYTESREAD 0
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_BYTESWRITTEN 1
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_BYTESREADRATE 2
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_BYTESWRITTENRATE 3
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_RPCSEXECUTED 4
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_RPCRATE 5
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_FRAMERATE 6
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_TIMEPERFRAME 7
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_EXECTIMEPERFRAME 8
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_WAITTIMEPERFRAME 9
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_STREAMTIMEPERFRAME 10
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_BUDGETPERFRAME 11
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_MEDIANTURNAROUND 12
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_DEFERREDCALLS 13
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_STREAMS 14
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_STREAMEVALUATIONS 15
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_STREAMEVALUATIONRATE 16
+#define KRPC_FIELD_KRPC_SERVERSTATISTICS_STREAMUPDATESSENT 17
+#define KRPC_STRUCT_KRPC_SERVERSTATUS 1u, 1932373256u
+#define KRPC_FIELD_KRPC_SERVERSTATUS_VERSION 0
+#define KRPC_FIELD_KRPC_SERVERSTATUS_PROTOCOLVERSION 1
+#define KRPC_FIELD_KRPC_SERVERSTATUS_SETTINGS 2
+#define KRPC_FIELD_KRPC_SERVERSTATUS_STATISTICS 3
 
 /**
- * Add a stream of the value a server side function computes on each update.
- *
- * Each call adds a new stream, with values of the type given by
- * KRPC::Expression::return_type. Any exception from the function ends the
- * stream, including one for an object that is not loaded. A procedure that pauses
- * execution to resume on a later tick produces an error on the stream.
+ * A method was invoked where at least one of the passed arguments does not
+ * meet the parameter specification of the method.
  */
-static inline krpc_error_t krpc_KRPC_AddFunctionStream(krpc_connection_t connection, krpc_schema_Stream * returnValue, krpc_KRPC_Expression_t function);
+#define KRPC_EXCEPTION_KRPC_ARGUMENTEXCEPTION 1u, 1727780136u
 
 /**
- * Add a streaming request and return its identifier.
- *
- * The stream starts sending results from the next update.
+ * A null reference was passed to a method that does not accept it as a valid argument.
  */
-static inline krpc_error_t krpc_KRPC_AddStream(krpc_connection_t connection, krpc_schema_Stream * returnValue, const krpc_schema_ProcedureCall * call);
+#define KRPC_EXCEPTION_KRPC_ARGUMENTNULLEXCEPTION 1u, 1172469918u
 
 /**
- * Compile a server side function, so that running, streaming or adding it as an
- * event does not compile it.
- *
- * Compiling a large function takes time on the game's main thread. Compiling it
- * in advance keeps that time out of its first run.
+ * The value of an argument is outside the allowable range of values as defined by the invoked method.
  */
-static inline krpc_error_t krpc_KRPC_CompileFunction(krpc_connection_t connection, krpc_KRPC_Expression_t function);
+#define KRPC_EXCEPTION_KRPC_ARGUMENTOUTOFRANGEEXCEPTION 1u, 4281096410u
+
+/**
+ * An integer was divided by zero.
+ */
+#define KRPC_EXCEPTION_KRPC_DIVIDEBYZEROEXCEPTION 1u, 3467427419u
+
+/**
+ * A general error, described by its message.
+ */
+#define KRPC_EXCEPTION_KRPC_ERROR 1u, 3253248084u
+
+/**
+ * An index was outside the bounds of a collection, string or array.
+ */
+#define KRPC_EXCEPTION_KRPC_INDEXOUTOFRANGEEXCEPTION 1u, 4260790485u
+
+/**
+ * A method call was made to a method that is invalid
+ * given the current state of the object.
+ */
+#define KRPC_EXCEPTION_KRPC_INVALIDOPERATIONEXCEPTION 1u, 1783436482u
+
+/**
+ * A key was not found in a dictionary.
+ */
+#define KRPC_EXCEPTION_KRPC_KEYNOTFOUNDEXCEPTION 1u, 4230252410u
+
+/**
+ * A method was invoked that is not supported.
+ */
+#define KRPC_EXCEPTION_KRPC_NOTSUPPORTEDEXCEPTION 1u, 3695119759u
+
+/**
+ * A value was null where its type does not allow one.
+ */
+#define KRPC_EXCEPTION_KRPC_NULLREFERENCEEXCEPTION 1u, 1410242424u
+
+/**
+ * The game object that a service object refers to no longer exists,
+ * so the object cannot be used. For example, the part it represents
+ * was destroyed, or the vessel it belongs to was recovered.
+ *
+ * See #KRPC_EXCEPTION_KRPC_OBJECTNOTLOADEDEXCEPTION for a game object that exists but is not
+ * loaded.
+ */
+#define KRPC_EXCEPTION_KRPC_OBJECTDESTROYEDEXCEPTION 1u, 2627328509u
+
+/**
+ * The game object that a service object refers to exists, but is not loaded.
+ * For example, the game is loading, or the vessel carrying the part is unloaded.
+ *
+ * See #KRPC_EXCEPTION_KRPC_OBJECTDESTROYEDEXCEPTION for a game object that no longer exists.
+ */
+#define KRPC_EXCEPTION_KRPC_OBJECTNOTLOADEDEXCEPTION 1u, 1508195546u
+
+/**
+ * An arithmetic or conversion operation overflowed.
+ */
+#define KRPC_EXCEPTION_KRPC_OVERFLOWEXCEPTION 1u, 627905092u
+
+/**
+ * A stream was removed by the server, e.g. an event that has finished.
+ */
+#define KRPC_EXCEPTION_KRPC_STREAMREMOVEDEXCEPTION 1u, 3610372597u
+
+/**
+ * An operation did not complete in the time allotted to it.
+ */
+#define KRPC_EXCEPTION_KRPC_TIMEOUTEXCEPTION 1u, 3959561168u
+
+/**
+ * The procedure is not available in the current game scene.
+ */
+#define KRPC_EXCEPTION_KRPC_UNSUPPORTEDSCENEEXCEPTION 1u, 873232004u
 
 /**
  * Returns the identifier for the current client.
  */
 static inline krpc_error_t krpc_KRPC_GetClientID(krpc_connection_t connection, krpc_bytes_t * returnValue);
+
+/**
+ * Fills in the call krpc_KRPC_GetClientID() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GetClientID_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_GetClientID(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GetClientID_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Returns the name of the current client.
@@ -367,18 +576,57 @@ static inline krpc_error_t krpc_KRPC_GetClientID(krpc_connection_t connection, k
 static inline krpc_error_t krpc_KRPC_GetClientName(krpc_connection_t connection, char * * returnValue);
 
 /**
- * Returns information on all services, procedures, classes, properties etc. provided by the server.
- * Can be used by client libraries to automatically create functionality such as stubs.
+ * Fills in the call krpc_KRPC_GetClientName() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GetClientName_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_GetClientName(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GetClientName_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * The services the server provides, with their procedures, classes, enumerations,
+ * structures and exceptions.
  */
 static inline krpc_error_t krpc_KRPC_GetServices(krpc_connection_t connection, krpc_schema_Services * returnValue);
 
 /**
- * Returns some information about the server, such as the version.
+ * Fills in the call krpc_KRPC_GetServices() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
  */
-static inline krpc_error_t krpc_KRPC_GetStatus(krpc_connection_t connection, krpc_schema_Status * returnValue);
+static inline krpc_error_t krpc_KRPC_GetServices_call(krpc_schema_ProcedureCall * procedureCall);
 
 /**
- * Hold the game on its current physics tick until KRPC::release_tick is called
+ * Fills in the call template of krpc_KRPC_GetServices(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GetServices_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Returns the status of the server, with its version, settings and performance statistics.
+ */
+static inline krpc_error_t krpc_KRPC_GetStatus(krpc_connection_t connection, krpc_KRPC_ServerStatus_t * returnValue);
+
+/**
+ * Fills in the call krpc_KRPC_GetStatus() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GetStatus_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_GetStatus(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GetStatus_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Hold the game on its current physics tick until krpc_KRPC_ReleaseTick() is called
  * or the hold times out. Every call made in between is executed before the game
  * advances, so a read, compute and write all happen in the state of one tick.
  *
@@ -398,6 +646,19 @@ static inline krpc_error_t krpc_KRPC_GetStatus(krpc_connection_t connection, krp
 static inline krpc_error_t krpc_KRPC_HoldTick(krpc_connection_t connection);
 
 /**
+ * Fills in the call krpc_KRPC_HoldTick() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_HoldTick_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_HoldTick(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_HoldTick_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Let the game move on from the tick being held and hold the one after it, so that a
  * program acts on consecutive physics ticks. Holds the soonest tick it can if no tick
  * is currently being held.
@@ -407,62 +668,71 @@ static inline krpc_error_t krpc_KRPC_HoldTick(krpc_connection_t connection);
  * act on every tick, work, and come back to it.
  *
  * The game advances one tick per call, so it runs at the rate of the loop for as long
- * as the loop runs. End the loop with KRPC::release_tick.
+ * as the loop runs. End the loop with krpc_KRPC_ReleaseTick().
  *
- * Every limit of KRPC::hold_tick applies, the timeout included. A hold lost to
+ * Every limit of krpc_KRPC_HoldTick() applies, the timeout included. A hold lost to
  * the timeout is not reported, and the next call takes whatever tick it lands on.
  */
 static inline krpc_error_t krpc_KRPC_NextTick(krpc_connection_t connection);
 
 /**
- * Let the game move on from the tick that KRPC::hold_tick held it on. Does
+ * Fills in the call krpc_KRPC_NextTick() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_NextTick_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_NextTick(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_NextTick_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Let the game move on from the tick that krpc_KRPC_HoldTick() held it on. Does
  * nothing when no tick is held, which is the case once a hold has timed out.
  */
 static inline krpc_error_t krpc_KRPC_ReleaseTick(krpc_connection_t connection);
 
 /**
- * Remove a streaming request.
- *
- * Does nothing for a stream that has ended. Throws an exception if the id has never
- * been issued.
+ * Fills in the call krpc_KRPC_ReleaseTick() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
  */
-static inline krpc_error_t krpc_KRPC_RemoveStream(krpc_connection_t connection, uint64_t id);
+static inline krpc_error_t krpc_KRPC_ReleaseTick_call(krpc_schema_ProcedureCall * procedureCall);
 
 /**
- * Run a server side function once, within a single physics tick, and return
- * the value it produces.
- *
- * The arguments are encoded at the types given by KRPC::Expression::parameter_types.
- * Throws an exception if a procedure the function calls pauses execution, and the
- * effects up to the pause remain.
- * @return The encoded value of the function, or no bytes for a function with no
- * value.
- * @param function The function to run.
- * @param arguments The encoded arguments, one per parameter.
+ * Fills in the call template of krpc_KRPC_ReleaseTick(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
  */
-static inline krpc_error_t krpc_KRPC_RunFunction(krpc_connection_t connection, krpc_bytes_t * returnValue, bool * returnValueIsNull, krpc_KRPC_Expression_t function, const krpc_list_nullable_bytes_t * arguments);
+static inline krpc_error_t krpc_KRPC_ReleaseTick_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
- * Set the update rate for a stream in Hz.
- *
- * Does nothing for a stream that has ended. Throws an exception if the id has never
- * been issued.
- */
-static inline krpc_error_t krpc_KRPC_SetStreamRate(krpc_connection_t connection, uint64_t id, float rate);
-
-/**
- * The RPC clients that are currently connected to the server.
+ * The clients that are currently connected to the server.
  */
 static inline krpc_error_t krpc_KRPC_Clients(krpc_connection_t connection, krpc_list_KRPC_ClientInfo_t * returnValue);
+
+/**
+ * Fills in the call krpc_KRPC_Clients() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Clients_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Clients(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Clients_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The current game scene. Setting this switches the game to the given
  * scene, or opens/closes the corresponding facility for the pseudo-scenes.
  * Scene changes happen asynchronously: setting this property returns
  * immediately, and clients should poll it until it reports the requested
- * scene. Setting it to KRPC::GameScene::flight resumes the save's
+ * scene. Setting it to #KRPC_KRPC_GAMESCENE_FLIGHT resumes the save's
  * active vessel, and fails if there is none. Moving between
- * KRPC::GameScene::editor_vab and KRPC::GameScene::editor_sph
+ * #KRPC_KRPC_GAMESCENE_EDITORVAB and #KRPC_KRPC_GAMESCENE_EDITORSPH
  * keeps the vessel that is being constructed, as the game's own switch
  * editor button does. Leaving flight saves the game first, unless the game
  * cannot be saved, e.g. while under acceleration.
@@ -470,18 +740,44 @@ static inline krpc_error_t krpc_KRPC_Clients(krpc_connection_t connection, krpc_
 static inline krpc_error_t krpc_KRPC_GameScene(krpc_connection_t connection, krpc_KRPC_GameScene_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_GameScene() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GameScene_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_GameScene(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GameScene_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The current game scene. Setting this switches the game to the given
  * scene, or opens/closes the corresponding facility for the pseudo-scenes.
  * Scene changes happen asynchronously: setting this property returns
  * immediately, and clients should poll it until it reports the requested
- * scene. Setting it to KRPC::GameScene::flight resumes the save's
+ * scene. Setting it to #KRPC_KRPC_GAMESCENE_FLIGHT resumes the save's
  * active vessel, and fails if there is none. Moving between
- * KRPC::GameScene::editor_vab and KRPC::GameScene::editor_sph
+ * #KRPC_KRPC_GAMESCENE_EDITORVAB and #KRPC_KRPC_GAMESCENE_EDITORSPH
  * keeps the vessel that is being constructed, as the game's own switch
  * editor button does. Leaving flight saves the game first, unless the game
  * cannot be saved, e.g. while under acceleration.
  */
 static inline krpc_error_t krpc_KRPC_set_GameScene(krpc_connection_t connection, krpc_KRPC_GameScene_t value);
+
+/**
+ * Fills in the call krpc_KRPC_set_GameScene() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_set_GameScene_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_GameScene_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_set_GameScene(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_set_GameScene_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The number of game states that have finished loading.
@@ -491,9 +787,35 @@ static inline krpc_error_t krpc_KRPC_set_GameScene(krpc_connection_t connection,
 static inline krpc_error_t krpc_KRPC_GameStateLoads(krpc_connection_t connection, uint32_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_GameStateLoads() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GameStateLoads_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_GameStateLoads(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_GameStateLoads_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the game is paused.
  */
 static inline krpc_error_t krpc_KRPC_Paused(krpc_connection_t connection, bool * returnValue);
+
+/**
+ * Fills in the call krpc_KRPC_Paused() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Paused_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Paused(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Paused_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Whether the game is paused.
@@ -501,27 +823,70 @@ static inline krpc_error_t krpc_KRPC_Paused(krpc_connection_t connection, bool *
 static inline krpc_error_t krpc_KRPC_set_Paused(krpc_connection_t connection, bool value);
 
 /**
+ * Fills in the call krpc_KRPC_set_Paused() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_set_Paused_call(krpc_schema_ProcedureCall * procedureCall, bool value);
+
+/**
+ * Fills in the call template of krpc_KRPC_set_Paused(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_set_Paused_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Numerical addition.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Add(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Add() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Add_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Add(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Add_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The result of applying an accumulator function over a collection.
  *
  * Throws an exception if the collection is empty.
- * @return The accumulated value.
+ * @param connection A connection object.
+ * @param returnValue The accumulated value.
  * @param arg The collection.
  * @param func The accumulator function.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Aggregate(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Aggregate() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Aggregate_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Aggregate(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Aggregate_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The result of applying an accumulator function over a collection, starting from a seed.
  *
  * The seed widens to the type of the accumulated value, the function's result.
- * @return The accumulated value.
+ * @param connection A connection object.
+ * @param returnValue The accumulated value.
  * @param arg The collection.
  * @param seed The seed value.
  * @param func The accumulator function.
@@ -529,83 +894,229 @@ static inline krpc_error_t krpc_KRPC_Expression_Aggregate(krpc_connection_t conn
 static inline krpc_error_t krpc_KRPC_Expression_AggregateWithSeed(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t seed, krpc_KRPC_Expression_t func);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_AggregateWithSeed() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_AggregateWithSeed_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t seed, krpc_KRPC_Expression_t func);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_AggregateWithSeed(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_AggregateWithSeed_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether a predicate function returns true for every value of a collection.
- * @return Whether all items satisfy the predicate.
+ * @param connection A connection object.
+ * @param returnValue Whether all items satisfy the predicate.
  * @param arg The collection.
  * @param predicate The predicate function.
  */
 static inline krpc_error_t krpc_KRPC_Expression_All(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t predicate);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_All() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_All_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t predicate);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_All(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_All_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Logical or bitwise and, which evaluates both operands.
+ *
+ * Also takes two values of a flags enumeration, and gives the values they share.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_And(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_And() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_And_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_And(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_And_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether a predicate function returns true for any value of a collection.
- * @return Whether any item satisfies the predicate.
+ * @param connection A connection object.
+ * @param returnValue Whether any item satisfies the predicate.
  * @param arg The collection.
  * @param predicate The predicate function.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Any(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t predicate);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Any() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Any_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t predicate);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Any(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Any_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A statement adding a value to a list or a set.
  *
  * The value goes on the end of a list. A set holding the value is left unchanged.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param collection The list or set to add to.
  * @param value The value to add.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Append(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Append() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Append_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Append(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Append_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * An assignment to a local variable, state variable or function parameter.
  *
  * The value's type must be assignable to the variable's type. A numeric value of a
  * different type is widened, and narrowing it requires a cast.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param variable The variable to assign to.
  * @param value The value to assign.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Assign(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t variable, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Assign() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Assign_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t variable, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Assign(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Assign_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The average of the values of a collection.
  *
  * Throws an exception if the collection is empty and its values are not nullable.
- * @return The average of the elements in the collection.
+ * @param connection A connection object.
+ * @param returnValue The average of the elements in the collection.
  * @param arg The list or set.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Average(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Average() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Average_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Average(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Average_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A block of statements, whose value is that of its last statement.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param statements The statements.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Block(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * statements);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Block() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Block_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * statements);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Block(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Block_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A block of statements with local variables.
  *
  * The value of the block is that of its last statement. The variables are in scope
  * for the statements of the block, including within nested functions.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param variables The local variables of the block.
  * @param statements The statements.
  */
 static inline krpc_error_t krpc_KRPC_Expression_BlockWithVariables(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * variables, const krpc_list_object_t * statements);
 
 /**
- * A break statement, which ends the enclosing loop.
+ * Fills in the call krpc_KRPC_Expression_BlockWithVariables() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_BlockWithVariables_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * variables, const krpc_list_object_t * statements);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_BlockWithVariables(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_BlockWithVariables_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * A break statement, which ends the enclosing loop or krpc_KRPC_Expression_Switch().
  */
 static inline krpc_error_t krpc_KRPC_Expression_Break(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Break() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Break_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Break(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Break_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A dictionary built from a collection, with a key and a value computed from each
  * element.
  *
  * A repeated key takes the last of its values.
- * @return The dictionary.
+ * @param connection A connection object.
+ * @param returnValue The dictionary.
  * @param arg The list or set.
  * @param keyFunc The function computing an element's key.
  * @param valueFunc The function computing an element's value.
@@ -613,56 +1124,147 @@ static inline krpc_error_t krpc_KRPC_Expression_Break(krpc_connection_t connecti
 static inline krpc_error_t krpc_KRPC_Expression_BuildDictionary(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t keyFunc, krpc_KRPC_Expression_t valueFunc);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_BuildDictionary() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_BuildDictionary_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t keyFunc, krpc_KRPC_Expression_t valueFunc);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_BuildDictionary(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_BuildDictionary_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * An RPC call.
  *
  * The instance the call is made on, and the values of its arguments, are fixed
  * when the expression is created. A call to a procedure with no return value is
- * evaluated for its effects, as a statement in a KRPC::Expression::block. A collection the
+ * evaluated for its effects, as a statement in a krpc_KRPC_Expression_Block(). A collection the
  * procedure returns is copied, as a client would receive it.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param call The procedure call.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Call(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_schema_ProcedureCall * call);
 
 /**
- * An RPC call, where some or all of the arguments are computed by expressions.
+ * Fills in the call krpc_KRPC_Expression_Call() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Call_call(krpc_schema_ProcedureCall * procedureCall, const krpc_schema_ProcedureCall * call);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Call(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Call_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * An RPC call, with its arguments computed by expressions.
  *
+ * The call is a call template, which names the procedure and carries no arguments.
  * Position 0 is the instance of a class method or property. A position with no
- * expression takes the argument encoded in the call, or the parameter's default. A
- * collection the procedure returns is copied, as a client would receive it.
- * @param call The RPC to call.
+ * expression takes the parameter's default. A collection the procedure returns is
+ * copied, as a client would receive it. Throws an exception if the call carries an
+ * argument.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param call The call template.
  * @param args Expressions computing the call's arguments, by position.
  */
 static inline krpc_error_t krpc_KRPC_Expression_CallWithArguments(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_schema_ProcedureCall * call, const krpc_dictionary_int32_object_t * args);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_CallWithArguments() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CallWithArguments_call(krpc_schema_ProcedureCall * procedureCall, const krpc_schema_ProcedureCall * call, const krpc_dictionary_int32_object_t * args);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_CallWithArguments(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CallWithArguments_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A value cast to the given type.
  *
  * A tuple or collection is cast element by element.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg The value to cast.
  * @param type Type to cast the argument to.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Cast(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Type_t type);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Cast() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Cast_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Type_t type);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Cast(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Cast_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A statement removing every value from a list or a set, or every entry from a dictionary.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param collection The list, set or dictionary.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Clear(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t collection);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Clear() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Clear_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t collection);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Clear(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Clear_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values of one collection followed by those of another.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The first collection followed by the second.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The first collection followed by the second.
  * @param arg1 The first collection.
  * @param arg2 The second collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Concat(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Concat() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Concat_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Concat(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Concat_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The second argument if the condition is true, and the third argument otherwise.
  *
  * Throws an exception if the two values have no common type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param condition The boolean condition.
  * @param ifTrue The value when the condition is true.
  * @param ifFalse The value when the condition is false.
@@ -670,39 +1272,129 @@ static inline krpc_error_t krpc_KRPC_Expression_Concat(krpc_connection_t connect
 static inline krpc_error_t krpc_KRPC_Expression_Conditional(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t ifTrue, krpc_KRPC_Expression_t ifFalse);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Conditional() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Conditional_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t ifTrue, krpc_KRPC_Expression_t ifFalse);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Conditional(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Conditional_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Logical and, which evaluates the second operand only when the first is true.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConditionalAnd(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConditionalAnd() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConditionalAnd_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConditionalAnd(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConditionalAnd_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Logical or, which evaluates the second operand only when the first is false.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConditionalOr(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConditionalOr() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConditionalOr_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConditionalOr(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConditionalOr_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of boolean type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantBool(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, bool value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantBool() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantBool_call(krpc_schema_ProcedureCall * procedureCall, bool value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantBool(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantBool_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of bytes type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantBytes(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_bytes_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantBytes() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantBytes_call(krpc_schema_ProcedureCall * procedureCall, krpc_bytes_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantBytes(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantBytes_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of double precision floating point type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantDouble(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, double value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantDouble() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantDouble_call(krpc_schema_ProcedureCall * procedureCall, double value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantDouble(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantDouble_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of an enumeration a service defines.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param service The name of the service the enumeration is defined in.
  * @param name The name of the enumeration.
  * @param value The value of the member of the enumeration.
@@ -710,72 +1402,256 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantDouble(krpc_connection_t
 static inline krpc_error_t krpc_KRPC_Expression_ConstantEnum(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * service, const char * name, int32_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantEnum() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnum_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name, int32_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantEnum(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnum_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * A constant value of an enumeration a service defines, named by ids.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param serviceId The id of the service the enumeration is defined in.
+ * @param enumerationId The id of the enumeration.
+ * @param value The value of the member of the enumeration.
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnumById(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint32_t serviceId, uint32_t enumerationId, int32_t value);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_ConstantEnumById() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnumById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t enumerationId, int32_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantEnumById(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnumById_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of single precision floating point type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantFloat(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, float value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantFloat() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantFloat_call(krpc_schema_ProcedureCall * procedureCall, float value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantFloat(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantFloat_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of integer type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantInt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, int32_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantInt() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantInt_call(krpc_schema_ProcedureCall * procedureCall, int32_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantInt(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantInt_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of long integer type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantLong(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, int64_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantLong() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantLong_call(krpc_schema_ProcedureCall * procedureCall, int64_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantLong(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantLong_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A null constant of the given type.
  *
- * The type is made nullable, as by KRPC::Type::nullable_type.
+ * The type is made nullable, as by krpc_KRPC_Type_NullableType().
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param type The type of the value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantNull(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t type);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantNull() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantNull_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t type);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantNull(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantNull_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant object, an instance of a class a service defines.
  *
  * The object is given by its object identifier.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The object identifier of the object.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantObject(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint64_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantObject() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantObject_call(krpc_schema_ProcedureCall * procedureCall, uint64_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantObject(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantObject_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of string type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantString(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantString() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantString_call(krpc_schema_ProcedureCall * procedureCall, const char * value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantString(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantString_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of unsigned integer type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantUInt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint32_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantUInt() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantUInt_call(krpc_schema_ProcedureCall * procedureCall, uint32_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantUInt(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantUInt_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A constant value of unsigned long integer type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConstantULong(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint64_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConstantULong() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantULong_call(krpc_schema_ProcedureCall * procedureCall, uint64_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConstantULong(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConstantULong_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether a collection contains a value.
- * @return Whether the collection contains the value.
+ * @param connection A connection object.
+ * @param returnValue Whether the collection contains the value.
  * @param arg The collection.
  * @param value The value to look for.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Contains(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Contains() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Contains_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Contains(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Contains_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether a dictionary contains a key.
- * @return Whether the dictionary contains the key.
+ * @param connection A connection object.
+ * @param returnValue Whether the dictionary contains the key.
  * @param dictionary The dictionary.
  * @param key The key to look for.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ContainsKey(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t dictionary, krpc_KRPC_Expression_t key);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_ContainsKey() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ContainsKey_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t dictionary, krpc_KRPC_Expression_t key);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ContainsKey(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ContainsKey_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A continue statement, which skips to the next iteration of the enclosing loop.
@@ -783,22 +1659,63 @@ static inline krpc_error_t krpc_KRPC_Expression_ContainsKey(krpc_connection_t co
 static inline krpc_error_t krpc_KRPC_Expression_Continue(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Continue() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Continue_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Continue(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Continue_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The string representation of a value.
  *
  * A value other than a number, boolean, string or enumeration converts as .NET
  * formats it, which for a collection is the name of its type. Throws an exception if
  * the value is null.
- * @return The string representation of the value.
+ * @param connection A connection object.
+ * @param returnValue The string representation of the value.
  * @param arg The value to convert.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ConvertToString(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ConvertToString() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConvertToString_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ConvertToString(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ConvertToString_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The number of values in a collection.
- * @return The number of elements in the collection.
+ * @param connection A connection object.
+ * @param returnValue The number of elements in the collection.
  * @param arg The list, set or dictionary.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Count(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Count() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Count_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Count(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Count_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A dictionary of the given keys and corresponding values, with numbers widened to
@@ -806,58 +1723,143 @@ static inline krpc_error_t krpc_KRPC_Expression_Count(krpc_connection_t connecti
  * keys are not of a valid key type, or a key is null.
  *
  * A repeated key takes the last of its values.
- * @return The dictionary.
+ * @param connection A connection object.
+ * @param returnValue The dictionary.
  * @param keys The keys.
  * @param values The values.
  */
 static inline krpc_error_t krpc_KRPC_Expression_CreateDictionary(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * keys, const krpc_list_object_t * values);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_CreateDictionary() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateDictionary_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * keys, const krpc_list_object_t * values);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_CreateDictionary(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateDictionary_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * An empty dictionary of the given key and value types. Throws an exception if the
  * key type is nullable or not a valid key type.
- * @return The empty dictionary.
+ * @param connection A connection object.
+ * @param returnValue The empty dictionary.
  * @param keyType The type of the dictionary's keys.
  * @param valueType The type of the dictionary's values.
  */
 static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyDictionary(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t keyType, krpc_KRPC_Type_t valueType);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_CreateEmptyDictionary() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyDictionary_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t keyType, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_CreateEmptyDictionary(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyDictionary_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * An empty list of the given value type.
- * @return The empty list.
+ * @param connection A connection object.
+ * @param returnValue The empty list.
  * @param valueType The type of the values the list holds.
  */
 static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyList(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t valueType);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_CreateEmptyList() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyList_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_CreateEmptyList(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyList_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * An empty set of the given value type. Throws an exception if the value type is
  * nullable.
- * @return The empty set.
+ * @param connection A connection object.
+ * @param returnValue The empty set.
  * @param valueType The type of the values the set holds.
  */
 static inline krpc_error_t krpc_KRPC_Expression_CreateEmptySet(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t valueType);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_CreateEmptySet() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptySet_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_CreateEmptySet(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptySet_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A list of the given values, with numbers widened to their common type. Throws an
  * exception if there are no values.
- * @return The list.
+ * @param connection A connection object.
+ * @param returnValue The list.
  * @param values The values.
  */
 static inline krpc_error_t krpc_KRPC_Expression_CreateList(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * values);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_CreateList() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateList_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * values);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_CreateList(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateList_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A set of the given values, with numbers widened to their common type. Throws an
  * exception if there are no values, or a value is null.
  *
  * The values are evaluated in an unspecified order.
- * @return The set.
+ * @param connection A connection object.
+ * @param returnValue The set.
  * @param values The values.
  */
 static inline krpc_error_t krpc_KRPC_Expression_CreateSet(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_set_object_t * values);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_CreateSet() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateSet_call(krpc_schema_ProcedureCall * procedureCall, const krpc_set_object_t * values);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_CreateSet(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateSet_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A structure with the given field values. Throws an exception if the field values do
  * not match its fields.
- * @return The structure.
+ * @param connection A connection object.
+ * @param returnValue The structure.
  * @param type The type of the structure.
  * @param fieldValues The values of the structure's fields,
  * in the order the structure declares them.
@@ -865,100 +1867,260 @@ static inline krpc_error_t krpc_KRPC_Expression_CreateSet(krpc_connection_t conn
 static inline krpc_error_t krpc_KRPC_Expression_CreateStruct(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t type, const krpc_list_object_t * fieldValues);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_CreateStruct() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateStruct_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t type, const krpc_list_object_t * fieldValues);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_CreateStruct(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateStruct_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A tuple of the given elements. Throws an exception if there are no elements or more
  * than seven.
- * @return The tuple.
+ * @param connection A connection object.
+ * @param returnValue The tuple.
  * @param elements The elements.
  */
 static inline krpc_error_t krpc_KRPC_Expression_CreateTuple(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * elements);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_CreateTuple() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateTuple_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * elements);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_CreateTuple(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_CreateTuple_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The keys of a dictionary, as a list.
  *
  * The collection operations take the keys of a dictionary from here, and its values
- * from KRPC::Expression::dictionary_values.
- * @return The keys of the dictionary.
+ * from krpc_KRPC_Expression_DictionaryValues().
+ * @param connection A connection object.
+ * @param returnValue The keys of the dictionary.
  * @param dictionary The dictionary.
  */
 static inline krpc_error_t krpc_KRPC_Expression_DictionaryKeys(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t dictionary);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_DictionaryKeys() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_DictionaryKeys_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t dictionary);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_DictionaryKeys(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_DictionaryKeys_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values of a dictionary, as a list.
- * @return The values of the dictionary.
+ * @param connection A connection object.
+ * @param returnValue The values of the dictionary.
  * @param dictionary The dictionary.
  */
 static inline krpc_error_t krpc_KRPC_Expression_DictionaryValues(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t dictionary);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_DictionaryValues() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_DictionaryValues_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t dictionary);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_DictionaryValues(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_DictionaryValues_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values of a collection with duplicates removed, keeping the first
  * occurrence of each.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The distinct values of the collection.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The distinct values of the collection.
  * @param arg The collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Distinct(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Distinct() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Distinct_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Distinct(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Distinct_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Numerical division.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Divide(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Divide() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Divide_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Divide(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Divide_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The value at the given position in a collection.
  *
  * Throws an exception if the index is out of range.
- * @return The value at the given position.
+ * @param connection A connection object.
+ * @param returnValue The value at the given position.
  * @param arg The collection.
  * @param index The position of the value, counting from zero.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ElementAt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ElementAt() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ElementAt_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ElementAt(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ElementAt_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Equality comparison.
  *
  * Collections, tuples, bytes and structures compare by their contents. Throws an
  * exception if the operands are of unrelated types.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Equal(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Equal() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Equal_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Equal(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Equal_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values of the first collection that are not in the second, with
  * duplicates removed.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The difference between the two collections.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The difference between the two collections.
  * @param arg1 The first collection.
  * @param arg2 The second collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Except(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Except() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Except_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Except(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Except_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Logical or bitwise exclusive or.
+ *
+ * Also takes two values of a flags enumeration, and gives the values in only one of them.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ExclusiveOr(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ExclusiveOr() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ExclusiveOr_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ExclusiveOr(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ExclusiveOr_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The first value of a collection.
  *
  * Throws an exception if the collection is empty.
- * @return The first value.
+ * @param connection A connection object.
+ * @param returnValue The first value.
  * @param arg The collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_First(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_First() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_First_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_First(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_First_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A loop that evaluates the body once for each value of a collection.
  *
  * The loop variable is a local variable declared by an enclosing
- * KRPC::Expression::block_with_variables, or a parameter of an enclosing KRPC::Expression::lambda.
- * A KRPC::Expression::break or KRPC::Expression::continue in the body applies to this loop.
+ * krpc_KRPC_Expression_BlockWithVariables(), or a parameter of an enclosing krpc_KRPC_Expression_Lambda().
+ * A krpc_KRPC_Expression_Break() or krpc_KRPC_Expression_Continue() in the body applies to this loop.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param variable The loop variable.
  * @param collection The collection to iterate over.
  * @param body The statement evaluated on each iteration.
@@ -966,61 +2128,188 @@ static inline krpc_error_t krpc_KRPC_Expression_First(krpc_connection_t connecti
 static inline krpc_error_t krpc_KRPC_Expression_ForEach(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t variable, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t body);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ForEach() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ForEach_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t variable, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t body);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ForEach(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ForEach_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * An element of a tuple, list or dictionary.
  *
  * A tuple takes a constant integer index, a list a zero indexed integer and a
  * dictionary a key. Throws an exception if the index is out of range or the key is
  * missing, and for a tuple when the expression is created.
- * @return The element.
+ * @param connection A connection object.
+ * @param returnValue The element.
  * @param arg The tuple, list or dictionary.
  * @param index The index or key of the element.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Get(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Get() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Get_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Get(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Get_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The value of a field of a structure. Throws an exception if the value is not a
  * structure, or has no field of the given name.
- * @return The value of the field.
+ * @param connection A connection object.
+ * @param returnValue The value of the field.
  * @param arg The structure.
  * @param name The name of the field to access.
  */
 static inline krpc_error_t krpc_KRPC_Expression_GetField(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, const char * name);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_GetField() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GetField_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, const char * name);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_GetField(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GetField_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * The value of a field of a structure, named by its position. Throws an exception if
+ * the value is not a structure, or the index is out of range.
+ *
+ * The fields are numbered from 0, in the order the structure defines them.
+ * @param connection A connection object.
+ * @param returnValue The value of the field.
+ * @param arg The structure.
+ * @param index The position of the field to access.
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GetFieldByIndex(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, int32_t index);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_GetFieldByIndex() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GetFieldByIndex_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, int32_t index);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_GetFieldByIndex(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GetFieldByIndex_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Greater than numerical comparison.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_GreaterThan(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_GreaterThan() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GreaterThan_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_GreaterThan(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GreaterThan_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Greater than or equal numerical comparison.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_GreaterThanOrEqual(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_GreaterThanOrEqual() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GreaterThanOrEqual_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_GreaterThanOrEqual(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GreaterThanOrEqual_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values of a collection grouped by the key a function produces for each of them.
- * @return A dictionary of each key to the values that produced it.
+ * @param connection A connection object.
+ * @param returnValue A dictionary of each key to the values that produced it.
  * @param arg The collection.
  * @param key A function producing the key to group values by.
  */
 static inline krpc_error_t krpc_KRPC_Expression_GroupBy(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_GroupBy() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GroupBy_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_GroupBy(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_GroupBy_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * An if statement, with no value.
  *
- * Use KRPC::Expression::conditional for an if-then-else that produces a value.
+ * Use krpc_KRPC_Expression_Conditional() for an if-then-else that produces a value.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param condition The boolean condition.
  * @param body The statement evaluated when the condition is true.
  */
 static inline krpc_error_t krpc_KRPC_Expression_IfThen(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_IfThen() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_IfThen_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_IfThen(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_IfThen_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * An if-else statement, with no value.
  *
- * Use KRPC::Expression::conditional for an if-then-else that produces a value.
+ * Use krpc_KRPC_Expression_Conditional() for an if-then-else that produces a value.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param condition The boolean condition.
  * @param body The statement evaluated when the condition is true.
  * @param elseBody The statement evaluated when the condition is false.
@@ -1028,190 +2317,537 @@ static inline krpc_error_t krpc_KRPC_Expression_IfThen(krpc_connection_t connect
 static inline krpc_error_t krpc_KRPC_Expression_IfThenElse(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t elseBody);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_IfThenElse() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_IfThenElse_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t elseBody);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_IfThenElse(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_IfThenElse_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values in both of two collections, with duplicates removed.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The intersection of the two collections.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The intersection of the two collections.
  * @param arg1 The first collection.
  * @param arg2 The second collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Intersect(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Intersect() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Intersect_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Intersect(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Intersect_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A function call.
- * @return A function call.
+ * @param connection A connection object.
+ * @param returnValue A function call.
  * @param function The function to call.
  * @param args The arguments to call the function with.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Invoke(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t function, const krpc_dictionary_string_object_t * args);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Invoke() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Invoke_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t function, const krpc_dictionary_string_object_t * args);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Invoke(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Invoke_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether a value is null. Throws an exception if the type of the value cannot be null.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value.
  */
 static inline krpc_error_t krpc_KRPC_Expression_IsNull(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_IsNull() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_IsNull_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_IsNull(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_IsNull_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A function with the given parameters and body.
  *
  * The body is an expression or a block of statements, and a body with no value is
- * evaluated for its effects. A KRPC::Expression::return or KRPC::Expression::return_nothing
+ * evaluated for its effects. A krpc_KRPC_Expression_Return() or krpc_KRPC_Expression_ReturnNothing()
  * statement ends the evaluation.
- * @return A function.
+ * @param connection A connection object.
+ * @param returnValue A function.
  * @param parameters The parameters of the function.
  * @param body The body of the function.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Lambda(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * parameters, krpc_KRPC_Expression_t body);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Lambda() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Lambda_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * parameters, krpc_KRPC_Expression_t body);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Lambda(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Lambda_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The last value of a collection.
  *
  * Throws an exception if the collection is empty.
- * @return The last value.
+ * @param connection A connection object.
+ * @param returnValue The last value.
  * @param arg The collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Last(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Last() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Last_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Last(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Last_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Bitwise left shift.
  *
  * Only the low 5 bits of the count are used for a 32-bit value, and the low 6 bits
  * for a 64-bit value.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_LeftShift(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_LeftShift() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_LeftShift_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_LeftShift(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_LeftShift_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Less than numerical comparison.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_LessThan(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_LessThan() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_LessThan_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_LessThan(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_LessThan_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Less than or equal numerical comparison.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_LessThanOrEqual(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_LessThanOrEqual() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_LessThanOrEqual_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_LessThanOrEqual(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_LessThanOrEqual_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * A match statement, which evaluates the first matching case.
+ *
+ * Test values compare as for krpc_KRPC_Expression_Equal(), and a case with none is the default.
+ * A krpc_KRPC_Expression_Break() in a body ends the enclosing loop.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param value The value to match.
+ * @param cases The test values of each case.
+ * @param bodies The statement of each case.
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Match(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t value, const krpc_list_list_object_t * cases, const krpc_list_object_t * bodies);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Match() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Match_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t value, const krpc_list_list_object_t * cases, const krpc_list_object_t * bodies);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Match(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Match_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The largest value of a collection.
  *
  * Throws an exception if the collection is empty and its values are not nullable.
- * @return The largest value in the collection.
+ * @param connection A connection object.
+ * @param returnValue The largest value in the collection.
  * @param arg The list or set.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Max(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Max() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Max_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Max(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Max_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The value of a collection with the largest key.
  *
  * Throws an exception if the collection is empty.
- * @return The value with the largest key.
+ * @param connection A connection object.
+ * @param returnValue The value with the largest key.
  * @param arg The collection.
  * @param key A function producing the key to compare values by.
  */
 static inline krpc_error_t krpc_KRPC_Expression_MaxBy(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_MaxBy() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_MaxBy_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_MaxBy(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_MaxBy_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The smallest value of a collection.
  *
  * Throws an exception if the collection is empty and its values are not nullable.
- * @return The smallest value in the collection.
+ * @param connection A connection object.
+ * @param returnValue The smallest value in the collection.
  * @param arg The list or set.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Min(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Min() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Min_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Min(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Min_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The value of a collection with the smallest key.
  *
  * Throws an exception if the collection is empty.
- * @return The value with the smallest key.
+ * @param connection A connection object.
+ * @param returnValue The value with the smallest key.
  * @param arg The collection.
  * @param key A function producing the key to compare values by.
  */
 static inline krpc_error_t krpc_KRPC_Expression_MinBy(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_MinBy() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_MinBy_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_MinBy(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_MinBy_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Numerical modulo operator.
+ * @param connection A connection object.
+ * @param returnValue The remainder of arg0 divided by arg1
  * @param arg0 The first operand.
  * @param arg1 The second operand.
- * @return The remainder of arg0 divided by arg1
  */
 static inline krpc_error_t krpc_KRPC_Expression_Modulo(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Modulo() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Modulo_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Modulo(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Modulo_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Numerical multiplication.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Multiply(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Multiply() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Multiply_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Multiply(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Multiply_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Numerical negation, which negates a uint as a long.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg The operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Negate(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Negate() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Negate_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Negate(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Negate_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Logical or bitwise negation.
+ *
+ * Also takes a value of a flags enumeration, and gives the declared values it does not hold.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg The operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Not(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Not() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Not_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Not(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Not_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Inequality comparison.
  *
  * Collections, tuples, bytes and structures compare by their contents. Throws an
  * exception if the operands are of unrelated types.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_NotEqual(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_NotEqual() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_NotEqual_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_NotEqual(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_NotEqual_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Logical or bitwise or, which evaluates both operands.
+ *
+ * Also takes two values of a flags enumeration, and gives their combination.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Or(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Or() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Or_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Or(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Or_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values of a collection ordered by the key a function produces for each of them.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The ordered collection.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The ordered collection.
  * @param arg The collection to order.
  * @param key A function producing the key to order values by.
  */
 static inline krpc_error_t krpc_KRPC_Expression_OrderBy(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_OrderBy() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_OrderBy_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_OrderBy(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_OrderBy_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A named parameter of a function.
  *
- * A value is bound to it by name with KRPC::Expression::invoke, or by its position in
- * the parameters of a KRPC::Expression::lambda.
- * @return A named parameter.
+ * A value is bound to it by name with krpc_KRPC_Expression_Invoke(), or by its position in
+ * the parameters of a krpc_KRPC_Expression_Lambda().
+ * @param connection A connection object.
+ * @param returnValue A named parameter.
  * @param name The name of the parameter.
  * @param type The type of the parameter.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Parameter(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * name, krpc_KRPC_Type_t type);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Parameter() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Parameter_call(krpc_schema_ProcedureCall * procedureCall, const char * name, krpc_KRPC_Type_t type);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Parameter(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Parameter_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Numerical power operator.
+ * @param connection A connection object.
+ * @param returnValue arg0 raised to the power of arg1, at the common type of the operands
  * @param arg0 The first operand.
  * @param arg1 The second operand.
- * @return arg0 raised to the power of arg1, at the common type of the operands
  */
 static inline krpc_error_t krpc_KRPC_Expression_Power(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Power() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Power_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Power(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Power_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A removal of a value from a list or a set, or of an entry from a dictionary.
  *
  * The first occurrence is removed from a list.
- * @return Whether the collection held the value.
+ * @param connection A connection object.
+ * @param returnValue Whether the collection held the value.
  * @param collection The list, set or dictionary.
  * @param value The value to remove, or the key of the entry to
  * remove.
@@ -1219,19 +2855,62 @@ static inline krpc_error_t krpc_KRPC_Expression_Power(krpc_connection_t connecti
 static inline krpc_error_t krpc_KRPC_Expression_Remove(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Remove() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Remove_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Remove(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Remove_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A statement removing the element at an index of a list.
  *
  * Throws an exception if the index is out of range.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param list The list.
  * @param index The index of the element, counting from zero.
  */
 static inline krpc_error_t krpc_KRPC_Expression_RemoveAt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t list, krpc_KRPC_Expression_t index);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_RemoveAt() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_RemoveAt_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t list, krpc_KRPC_Expression_t index);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_RemoveAt(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_RemoveAt_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A return statement, which ends the enclosing function with a value.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param value The value to return.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Return(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Return() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Return_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Return(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Return_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A return statement, which ends the enclosing function with no value.
@@ -1239,40 +2918,97 @@ static inline krpc_error_t krpc_KRPC_Expression_Return(krpc_connection_t connect
 static inline krpc_error_t krpc_KRPC_Expression_ReturnNothing(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ReturnNothing() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ReturnNothing_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ReturnNothing(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ReturnNothing_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values of a collection in the opposite order.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The reversed collection.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The reversed collection.
  * @param arg The collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Reverse(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Reverse() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Reverse_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Reverse(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Reverse_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Bitwise right shift.
  *
  * Only the low 5 bits of the count are used for a 32-bit value, and the low 6 bits
  * for a 64-bit value.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_RightShift(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_RightShift() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_RightShift_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_RightShift(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_RightShift_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The result of a function for each value of a collection.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The collection of function results.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The collection of function results.
  * @param arg The list or set.
  * @param func The function, taking an element of the collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Select(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Select() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Select_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Select(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Select_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values of the collections a function returns for each value of a collection,
  * flattened into one.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The flattened collection of function results.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The flattened collection of function results.
  * @param arg The list or set.
  * @param func The function, taking an element of the collection
  * and returning a collection.
@@ -1280,10 +3016,25 @@ static inline krpc_error_t krpc_KRPC_Expression_Select(krpc_connection_t connect
 static inline krpc_error_t krpc_KRPC_Expression_SelectMany(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_SelectMany() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_SelectMany_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_SelectMany(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_SelectMany_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A statement setting an element of a list, or an entry of a dictionary.
  *
  * A key the dictionary does not hold is added. Throws an exception if the index
  * is out of range for the list.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param collection The list or dictionary.
  * @param index The index of the element, counting from zero, or the key of the entry.
  * @param value The value to set.
@@ -1291,14 +3042,41 @@ static inline krpc_error_t krpc_KRPC_Expression_SelectMany(krpc_connection_t con
 static inline krpc_error_t krpc_KRPC_Expression_Set(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t index, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Set() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Set_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t index, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Set(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Set_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A collection without its first count values.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The collection without its first count values.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The collection without its first count values.
  * @param arg The collection.
  * @param count The number of values to skip.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Skip(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t count);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Skip() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Skip_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t count);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Skip(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Skip_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A variable that keeps its value between evaluations of a function.
@@ -1306,75 +3084,188 @@ static inline krpc_error_t krpc_KRPC_Expression_Skip(krpc_connection_t connectio
  * The initial value is evaluated once, when the variable is created, and gives the
  * variable its type. The value belongs to the variable, so every function that
  * contains it shares it.
- * @return A state variable.
+ * @param connection A connection object.
+ * @param returnValue A state variable.
  * @param name The name of the variable.
  * @param initialValue The initial value of the variable.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StateVariable(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * name, krpc_KRPC_Expression_t initialValue);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StateVariable() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StateVariable_call(krpc_schema_ProcedureCall * procedureCall, const char * name, krpc_KRPC_Expression_t initialValue);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StateVariable(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StateVariable_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The concatenation of strings.
  *
- * Use KRPC::Expression::convert_to_string to convert other values to strings.
- * @return The concatenated string.
+ * Use krpc_KRPC_Expression_ConvertToString() to convert other values to strings.
+ * @param connection A connection object.
+ * @param returnValue The concatenated string.
  * @param args The strings to concatenate, in order.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringConcat(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * args);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringConcat() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringConcat_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * args);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringConcat(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringConcat_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether one string occurs within another.
- * @return Whether the value occurs in the string.
+ * @param connection A connection object.
+ * @param returnValue Whether the value occurs in the string.
  * @param arg The string to search.
  * @param value The string to search for.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringContains(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringContains() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringContains_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringContains(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringContains_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether a string ends with another.
- * @return Whether the string ends with the value.
+ * @param connection A connection object.
+ * @param returnValue Whether the string ends with the value.
  * @param arg The string to test.
  * @param value The string to test for.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringEndsWith(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringEndsWith() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringEndsWith_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringEndsWith(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringEndsWith_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The character at the given position in a string, as a string of length one.
  *
  * Throws an exception if the index is out of range.
- * @return The character at the given position.
+ * @param connection A connection object.
+ * @param returnValue The character at the given position.
  * @param arg The string.
  * @param index The position of the character, counting from zero.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringGet(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringGet() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringGet_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringGet(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringGet_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The position of the first occurrence of one string within another.
- * @return The position of the value, counting from zero, or -1 if it does not occur.
+ * @param connection A connection object.
+ * @param returnValue The position of the value, counting from zero, or -1 if it does not occur.
  * @param arg The string to search.
  * @param value The string to search for.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringIndexOf(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringIndexOf() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringIndexOf_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringIndexOf(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringIndexOf_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Strings joined together, separated by another string.
- * @return The joined string.
+ * @param connection A connection object.
+ * @param returnValue The joined string.
  * @param separator The string to put between the values.
  * @param values The strings to join.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringJoin(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t separator, krpc_KRPC_Expression_t values);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringJoin() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringJoin_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t separator, krpc_KRPC_Expression_t values);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringJoin(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringJoin_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The number of characters in a string.
- * @return The length of the string.
+ * @param connection A connection object.
+ * @param returnValue The length of the string.
  * @param arg The string.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringLength(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringLength() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringLength_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringLength(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringLength_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A string with every occurrence of one string replaced by another.
  *
  * Throws an exception if the string to replace is empty.
- * @return The string with the replacements made.
+ * @param connection A connection object.
+ * @param returnValue The string with the replacements made.
  * @param arg The string to search.
  * @param oldValue The string to replace.
  * @param newValue The string to replace it with.
@@ -1382,26 +3273,68 @@ static inline krpc_error_t krpc_KRPC_Expression_StringLength(krpc_connection_t c
 static inline krpc_error_t krpc_KRPC_Expression_StringReplace(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t oldValue, krpc_KRPC_Expression_t newValue);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringReplace() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringReplace_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t oldValue, krpc_KRPC_Expression_t newValue);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringReplace(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringReplace_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The parts of a string separated by another string.
- * @return The parts of the string.
+ * @param connection A connection object.
+ * @param returnValue The parts of the string.
  * @param arg The string to split.
  * @param separator The string that separates the parts.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringSplit(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t separator);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringSplit() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringSplit_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t separator);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringSplit(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringSplit_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether a string starts with another.
- * @return Whether the string starts with the value.
+ * @param connection A connection object.
+ * @param returnValue Whether the string starts with the value.
  * @param arg The string to test.
  * @param value The string to test for.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringStartsWith(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringStartsWith() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringStartsWith_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringStartsWith(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringStartsWith_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Part of a string.
  *
  * Throws an exception if the start or the length is out of range.
- * @return The substring.
+ * @param connection A connection object.
+ * @param returnValue The substring.
  * @param arg The string.
  * @param start The position to start at, counting from zero.
  * @param length The number of characters to take.
@@ -1409,69 +3342,225 @@ static inline krpc_error_t krpc_KRPC_Expression_StringStartsWith(krpc_connection
 static inline krpc_error_t krpc_KRPC_Expression_StringSubstring(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t start, krpc_KRPC_Expression_t length);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringSubstring() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringSubstring_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t start, krpc_KRPC_Expression_t length);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringSubstring(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringSubstring_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A string in lower case, independently of the game's language.
- * @return The string in lower case.
+ * @param connection A connection object.
+ * @param returnValue The string in lower case.
  * @param arg The string.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringToLower(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringToLower() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringToLower_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringToLower(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringToLower_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A string in upper case, independently of the game's language.
- * @return The string in upper case.
+ * @param connection A connection object.
+ * @param returnValue The string in upper case.
  * @param arg The string.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringToUpper(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringToUpper() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringToUpper_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringToUpper(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringToUpper_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A string with white space removed from both ends.
- * @return The trimmed string.
+ * @param connection A connection object.
+ * @param returnValue The trimmed string.
  * @param arg The string.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringTrim(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringTrim() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringTrim_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringTrim(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringTrim_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A string with white space removed from its end.
- * @return The trimmed string.
+ * @param connection A connection object.
+ * @param returnValue The trimmed string.
  * @param arg The string.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringTrimEnd(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringTrimEnd() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringTrimEnd_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringTrimEnd(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringTrimEnd_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A string with white space removed from its start.
- * @return The trimmed string.
+ * @param connection A connection object.
+ * @param returnValue The trimmed string.
  * @param arg The string.
  */
 static inline krpc_error_t krpc_KRPC_Expression_StringTrimStart(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_StringTrimStart() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringTrimStart_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_StringTrimStart(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_StringTrimStart_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Numerical subtraction.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param arg0 The first operand.
  * @param arg1 The second operand.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Subtract(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Subtract() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Subtract_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Subtract(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Subtract_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The sum of the values of a collection.
- * @return The sum of the elements in the collection.
+ * @param connection A connection object.
+ * @param returnValue The sum of the elements in the collection.
  * @param arg The list or set.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Sum(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Sum() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Sum_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Sum(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Sum_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * A switch statement, which evaluates from the first matching case on.
+ *
+ * Test values compare as for krpc_KRPC_Expression_Equal(), and a case with none is the default.
+ * A krpc_KRPC_Expression_Break() in a body ends the switch.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param value The value to match.
+ * @param cases The test values of each case.
+ * @param bodies The statement of each case.
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Switch(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t value, const krpc_list_list_object_t * cases, const krpc_list_object_t * bodies);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_Switch() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Switch_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t value, const krpc_list_list_object_t * cases, const krpc_list_object_t * bodies);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Switch(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Switch_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The first count values of a collection.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The first count values of the collection.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The first count values of the collection.
  * @param arg The collection.
  * @param count The number of values to take.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Take(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t count);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Take() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Take_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t count);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Take(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Take_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A throw statement, which raises the named exception.
  *
  * The client receives the exception as an error from the function, or from the stream
- * or event evaluating it. Throws an exception if the service does not declare it.
+ * or event evaluating it. For example, the service `KRPC` and the name
+ * `Error` raise #KRPC_EXCEPTION_KRPC_ERROR. Throws an exception if the service does not
+ * declare it.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param service The name of the service the exception is defined in.
  * @param name The name of the exception.
  * @param message The message of the exception.
@@ -1479,26 +3568,95 @@ static inline krpc_error_t krpc_KRPC_Expression_Take(krpc_connection_t connectio
 static inline krpc_error_t krpc_KRPC_Expression_Throw(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * service, const char * name, krpc_KRPC_Expression_t message);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Throw() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Throw_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name, krpc_KRPC_Expression_t message);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Throw(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Throw_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * A throw statement, which raises the exception with the given ids.
+ *
+ * Raises the exception as krpc_KRPC_Expression_Throw() does. Throws an exception if the
+ * service does not declare it.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param serviceId The id of the service the exception is defined in.
+ * @param exceptionId The id of the exception.
+ * @param message The message of the exception.
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ThrowById(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint32_t serviceId, uint32_t exceptionId, krpc_KRPC_Expression_t message);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_ThrowById() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ThrowById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t exceptionId, krpc_KRPC_Expression_t message);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ThrowById(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ThrowById_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A collection as a list.
- * @return The collection as a list.
+ * @param connection A connection object.
+ * @param returnValue The collection as a list.
  * @param arg The collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ToList(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ToList() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ToList_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ToList(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ToList_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A collection as a set.
  *
  * Throws an exception if a value is null.
- * @return The collection as a set.
+ * @param connection A connection object.
+ * @param returnValue The collection as a set.
  * @param arg The collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_ToSet(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_ToSet() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ToSet_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ToSet(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ToSet_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A try-catch statement that handles the named exception.
  *
- * Only an exception a service declares can be named, and KRPC::Expression::try_catch_all
+ * Only an exception a service declares can be named, and krpc_KRPC_Expression_TryCatchAll()
  * handles any exception. Throws an exception if the service does not declare it.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param body The statement to evaluate.
  * @param service The name of the service the exception is defined in.
  * @param name The name of the exception.
@@ -1508,7 +3666,22 @@ static inline krpc_error_t krpc_KRPC_Expression_ToSet(krpc_connection_t connecti
 static inline krpc_error_t krpc_KRPC_Expression_TryCatch(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t body, const char * service, const char * name, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_TryCatch() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_TryCatch_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t body, const char * service, const char * name, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_TryCatch(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_TryCatch_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A try-catch statement that handles any exception.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param body The statement to evaluate.
  * @param message A string variable assigned the exception's message, or null.
  * @param handler The statement evaluated when an exception is caught.
@@ -1516,58 +3689,172 @@ static inline krpc_error_t krpc_KRPC_Expression_TryCatch(krpc_connection_t conne
 static inline krpc_error_t krpc_KRPC_Expression_TryCatchAll(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_TryCatchAll() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchAll_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_TryCatchAll(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchAll_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * A try-catch statement that handles the exception with the given ids.
+ *
+ * Handles the exception as krpc_KRPC_Expression_TryCatch() does. Throws an exception if the
+ * service does not declare it.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param body The statement to evaluate.
+ * @param serviceId The id of the service the exception is defined in.
+ * @param exceptionId The id of the exception.
+ * @param message A string variable assigned the exception's message, or null.
+ * @param handler The statement evaluated when the exception is caught.
+ */
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchById(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t body, uint32_t serviceId, uint32_t exceptionId, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_TryCatchById() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchById_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t body, uint32_t serviceId, uint32_t exceptionId, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_TryCatchById(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchById_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A try-finally statement.
  *
  * The finalizer is evaluated after the body, whether or not the body raises an
  * exception. A break, continue or return cannot leave the finalizer.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param body The statement to evaluate.
  * @param finalizer The statement evaluated after the body.
  */
 static inline krpc_error_t krpc_KRPC_Expression_TryFinally(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t finalizer);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_TryFinally() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_TryFinally_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t finalizer);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_TryFinally(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_TryFinally_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values in either of two collections, with duplicates removed.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The union of the two collections.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The union of the two collections.
  * @param arg1 The first collection.
  * @param arg2 The second collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Union(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2);
 
 /**
- * A local variable, declared by KRPC::Expression::block_with_variables.
- * @return A local variable.
+ * Fills in the call krpc_KRPC_Expression_Union() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Union_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Union(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Union_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * A local variable, declared by krpc_KRPC_Expression_BlockWithVariables().
+ * @param connection A connection object.
+ * @param returnValue A local variable.
  * @param name The name of the variable.
  * @param type The type of the variable.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Variable(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * name, krpc_KRPC_Type_t type);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Variable() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Variable_call(krpc_schema_ProcedureCall * procedureCall, const char * name, krpc_KRPC_Type_t type);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Variable(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Variable_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The values of a collection for which a predicate function returns true.
  *
- * The result is lazily evaluated. KRPC::Expression::to_list makes it concrete.
- * @return The filtered collection.
+ * The result is lazily evaluated. krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The filtered collection.
  * @param arg The list or set.
  * @param func The predicate function, taking an element of the collection.
  */
 static inline krpc_error_t krpc_KRPC_Expression_Where(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Where() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Where_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Where(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Where_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A while loop, which evaluates the body while the condition is true.
  *
- * A KRPC::Expression::break or KRPC::Expression::continue in the body applies to this loop.
+ * A krpc_KRPC_Expression_Break() or krpc_KRPC_Expression_Continue() in the body applies to this loop.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param condition The boolean condition.
  * @param body The statement evaluated on each iteration.
  */
 static inline krpc_error_t krpc_KRPC_Expression_While(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_While() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_While_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_While(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_While_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The results of a function applied to the values of two collections in pairs.
  *
  * The result is as long as the shorter of the two collections. It is lazily
- * evaluated, and KRPC::Expression::to_list makes it concrete.
- * @return The combined collection.
+ * evaluated, and krpc_KRPC_Expression_ToList() makes it concrete.
+ * @param connection A connection object.
+ * @param returnValue The combined collection.
  * @param arg1 The first collection.
  * @param arg2 The second collection.
  * @param func A function combining a value from each collection.
@@ -1575,29 +3862,81 @@ static inline krpc_error_t krpc_KRPC_Expression_While(krpc_connection_t connecti
 static inline krpc_error_t krpc_KRPC_Expression_Zip(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2, krpc_KRPC_Expression_t func);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_Zip() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Zip_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2, krpc_KRPC_Expression_t func);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_Zip(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_Zip_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * Whether the expression evaluates to a value.
  *
- * An expression with no value has no KRPC::Expression::return_type. An empty
+ * An expression with no value has no krpc_KRPC_Expression_ReturnType(). An empty
  * collection and no value both encode to an empty sequence of bytes.
  */
 static inline krpc_error_t krpc_KRPC_Expression_HasReturnType(krpc_connection_t connection, bool * returnValue, krpc_KRPC_Expression_t instance);
 
 /**
+ * Fills in the call krpc_KRPC_Expression_HasReturnType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_HasReturnType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t instance);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_HasReturnType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_HasReturnType_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The types of the function's parameters.
  *
- * Empty for a function that is not created with KRPC::Expression::lambda.
+ * Empty for a function that is not created with krpc_KRPC_Expression_Lambda().
  */
 static inline krpc_error_t krpc_KRPC_Expression_ParameterTypes(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_KRPC_Expression_t instance);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_ParameterTypes() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ParameterTypes_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t instance);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ParameterTypes(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ParameterTypes_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The type of the value the expression evaluates to. Throws an exception if the
  * value cannot be sent to a client.
  *
- * A function created with KRPC::Expression::lambda evaluates to the value it returns. A
- * lazily evaluated collection, such as from KRPC::Expression::select, is sent once
- * converted by KRPC::Expression::to_list or KRPC::Expression::to_set.
+ * A function created with krpc_KRPC_Expression_Lambda() evaluates to the value it returns. A
+ * lazily evaluated collection, such as from krpc_KRPC_Expression_Select(), is sent once
+ * converted by krpc_KRPC_Expression_ToList() or krpc_KRPC_Expression_ToSet().
  */
 static inline krpc_error_t krpc_KRPC_Expression_ReturnType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Expression_t instance);
+
+/**
+ * Fills in the call krpc_KRPC_Expression_ReturnType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ReturnType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t instance);
+
+/**
+ * Fills in the call template of krpc_KRPC_Expression_ReturnType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Expression_ReturnType_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A boolean type.
@@ -1605,24 +3944,102 @@ static inline krpc_error_t krpc_KRPC_Expression_ReturnType(krpc_connection_t con
 static inline krpc_error_t krpc_KRPC_Type_Bool(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Type_Bool() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Bool_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Bool(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Bool_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A byte sequence type.
  */
 static inline krpc_error_t krpc_KRPC_Type_Bytes(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Type_Bytes() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Bytes_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Bytes(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Bytes_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The type of a class defined by a service.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param service The name of the service the class is defined in.
  * @param name The name of the class.
  */
 static inline krpc_error_t krpc_KRPC_Type_ClassType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, const char * service, const char * name);
 
 /**
+ * Fills in the call krpc_KRPC_Type_ClassType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_ClassType_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_ClassType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_ClassType_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * The type of a class defined by a service, named by ids.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param serviceId The id of the service the class is defined in.
+ * @param classId The id of the class.
+ */
+static inline krpc_error_t krpc_KRPC_Type_ClassTypeById(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, uint32_t serviceId, uint32_t classId);
+
+/**
+ * Fills in the call krpc_KRPC_Type_ClassTypeById() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_ClassTypeById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t classId);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_ClassTypeById(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_ClassTypeById_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A dictionary type. Throws an exception if the key type is nullable or not a valid
  * key type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param keyType The type of the keys of the dictionary.
  * @param valueType The type of the values of the dictionary.
  */
 static inline krpc_error_t krpc_KRPC_Type_DictionaryType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Type_t keyType, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call krpc_KRPC_Type_DictionaryType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_DictionaryType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t keyType, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_DictionaryType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_DictionaryType_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A double precision floating point number type.
@@ -1630,11 +4047,61 @@ static inline krpc_error_t krpc_KRPC_Type_DictionaryType(krpc_connection_t conne
 static inline krpc_error_t krpc_KRPC_Type_Double(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Type_Double() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Double_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Double(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Double_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The type of an enumeration defined by a service.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param service The name of the service the enumeration is defined in.
  * @param name The name of the enumeration.
  */
 static inline krpc_error_t krpc_KRPC_Type_EnumerationType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, const char * service, const char * name);
+
+/**
+ * Fills in the call krpc_KRPC_Type_EnumerationType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_EnumerationType_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_EnumerationType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_EnumerationType_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * The type of an enumeration defined by a service, named by ids.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param serviceId The id of the service the enumeration is defined in.
+ * @param enumerationId The id of the enumeration.
+ */
+static inline krpc_error_t krpc_KRPC_Type_EnumerationTypeById(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, uint32_t serviceId, uint32_t enumerationId);
+
+/**
+ * Fills in the call krpc_KRPC_Type_EnumerationTypeById() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_EnumerationTypeById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t enumerationId);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_EnumerationTypeById(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_EnumerationTypeById_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A single precision floating point number type.
@@ -1642,15 +4109,56 @@ static inline krpc_error_t krpc_KRPC_Type_EnumerationType(krpc_connection_t conn
 static inline krpc_error_t krpc_KRPC_Type_Float(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Type_Float() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Float_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Float(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Float_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A signed 32-bit integer type.
  */
 static inline krpc_error_t krpc_KRPC_Type_Int(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Type_Int() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Int_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Int(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Int_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A list type.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param valueType The type of the elements of the list.
  */
 static inline krpc_error_t krpc_KRPC_Type_ListType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call krpc_KRPC_Type_ListType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_ListType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_ListType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_ListType_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A signed 64-bit integer type.
@@ -1658,16 +4166,59 @@ static inline krpc_error_t krpc_KRPC_Type_ListType(krpc_connection_t connection,
 static inline krpc_error_t krpc_KRPC_Type_Long(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Type_Long() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Long_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Long(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Long_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A nullable type, holding a value of the given type or null.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param valueType The type of the value.
  */
 static inline krpc_error_t krpc_KRPC_Type_NullableType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Type_t valueType);
 
 /**
+ * Fills in the call krpc_KRPC_Type_NullableType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_NullableType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_NullableType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_NullableType_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A set type. Throws an exception if the element type is nullable.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param valueType The type of the elements of the set.
  */
 static inline krpc_error_t krpc_KRPC_Type_SetType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call krpc_KRPC_Type_SetType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_SetType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_SetType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_SetType_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * A string type.
@@ -1675,17 +4226,82 @@ static inline krpc_error_t krpc_KRPC_Type_SetType(krpc_connection_t connection, 
 static inline krpc_error_t krpc_KRPC_Type_String(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Type_String() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_String_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_String(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_String_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The type of a structure defined by a service.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param service The name of the service the structure is defined in.
  * @param name The name of the structure.
  */
 static inline krpc_error_t krpc_KRPC_Type_StructType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, const char * service, const char * name);
 
 /**
+ * Fills in the call krpc_KRPC_Type_StructType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_StructType_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_StructType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_StructType_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * The type of a structure defined by a service, named by ids.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
+ * @param serviceId The id of the service the structure is defined in.
+ * @param structId The id of the structure.
+ */
+static inline krpc_error_t krpc_KRPC_Type_StructTypeById(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, uint32_t serviceId, uint32_t structId);
+
+/**
+ * Fills in the call krpc_KRPC_Type_StructTypeById() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_StructTypeById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t structId);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_StructTypeById(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_StructTypeById_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * A tuple type. Throws an exception if there are no element types or more than seven.
+ * @param connection A connection object.
+ * @param returnValue The value returned.
  * @param valueTypes The types of the elements of the tuple.
  */
 static inline krpc_error_t krpc_KRPC_Type_TupleType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, const krpc_list_object_t * valueTypes);
+
+/**
+ * Fills in the call krpc_KRPC_Type_TupleType() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_TupleType_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * valueTypes);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_TupleType(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_TupleType_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * An unsigned 32-bit integer type.
@@ -1693,9 +4309,35 @@ static inline krpc_error_t krpc_KRPC_Type_TupleType(krpc_connection_t connection
 static inline krpc_error_t krpc_KRPC_Type_UInt(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue);
 
 /**
+ * Fills in the call krpc_KRPC_Type_UInt() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_UInt_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_UInt(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_UInt_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * An unsigned 64-bit integer type.
  */
 static inline krpc_error_t krpc_KRPC_Type_ULong(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue);
+
+/**
+ * Fills in the call krpc_KRPC_Type_ULong() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_ULong_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_ULong(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_ULong_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The kind of the type.
@@ -1703,9 +4345,35 @@ static inline krpc_error_t krpc_KRPC_Type_ULong(krpc_connection_t connection, kr
 static inline krpc_error_t krpc_KRPC_Type_Code(krpc_connection_t connection, krpc_KRPC_TypeCode_t * returnValue, krpc_KRPC_Type_t instance);
 
 /**
+ * Fills in the call krpc_KRPC_Type_Code() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Code_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Code(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Code_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The name of a class, enumeration or structure type, or an empty string.
  */
 static inline krpc_error_t krpc_KRPC_Type_Name(krpc_connection_t connection, char * * returnValue, krpc_KRPC_Type_t instance);
+
+/**
+ * Fills in the call krpc_KRPC_Type_Name() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Name_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Name(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Name_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Whether a value of the type may be null.
@@ -1716,9 +4384,35 @@ static inline krpc_error_t krpc_KRPC_Type_Name(krpc_connection_t connection, cha
 static inline krpc_error_t krpc_KRPC_Type_Nullable(krpc_connection_t connection, bool * returnValue, krpc_KRPC_Type_t instance);
 
 /**
+ * Fills in the call krpc_KRPC_Type_Nullable() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Nullable_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Nullable(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Nullable_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
  * The service a class, enumeration or structure type is defined in, or an empty string.
  */
 static inline krpc_error_t krpc_KRPC_Type_Service(krpc_connection_t connection, char * * returnValue, krpc_KRPC_Type_t instance);
+
+/**
+ * Fills in the call krpc_KRPC_Type_Service() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Service_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Service(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Service_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * The types of the elements of a tuple, list, set or dictionary type.
@@ -1728,7 +4422,557 @@ static inline krpc_error_t krpc_KRPC_Type_Service(krpc_connection_t connection, 
  */
 static inline krpc_error_t krpc_KRPC_Type_Types(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_KRPC_Type_t instance);
 
+/**
+ * Fills in the call krpc_KRPC_Type_Types() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Types_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance);
+
+/**
+ * Fills in the call template of krpc_KRPC_Type_Types(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+static inline krpc_error_t krpc_KRPC_Type_Types_call_template(krpc_schema_ProcedureCall * procedureCall);
+
 // Implementation
+
+#ifndef KRPC_IMPL_TYPE_KRPC_SERVERSETTINGS
+#define KRPC_IMPL_TYPE_KRPC_SERVERSETTINGS
+
+static inline bool krpc_encode_callback_items_KRPC_ServerSettings(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  const krpc_KRPC_ServerSettings_t * value = (const krpc_KRPC_ServerSettings_t*)(*arg);
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_bool(&size, value->adaptive_rate_control));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_bool(stream, value->adaptive_rate_control));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint32(&size, value->target_frame_rate));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint32(stream, value->target_frame_rate));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint32(&size, value->max_time_per_frame));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint32(stream, value->max_time_per_frame));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint32(&size, value->max_call_wait));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint32(stream, value->max_call_wait));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint32(&size, value->tick_hold_timeout));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint32(stream, value->tick_hold_timeout));
+  }
+  return true;
+}
+
+static inline krpc_error_t krpc_encode_KRPC_ServerSettings(
+  pb_ostream_t * stream, const krpc_KRPC_ServerSettings_t * value) {
+  krpc_schema_Tuple message = krpc_schema_Tuple_init_default;
+  message.items.funcs.encode = &krpc_encode_callback_items_KRPC_ServerSettings;
+  message.items.arg = (krpc_KRPC_ServerSettings_t*)value;
+  KRPC_RETURN_ON_ERROR(krpc_encode_message_Tuple(stream, &message));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_encode_size_KRPC_ServerSettings(
+  size_t * size, const krpc_KRPC_ServerSettings_t * value) {
+  pb_ostream_t stream = PB_OSTREAM_SIZING;
+  KRPC_RETURN_ON_ERROR(krpc_encode_KRPC_ServerSettings(&stream, value));
+  *size = stream.bytes_written;
+  return KRPC_OK;
+}
+
+static inline bool krpc_encode_callback_KRPC_ServerSettings(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  if (!pb_encode_tag_for_field(stream, field))
+    KRPC_CALLBACK_RETURN_ERROR("encoding tag for KRPC_ServerSettings");
+  krpc_KRPC_ServerSettings_t * value = (krpc_KRPC_ServerSettings_t*)(*arg);
+  size_t size;
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_KRPC_ServerSettings(&size, value));
+  if (!pb_encode_varint(stream, size))
+    KRPC_CALLBACK_RETURN_ERROR("encoding size for KRPC_ServerSettings");
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_KRPC_ServerSettings(stream, value));
+  return true;
+}
+
+static inline bool krpc_decode_callback_item_KRPC_ServerSettings(
+  pb_istream_t * stream, const pb_field_t * field, void ** arg) {
+  typedef struct State {size_t pos; krpc_KRPC_ServerSettings_t * value;} State;
+  State * state = (State*)(*arg);
+  krpc_KRPC_ServerSettings_t * value = state->value;
+  switch (state->pos) {
+  case 0:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_bool(stream, &value->adaptive_rate_control));
+    break;
+  case 1:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint32(stream, &value->target_frame_rate));
+    break;
+  case 2:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint32(stream, &value->max_time_per_frame));
+    break;
+  case 3:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint32(stream, &value->max_call_wait));
+    break;
+  case 4:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint32(stream, &value->tick_hold_timeout));
+    break;
+  default:
+    // Fields are only ever appended to a structure, so a value from a newer server may
+    // carry more items than this client knows about, and those are skipped
+    if (!pb_read(stream, NULL, stream->bytes_left))
+      KRPC_CALLBACK_RETURN_ERROR("skipping an appended struct field");
+    break;
+  }
+  state->pos++;
+  return true;
+}
+
+static inline krpc_error_t krpc_decode_KRPC_ServerSettings(
+  pb_istream_t * stream, krpc_KRPC_ServerSettings_t * value) {
+  krpc_schema_Tuple message = krpc_schema_Tuple_init_default;
+  message.items.funcs.decode = &krpc_decode_callback_item_KRPC_ServerSettings;
+  typedef struct State { size_t pos; krpc_KRPC_ServerSettings_t * value; } State;
+  State state = { 0, value };
+  message.items.arg = &state;
+  KRPC_RETURN_ON_ERROR(krpc_decode_message_Tuple(stream, &message));
+  if (state.pos < 5)
+    KRPC_FAIL(ENCODING, "Too few fields for a KRPC_ServerSettings");
+  return KRPC_OK;
+}
+
+#endif  // KRPC_IMPL_TYPE_KRPC_SERVERSETTINGS
+
+#ifndef KRPC_IMPL_TYPE_KRPC_SERVERSTATISTICS
+#define KRPC_IMPL_TYPE_KRPC_SERVERSTATISTICS
+
+static inline bool krpc_encode_callback_items_KRPC_ServerStatistics(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  const krpc_KRPC_ServerStatistics_t * value = (const krpc_KRPC_ServerStatistics_t*)(*arg);
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint64(&size, value->bytes_read));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint64(stream, value->bytes_read));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint64(&size, value->bytes_written));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint64(stream, value->bytes_written));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->bytes_read_rate));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->bytes_read_rate));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->bytes_written_rate));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->bytes_written_rate));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint64(&size, value->rpcs_executed));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint64(stream, value->rpcs_executed));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->rpc_rate));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->rpc_rate));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->frame_rate));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->frame_rate));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->time_per_frame));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->time_per_frame));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->exec_time_per_frame));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->exec_time_per_frame));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->wait_time_per_frame));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->wait_time_per_frame));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->stream_time_per_frame));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->stream_time_per_frame));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->budget_per_frame));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->budget_per_frame));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->median_turnaround));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->median_turnaround));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint32(&size, value->deferred_calls));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint32(stream, value->deferred_calls));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint32(&size, value->streams));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint32(stream, value->streams));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint64(&size, value->stream_evaluations));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint64(stream, value->stream_evaluations));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_float(&size, value->stream_evaluation_rate));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_float(stream, value->stream_evaluation_rate));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint64(&size, value->stream_updates_sent));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint64(stream, value->stream_updates_sent));
+  }
+  return true;
+}
+
+static inline krpc_error_t krpc_encode_KRPC_ServerStatistics(
+  pb_ostream_t * stream, const krpc_KRPC_ServerStatistics_t * value) {
+  krpc_schema_Tuple message = krpc_schema_Tuple_init_default;
+  message.items.funcs.encode = &krpc_encode_callback_items_KRPC_ServerStatistics;
+  message.items.arg = (krpc_KRPC_ServerStatistics_t*)value;
+  KRPC_RETURN_ON_ERROR(krpc_encode_message_Tuple(stream, &message));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_encode_size_KRPC_ServerStatistics(
+  size_t * size, const krpc_KRPC_ServerStatistics_t * value) {
+  pb_ostream_t stream = PB_OSTREAM_SIZING;
+  KRPC_RETURN_ON_ERROR(krpc_encode_KRPC_ServerStatistics(&stream, value));
+  *size = stream.bytes_written;
+  return KRPC_OK;
+}
+
+static inline bool krpc_encode_callback_KRPC_ServerStatistics(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  if (!pb_encode_tag_for_field(stream, field))
+    KRPC_CALLBACK_RETURN_ERROR("encoding tag for KRPC_ServerStatistics");
+  krpc_KRPC_ServerStatistics_t * value = (krpc_KRPC_ServerStatistics_t*)(*arg);
+  size_t size;
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_KRPC_ServerStatistics(&size, value));
+  if (!pb_encode_varint(stream, size))
+    KRPC_CALLBACK_RETURN_ERROR("encoding size for KRPC_ServerStatistics");
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_KRPC_ServerStatistics(stream, value));
+  return true;
+}
+
+static inline bool krpc_decode_callback_item_KRPC_ServerStatistics(
+  pb_istream_t * stream, const pb_field_t * field, void ** arg) {
+  typedef struct State {size_t pos; krpc_KRPC_ServerStatistics_t * value;} State;
+  State * state = (State*)(*arg);
+  krpc_KRPC_ServerStatistics_t * value = state->value;
+  switch (state->pos) {
+  case 0:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint64(stream, &value->bytes_read));
+    break;
+  case 1:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint64(stream, &value->bytes_written));
+    break;
+  case 2:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->bytes_read_rate));
+    break;
+  case 3:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->bytes_written_rate));
+    break;
+  case 4:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint64(stream, &value->rpcs_executed));
+    break;
+  case 5:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->rpc_rate));
+    break;
+  case 6:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->frame_rate));
+    break;
+  case 7:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->time_per_frame));
+    break;
+  case 8:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->exec_time_per_frame));
+    break;
+  case 9:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->wait_time_per_frame));
+    break;
+  case 10:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->stream_time_per_frame));
+    break;
+  case 11:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->budget_per_frame));
+    break;
+  case 12:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->median_turnaround));
+    break;
+  case 13:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint32(stream, &value->deferred_calls));
+    break;
+  case 14:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint32(stream, &value->streams));
+    break;
+  case 15:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint64(stream, &value->stream_evaluations));
+    break;
+  case 16:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_float(stream, &value->stream_evaluation_rate));
+    break;
+  case 17:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint64(stream, &value->stream_updates_sent));
+    break;
+  default:
+    // Fields are only ever appended to a structure, so a value from a newer server may
+    // carry more items than this client knows about, and those are skipped
+    if (!pb_read(stream, NULL, stream->bytes_left))
+      KRPC_CALLBACK_RETURN_ERROR("skipping an appended struct field");
+    break;
+  }
+  state->pos++;
+  return true;
+}
+
+static inline krpc_error_t krpc_decode_KRPC_ServerStatistics(
+  pb_istream_t * stream, krpc_KRPC_ServerStatistics_t * value) {
+  krpc_schema_Tuple message = krpc_schema_Tuple_init_default;
+  message.items.funcs.decode = &krpc_decode_callback_item_KRPC_ServerStatistics;
+  typedef struct State { size_t pos; krpc_KRPC_ServerStatistics_t * value; } State;
+  State state = { 0, value };
+  message.items.arg = &state;
+  KRPC_RETURN_ON_ERROR(krpc_decode_message_Tuple(stream, &message));
+  if (state.pos < 18)
+    KRPC_FAIL(ENCODING, "Too few fields for a KRPC_ServerStatistics");
+  return KRPC_OK;
+}
+
+#endif  // KRPC_IMPL_TYPE_KRPC_SERVERSTATISTICS
+
+#ifndef KRPC_IMPL_TYPE_KRPC_SERVERSTATUS
+#define KRPC_IMPL_TYPE_KRPC_SERVERSTATUS
+
+static inline bool krpc_encode_callback_items_KRPC_ServerStatus(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  const krpc_KRPC_ServerStatus_t * value = (const krpc_KRPC_ServerStatus_t*)(*arg);
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_string(&size, value->version));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_string(stream, value->version));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_uint32(&size, value->protocol_version));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_uint32(stream, value->protocol_version));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_KRPC_ServerSettings(&size, &value->settings));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_KRPC_ServerSettings(stream, &value->settings));
+  }
+  {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for tuple item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_KRPC_ServerStatistics(&size, &value->statistics));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for tuple item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_KRPC_ServerStatistics(stream, &value->statistics));
+  }
+  return true;
+}
+
+static inline krpc_error_t krpc_encode_KRPC_ServerStatus(
+  pb_ostream_t * stream, const krpc_KRPC_ServerStatus_t * value) {
+  krpc_schema_Tuple message = krpc_schema_Tuple_init_default;
+  message.items.funcs.encode = &krpc_encode_callback_items_KRPC_ServerStatus;
+  message.items.arg = (krpc_KRPC_ServerStatus_t*)value;
+  KRPC_RETURN_ON_ERROR(krpc_encode_message_Tuple(stream, &message));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_encode_size_KRPC_ServerStatus(
+  size_t * size, const krpc_KRPC_ServerStatus_t * value) {
+  pb_ostream_t stream = PB_OSTREAM_SIZING;
+  KRPC_RETURN_ON_ERROR(krpc_encode_KRPC_ServerStatus(&stream, value));
+  *size = stream.bytes_written;
+  return KRPC_OK;
+}
+
+static inline bool krpc_encode_callback_KRPC_ServerStatus(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  if (!pb_encode_tag_for_field(stream, field))
+    KRPC_CALLBACK_RETURN_ERROR("encoding tag for KRPC_ServerStatus");
+  krpc_KRPC_ServerStatus_t * value = (krpc_KRPC_ServerStatus_t*)(*arg);
+  size_t size;
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_KRPC_ServerStatus(&size, value));
+  if (!pb_encode_varint(stream, size))
+    KRPC_CALLBACK_RETURN_ERROR("encoding size for KRPC_ServerStatus");
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_KRPC_ServerStatus(stream, value));
+  return true;
+}
+
+static inline bool krpc_decode_callback_item_KRPC_ServerStatus(
+  pb_istream_t * stream, const pb_field_t * field, void ** arg) {
+  typedef struct State {size_t pos; krpc_KRPC_ServerStatus_t * value;} State;
+  State * state = (State*)(*arg);
+  krpc_KRPC_ServerStatus_t * value = state->value;
+  switch (state->pos) {
+  case 0:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_string(stream, &value->version));
+    break;
+  case 1:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_uint32(stream, &value->protocol_version));
+    break;
+  case 2:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_KRPC_ServerSettings(stream, &value->settings));
+    break;
+  case 3:
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_KRPC_ServerStatistics(stream, &value->statistics));
+    break;
+  default:
+    // Fields are only ever appended to a structure, so a value from a newer server may
+    // carry more items than this client knows about, and those are skipped
+    if (!pb_read(stream, NULL, stream->bytes_left))
+      KRPC_CALLBACK_RETURN_ERROR("skipping an appended struct field");
+    break;
+  }
+  state->pos++;
+  return true;
+}
+
+static inline krpc_error_t krpc_decode_KRPC_ServerStatus(
+  pb_istream_t * stream, krpc_KRPC_ServerStatus_t * value) {
+  krpc_schema_Tuple message = krpc_schema_Tuple_init_default;
+  message.items.funcs.decode = &krpc_decode_callback_item_KRPC_ServerStatus;
+  typedef struct State { size_t pos; krpc_KRPC_ServerStatus_t * value; } State;
+  State state = { 0, value };
+  message.items.arg = &state;
+  KRPC_RETURN_ON_ERROR(krpc_decode_message_Tuple(stream, &message));
+  if (state.pos < 4)
+    KRPC_FAIL(ENCODING, "Too few fields for a KRPC_ServerStatus");
+  return KRPC_OK;
+}
+
+#endif  // KRPC_IMPL_TYPE_KRPC_SERVERSTATUS
 
 #ifndef KRPC_IMPL_TYPE_DICTIONARY_INT32_OBJECT
 #define KRPC_IMPL_TYPE_DICTIONARY_INT32_OBJECT
@@ -2095,7 +5339,7 @@ static inline krpc_error_t krpc_decode_KRPC_ClientInfo(
   message.items.arg = &state;
   KRPC_RETURN_ON_ERROR(krpc_decode_message_Tuple(stream, &message));
   if (state.pos < 3)
-    KRPC_RETURN_ERROR(DECODING_FAILED, "too few fields for a KRPC_ClientInfo");
+    KRPC_FAIL(ENCODING, "Too few fields for a KRPC_ClientInfo");
   return KRPC_OK;
 }
 
@@ -2182,6 +5426,168 @@ static inline krpc_error_t krpc_decode_list_KRPC_ClientInfo(
 
 #endif  // KRPC_IMPL_TYPE_LIST_KRPC_CLIENTINFO
 
+#ifndef KRPC_IMPL_TYPE_LIST_OBJECT
+#define KRPC_IMPL_TYPE_LIST_OBJECT
+
+static inline bool krpc_encode_callback_items_list_object(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  const krpc_list_object_t * value = (const krpc_list_object_t*)(*arg);
+  size_t i = 0;
+  for (; i < value->size; i++) {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for list item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_object(&size, value->items[i]));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for list item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_object(stream, value->items[i]));
+  }
+  return true;
+}
+
+static inline krpc_error_t krpc_encode_list_object(
+  pb_ostream_t * stream, const krpc_list_object_t * value) {
+  krpc_schema_List message = krpc_schema_List_init_default;
+  message.items.funcs.encode = &krpc_encode_callback_items_list_object;
+  message.items.arg = (krpc_list_object_t*)value;
+  KRPC_RETURN_ON_ERROR(krpc_encode_message_List(stream, &message));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_encode_size_list_object(
+  size_t * size, const krpc_list_object_t * value) {
+  pb_ostream_t stream = PB_OSTREAM_SIZING;
+  KRPC_RETURN_ON_ERROR(krpc_encode_list_object(&stream, value));
+  *size = stream.bytes_written;
+  return KRPC_OK;
+}
+
+static inline bool krpc_encode_callback_list_object(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  if (!pb_encode_tag_for_field(stream, field))
+    KRPC_CALLBACK_RETURN_ERROR("encoding tag for list_object");
+  krpc_list_object_t * value = (krpc_list_object_t*)(*arg);
+  size_t size;
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_list_object(&size, value));
+  if (!pb_encode_varint(stream, size))
+    KRPC_CALLBACK_RETURN_ERROR("encoding size for list_object");
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_list_object(stream, value));
+  return true;
+}
+
+static inline bool krpc_decode_callback_item_list_object(
+  pb_istream_t * stream, const pb_field_t * field, void ** arg) {
+  typedef struct State { size_t capacity; krpc_list_object_t * value; } State;
+  State * state = (State*)(*arg);
+  size_t i = state->value->size;
+  state->value->size++;
+  if (state->capacity > 0 && state->value->size > state->capacity) {
+    state->value->items = (krpc_object_t*)krpc_recalloc(state->value->items, state->capacity, KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_object_t));
+    state->capacity += KRPC_ALLOC_BLOCK_SIZE;
+  }
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_object(stream, &state->value->items[i]));
+  return true;
+}
+
+static inline krpc_error_t krpc_decode_list_object(
+  pb_istream_t * stream, krpc_list_object_t * value) {
+  typedef struct State { size_t capacity; krpc_list_object_t * value; } State;
+  State state = { 0, value };
+  value->size = 0;
+  if (value->items == NULL) {
+    value->items = (krpc_object_t*)krpc_calloc(KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_object_t));
+    state.capacity = KRPC_ALLOC_BLOCK_SIZE;
+  }
+  krpc_schema_List message = krpc_schema_List_init_default;
+  message.items.funcs.decode = &krpc_decode_callback_item_list_object;
+  message.items.arg = &state;
+  KRPC_RETURN_ON_ERROR(krpc_decode_message_List(stream, &message));
+  return KRPC_OK;
+}
+
+#endif  // KRPC_IMPL_TYPE_LIST_OBJECT
+
+#ifndef KRPC_IMPL_TYPE_LIST_LIST_OBJECT
+#define KRPC_IMPL_TYPE_LIST_LIST_OBJECT
+
+static inline bool krpc_encode_callback_items_list_list_object(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  const krpc_list_list_object_t * value = (const krpc_list_list_object_t*)(*arg);
+  size_t i = 0;
+  for (; i < value->size; i++) {
+    if (!pb_encode_tag_for_field(stream, field))
+      KRPC_CALLBACK_RETURN_ERROR("encoding tag for list item");
+    size_t size;
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_list_object(&size, &value->items[i]));
+    if (!pb_encode_varint(stream, size))
+      KRPC_CALLBACK_RETURN_ERROR("encoding size for list item");
+    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_list_object(stream, &value->items[i]));
+  }
+  return true;
+}
+
+static inline krpc_error_t krpc_encode_list_list_object(
+  pb_ostream_t * stream, const krpc_list_list_object_t * value) {
+  krpc_schema_List message = krpc_schema_List_init_default;
+  message.items.funcs.encode = &krpc_encode_callback_items_list_list_object;
+  message.items.arg = (krpc_list_list_object_t*)value;
+  KRPC_RETURN_ON_ERROR(krpc_encode_message_List(stream, &message));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_encode_size_list_list_object(
+  size_t * size, const krpc_list_list_object_t * value) {
+  pb_ostream_t stream = PB_OSTREAM_SIZING;
+  KRPC_RETURN_ON_ERROR(krpc_encode_list_list_object(&stream, value));
+  *size = stream.bytes_written;
+  return KRPC_OK;
+}
+
+static inline bool krpc_encode_callback_list_list_object(
+  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
+  if (!pb_encode_tag_for_field(stream, field))
+    KRPC_CALLBACK_RETURN_ERROR("encoding tag for list_list_object");
+  krpc_list_list_object_t * value = (krpc_list_list_object_t*)(*arg);
+  size_t size;
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_list_list_object(&size, value));
+  if (!pb_encode_varint(stream, size))
+    KRPC_CALLBACK_RETURN_ERROR("encoding size for list_list_object");
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_list_list_object(stream, value));
+  return true;
+}
+
+static inline bool krpc_decode_callback_item_list_list_object(
+  pb_istream_t * stream, const pb_field_t * field, void ** arg) {
+  typedef struct State { size_t capacity; krpc_list_list_object_t * value; } State;
+  State * state = (State*)(*arg);
+  size_t i = state->value->size;
+  state->value->size++;
+  if (state->capacity > 0 && state->value->size > state->capacity) {
+    state->value->items = (krpc_list_object_t*)krpc_recalloc(state->value->items, state->capacity, KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_list_object_t));
+    state->capacity += KRPC_ALLOC_BLOCK_SIZE;
+  }
+  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_list_object(stream, &state->value->items[i]));
+  return true;
+}
+
+static inline krpc_error_t krpc_decode_list_list_object(
+  pb_istream_t * stream, krpc_list_list_object_t * value) {
+  typedef struct State { size_t capacity; krpc_list_list_object_t * value; } State;
+  State state = { 0, value };
+  value->size = 0;
+  if (value->items == NULL) {
+    value->items = (krpc_list_object_t*)krpc_calloc(KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_list_object_t));
+    state.capacity = KRPC_ALLOC_BLOCK_SIZE;
+  }
+  krpc_schema_List message = krpc_schema_List_init_default;
+  message.items.funcs.decode = &krpc_decode_callback_item_list_list_object;
+  message.items.arg = &state;
+  KRPC_RETURN_ON_ERROR(krpc_decode_message_List(stream, &message));
+  return KRPC_OK;
+}
+
+#endif  // KRPC_IMPL_TYPE_LIST_LIST_OBJECT
+
 #ifndef KRPC_IMPL_TYPE_NULLABLE_BYTES
 #define KRPC_IMPL_TYPE_NULLABLE_BYTES
 
@@ -2222,9 +5628,17 @@ static inline krpc_error_t krpc_decode_nullable_bytes(
   pb_istream_t * stream, krpc_nullable_bytes_t * value) {
   // An absent value is left zeroed, so the member is defined whatever the caller passed in
   memset(&value->value, 0, sizeof(value->value));
-  KRPC_RETURN_ON_ERROR(krpc_decode_bool(stream, &value->has_value));
-  if (value->has_value)
+  uint32_t present;
+  if (!pb_decode_varint32(stream, &present))
+    KRPC_FAIL_STREAM(ENCODING, "A nullable value carries no presence bool", stream);
+  if (present > 1)
+    KRPC_FAIL(ENCODING, "A presence bool is neither 0 nor 1");
+  value->has_value = present == 1;
+  if (value->has_value) {
     KRPC_RETURN_ON_ERROR(krpc_decode_bytes(stream, &value->value));
+  } else if (stream->bytes_left > 0) {
+    KRPC_FAIL(ENCODING, "A null value carries data");
+  }
   return KRPC_OK;
 }
 
@@ -2311,87 +5725,6 @@ static inline krpc_error_t krpc_decode_list_nullable_bytes(
 
 #endif  // KRPC_IMPL_TYPE_LIST_NULLABLE_BYTES
 
-#ifndef KRPC_IMPL_TYPE_LIST_OBJECT
-#define KRPC_IMPL_TYPE_LIST_OBJECT
-
-static inline bool krpc_encode_callback_items_list_object(
-  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
-  const krpc_list_object_t * value = (const krpc_list_object_t*)(*arg);
-  size_t i = 0;
-  for (; i < value->size; i++) {
-    if (!pb_encode_tag_for_field(stream, field))
-      KRPC_CALLBACK_RETURN_ERROR("encoding tag for list item");
-    size_t size;
-    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_object(&size, value->items[i]));
-    if (!pb_encode_varint(stream, size))
-      KRPC_CALLBACK_RETURN_ERROR("encoding size for list item");
-    KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_object(stream, value->items[i]));
-  }
-  return true;
-}
-
-static inline krpc_error_t krpc_encode_list_object(
-  pb_ostream_t * stream, const krpc_list_object_t * value) {
-  krpc_schema_List message = krpc_schema_List_init_default;
-  message.items.funcs.encode = &krpc_encode_callback_items_list_object;
-  message.items.arg = (krpc_list_object_t*)value;
-  KRPC_RETURN_ON_ERROR(krpc_encode_message_List(stream, &message));
-  return KRPC_OK;
-}
-
-static inline krpc_error_t krpc_encode_size_list_object(
-  size_t * size, const krpc_list_object_t * value) {
-  pb_ostream_t stream = PB_OSTREAM_SIZING;
-  KRPC_RETURN_ON_ERROR(krpc_encode_list_object(&stream, value));
-  *size = stream.bytes_written;
-  return KRPC_OK;
-}
-
-static inline bool krpc_encode_callback_list_object(
-  pb_ostream_t * stream, const pb_field_t * field, void * const * arg) {
-  if (!pb_encode_tag_for_field(stream, field))
-    KRPC_CALLBACK_RETURN_ERROR("encoding tag for list_object");
-  krpc_list_object_t * value = (krpc_list_object_t*)(*arg);
-  size_t size;
-  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_size_list_object(&size, value));
-  if (!pb_encode_varint(stream, size))
-    KRPC_CALLBACK_RETURN_ERROR("encoding size for list_object");
-  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_encode_list_object(stream, value));
-  return true;
-}
-
-static inline bool krpc_decode_callback_item_list_object(
-  pb_istream_t * stream, const pb_field_t * field, void ** arg) {
-  typedef struct State { size_t capacity; krpc_list_object_t * value; } State;
-  State * state = (State*)(*arg);
-  size_t i = state->value->size;
-  state->value->size++;
-  if (state->capacity > 0 && state->value->size > state->capacity) {
-    state->value->items = (krpc_object_t*)krpc_recalloc(state->value->items, state->capacity, KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_object_t));
-    state->capacity += KRPC_ALLOC_BLOCK_SIZE;
-  }
-  KRPC_CALLBACK_RETURN_ON_ERROR(krpc_decode_object(stream, &state->value->items[i]));
-  return true;
-}
-
-static inline krpc_error_t krpc_decode_list_object(
-  pb_istream_t * stream, krpc_list_object_t * value) {
-  typedef struct State { size_t capacity; krpc_list_object_t * value; } State;
-  State state = { 0, value };
-  value->size = 0;
-  if (value->items == NULL) {
-    value->items = (krpc_object_t*)krpc_calloc(KRPC_ALLOC_BLOCK_SIZE, sizeof(krpc_object_t));
-    state.capacity = KRPC_ALLOC_BLOCK_SIZE;
-  }
-  krpc_schema_List message = krpc_schema_List_init_default;
-  message.items.funcs.decode = &krpc_decode_callback_item_list_object;
-  message.items.arg = &state;
-  KRPC_RETURN_ON_ERROR(krpc_decode_message_List(stream, &message));
-  return KRPC_OK;
-}
-
-#endif  // KRPC_IMPL_TYPE_LIST_OBJECT
-
 #ifndef KRPC_IMPL_TYPE_SET_OBJECT
 #define KRPC_IMPL_TYPE_SET_OBJECT
 
@@ -2473,72 +5806,9 @@ static inline krpc_error_t krpc_decode_set_object(
 
 #endif  // KRPC_IMPL_TYPE_SET_OBJECT
 
-static inline krpc_error_t krpc_KRPC_AddEvent(krpc_connection_t connection, krpc_schema_Event * returnValue, krpc_KRPC_Expression_t function) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 11, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &function));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_message_Event(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-static inline krpc_error_t krpc_KRPC_AddFunctionStream(krpc_connection_t connection, krpc_schema_Stream * returnValue, krpc_KRPC_Expression_t function) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 8, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &function));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_message_Stream(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-static inline krpc_error_t krpc_KRPC_AddStream(krpc_connection_t connection, krpc_schema_Stream * returnValue, const krpc_schema_ProcedureCall * call) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 5, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_message_ProcedureCall, call));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    pb_istream_t _stream;
-    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_message_Stream(&_stream, returnValue));
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-static inline krpc_error_t krpc_KRPC_CompileFunction(krpc_connection_t connection, krpc_KRPC_Expression_t function) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 9, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &function));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
 static inline krpc_error_t krpc_KRPC_GetClientID(krpc_connection_t connection, krpc_bytes_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 1, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 3459659327, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -2551,9 +5821,18 @@ static inline krpc_error_t krpc_KRPC_GetClientID(krpc_connection_t connection, k
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_GetClientID_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3459659327, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_GetClientID_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3459659327, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_GetClientName(krpc_connection_t connection, char * * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 2, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 3449758574, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -2566,9 +5845,18 @@ static inline krpc_error_t krpc_KRPC_GetClientName(krpc_connection_t connection,
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_GetClientName_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3449758574, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_GetClientName_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3449758574, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_GetServices(krpc_connection_t connection, krpc_schema_Services * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 4, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 668146451, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -2581,44 +5869,80 @@ static inline krpc_error_t krpc_KRPC_GetServices(krpc_connection_t connection, k
   return KRPC_OK;
 }
 
-static inline krpc_error_t krpc_KRPC_GetStatus(krpc_connection_t connection, krpc_schema_Status * returnValue) {
+static inline krpc_error_t krpc_KRPC_GetServices_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 668146451, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_GetServices_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 668146451, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_GetStatus(krpc_connection_t connection, krpc_KRPC_ServerStatus_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 3, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 2007570979, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   if (returnValue) {
     pb_istream_t _stream;
     KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-    KRPC_CHECK(krpc_decode_message_Status(&_stream, returnValue));
+    KRPC_CHECK(krpc_decode_KRPC_ServerStatus(&_stream, returnValue));
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_GetStatus_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2007570979, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_GetStatus_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2007570979, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_HoldTick(krpc_connection_t connection) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 12, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 3040718796, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_HoldTick_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3040718796, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_HoldTick_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3040718796, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_NextTick(krpc_connection_t connection) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 14, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 2824385334, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_NextTick_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2824385334, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_NextTick_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2824385334, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_ReleaseTick(krpc_connection_t connection) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 13, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 1884195753, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -2626,59 +5950,18 @@ static inline krpc_error_t krpc_KRPC_ReleaseTick(krpc_connection_t connection) {
   return KRPC_OK;
 }
 
-static inline krpc_error_t krpc_KRPC_RemoveStream(krpc_connection_t connection, uint64_t id) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 7, 1, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &id));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
+static inline krpc_error_t krpc_KRPC_ReleaseTick_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1884195753, 0));
   return KRPC_OK;
 }
 
-static inline krpc_error_t krpc_KRPC_RunFunction(krpc_connection_t connection, krpc_bytes_t * returnValue, bool * returnValueIsNull, krpc_KRPC_Expression_t function, const krpc_list_nullable_bytes_t * arguments) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 10, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &function));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_list_nullable_bytes, arguments));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  if (returnValue) {
-    if (_result.message.is_null) {
-      if (returnValueIsNull)
-        *returnValueIsNull = true;
-    } else {
-      if (returnValueIsNull)
-        *returnValueIsNull = false;
-      pb_istream_t _stream;
-      KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
-      KRPC_CHECK(krpc_decode_bytes(&_stream, returnValue));
-    }
-  }
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
-}
-
-static inline krpc_error_t krpc_KRPC_SetStreamRate(krpc_connection_t connection, uint64_t id, float rate) {
-  krpc_call_t _call;
-  krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 6, 2, _arguments));
-  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &id));
-  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_float, &rate));
-  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
-  KRPC_CHECK(krpc_init_result(&_result));
-  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
-  KRPC_CHECK(krpc_free_result(&_result));
-  return KRPC_OK;
+static inline krpc_error_t krpc_KRPC_ReleaseTick_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1884195753, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Clients(krpc_connection_t connection, krpc_list_KRPC_ClientInfo_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 15, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 539173867, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -2691,9 +5974,18 @@ static inline krpc_error_t krpc_KRPC_Clients(krpc_connection_t connection, krpc_
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Clients_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 539173867, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Clients_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 539173867, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_GameScene(krpc_connection_t connection, krpc_KRPC_GameScene_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 16, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 1067515929, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -2706,10 +5998,19 @@ static inline krpc_error_t krpc_KRPC_GameScene(krpc_connection_t connection, krp
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_GameScene_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1067515929, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_GameScene_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1067515929, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_set_GameScene(krpc_connection_t connection, krpc_KRPC_GameScene_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 17, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2078163994, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_enum, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2718,9 +6019,19 @@ static inline krpc_error_t krpc_KRPC_set_GameScene(krpc_connection_t connection,
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_set_GameScene_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_GameScene_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2078163994, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_enum, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_set_GameScene_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2078163994, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_GameStateLoads(krpc_connection_t connection, uint32_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 20, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 470022463, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -2733,9 +6044,18 @@ static inline krpc_error_t krpc_KRPC_GameStateLoads(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_GameStateLoads_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 470022463, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_GameStateLoads_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 470022463, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Paused(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 18, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 648517823, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -2748,10 +6068,19 @@ static inline krpc_error_t krpc_KRPC_Paused(krpc_connection_t connection, bool *
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Paused_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 648517823, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Paused_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 648517823, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_set_Paused(krpc_connection_t connection, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 19, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2938665290, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2760,10 +6089,20 @@ static inline krpc_error_t krpc_KRPC_set_Paused(krpc_connection_t connection, bo
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_set_Paused_call(krpc_schema_ProcedureCall * procedureCall, bool value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2938665290, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_bool, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_set_Paused_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2938665290, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_HasReturnType(krpc_connection_t connection, bool * returnValue, krpc_KRPC_Expression_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 148, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2597652062, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2777,10 +6116,20 @@ static inline krpc_error_t krpc_KRPC_Expression_HasReturnType(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_HasReturnType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2597652062, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_HasReturnType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2597652062, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ParameterTypes(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_KRPC_Expression_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 147, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2373739087, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2794,10 +6143,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ParameterTypes(krpc_connection_t
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ParameterTypes_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2373739087, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ParameterTypes_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2373739087, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ReturnType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Expression_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 146, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 344314153, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2811,10 +6170,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ReturnType(krpc_connection_t con
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ReturnType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 344314153, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ReturnType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 344314153, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Add(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 134, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1868603324, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2829,10 +6198,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Add(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Add_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1868603324, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Add_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1868603324, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Aggregate(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 51, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 247942085, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &func));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2847,10 +6227,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Aggregate(krpc_connection_t conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Aggregate_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 247942085, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &func));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Aggregate_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 247942085, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_AggregateWithSeed(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t seed, krpc_KRPC_Expression_t func) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 52, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 496001122, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &seed));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &func));
@@ -2866,10 +6257,22 @@ static inline krpc_error_t krpc_KRPC_Expression_AggregateWithSeed(krpc_connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_AggregateWithSeed_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t seed, krpc_KRPC_Expression_t func) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 496001122, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &seed));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &func));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_AggregateWithSeed_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 496001122, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_All(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t predicate) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 55, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2039378952, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &predicate));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2884,10 +6287,21 @@ static inline krpc_error_t krpc_KRPC_Expression_All(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_All_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t predicate) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2039378952, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &predicate));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_All_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2039378952, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_And(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 126, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2436395494, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2902,10 +6316,21 @@ static inline krpc_error_t krpc_KRPC_Expression_And(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_And_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2436395494, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_And_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2436395494, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Any(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t predicate) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 56, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3448676716, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &predicate));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2920,10 +6345,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Any(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Any_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t predicate) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3448676716, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &predicate));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Any_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3448676716, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Append(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 61, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1383033188, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &collection));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2938,10 +6374,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Append(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Append_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1383033188, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &collection));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Append_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1383033188, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Assign(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t variable, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 68, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1440821411, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &variable));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -2956,10 +6403,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Assign(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Assign_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t variable, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1440821411, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &variable));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Assign_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1440821411, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Average(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 28, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2078080852, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2973,10 +6431,20 @@ static inline krpc_error_t krpc_KRPC_Expression_Average(krpc_connection_t connec
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Average_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2078080852, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Average_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2078080852, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Block(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * statements) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 69, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3847902184, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_list_object, statements));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -2990,10 +6458,20 @@ static inline krpc_error_t krpc_KRPC_Expression_Block(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Block_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * statements) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3847902184, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_list_object, statements));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Block_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3847902184, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_BlockWithVariables(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * variables, const krpc_list_object_t * statements) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 70, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2024247022, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_list_object, variables));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_list_object, statements));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3008,9 +6486,20 @@ static inline krpc_error_t krpc_KRPC_Expression_BlockWithVariables(krpc_connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_BlockWithVariables_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * variables, const krpc_list_object_t * statements) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2024247022, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_list_object, variables));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_list_object, statements));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_BlockWithVariables_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2024247022, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Break(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 73, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 1152820813, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -3023,10 +6512,19 @@ static inline krpc_error_t krpc_KRPC_Expression_Break(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Break_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1152820813, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Break_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1152820813, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_BuildDictionary(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t keyFunc, krpc_KRPC_Expression_t valueFunc) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 34, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3204923992, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &keyFunc));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &valueFunc));
@@ -3042,10 +6540,22 @@ static inline krpc_error_t krpc_KRPC_Expression_BuildDictionary(krpc_connection_
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_BuildDictionary_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t keyFunc, krpc_KRPC_Expression_t valueFunc) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3204923992, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &keyFunc));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &valueFunc));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_BuildDictionary_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3204923992, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Call(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_schema_ProcedureCall * call) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 118, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3404969939, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_message_ProcedureCall, call));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3059,10 +6569,20 @@ static inline krpc_error_t krpc_KRPC_Expression_Call(krpc_connection_t connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Call_call(krpc_schema_ProcedureCall * procedureCall, const krpc_schema_ProcedureCall * call) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3404969939, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_message_ProcedureCall, call));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Call_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3404969939, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_CallWithArguments(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_schema_ProcedureCall * call, const krpc_dictionary_int32_object_t * args) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 119, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 574013301, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_message_ProcedureCall, call));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_dictionary_int32_object, args));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3077,10 +6597,21 @@ static inline krpc_error_t krpc_KRPC_Expression_CallWithArguments(krpc_connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_CallWithArguments_call(krpc_schema_ProcedureCall * procedureCall, const krpc_schema_ProcedureCall * call, const krpc_dictionary_int32_object_t * args) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 574013301, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_message_ProcedureCall, call));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_dictionary_int32_object, args));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CallWithArguments_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 574013301, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Cast(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Type_t type) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 142, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1889491247, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &type));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3095,10 +6626,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Cast(krpc_connection_t connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Cast_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Type_t type) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1889491247, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &type));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Cast_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1889491247, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Clear(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t collection) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 65, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1550759917, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &collection));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3112,10 +6654,20 @@ static inline krpc_error_t krpc_KRPC_Expression_Clear(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Clear_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t collection) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1550759917, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &collection));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Clear_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1550759917, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Concat(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 53, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 366630899, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg1));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg2));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3130,10 +6682,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Concat(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Concat_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 366630899, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg2));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Concat_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 366630899, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Conditional(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t ifTrue, krpc_KRPC_Expression_t ifFalse) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 133, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2544695127, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &condition));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &ifTrue));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &ifFalse));
@@ -3149,10 +6712,22 @@ static inline krpc_error_t krpc_KRPC_Expression_Conditional(krpc_connection_t co
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Conditional_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t ifTrue, krpc_KRPC_Expression_t ifFalse) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2544695127, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &condition));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &ifTrue));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &ifFalse));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Conditional_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2544695127, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConditionalAnd(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 128, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3796263843, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3165,12 +6740,23 @@ static inline krpc_error_t krpc_KRPC_Expression_ConditionalAnd(krpc_connection_t
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConditionalAnd_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3796263843, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConditionalAnd_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3796263843, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_ConditionalOr(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 129, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3717964551, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3185,10 +6771,21 @@ static inline krpc_error_t krpc_KRPC_Expression_ConditionalOr(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConditionalOr_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3717964551, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConditionalOr_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3717964551, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantBool(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, bool value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 111, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 113076490, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_bool, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3202,10 +6799,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantBool(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantBool_call(krpc_schema_ProcedureCall * procedureCall, bool value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 113076490, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_bool, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantBool_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 113076490, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantBytes(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_bytes_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 113, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3787765618, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_bytes, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3219,10 +6826,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantBytes(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantBytes_call(krpc_schema_ProcedureCall * procedureCall, krpc_bytes_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3787765618, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_bytes, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantBytes_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3787765618, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantDouble(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, double value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 105, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 4218431537, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_double, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3236,10 +6853,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantDouble(krpc_connection_t
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantDouble_call(krpc_schema_ProcedureCall * procedureCall, double value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4218431537, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_double, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantDouble_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4218431537, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantEnum(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * service, const char * name, int32_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 114, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3317292423, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &service));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_int32, &value));
@@ -3255,10 +6882,53 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantEnum(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnum_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name, int32_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3317292423, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &service));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_int32, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnum_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3317292423, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnumById(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint32_t serviceId, uint32_t enumerationId, int32_t value) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 1, 190274192, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_uint32, &enumerationId));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_int32, &value));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnumById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t enumerationId, int32_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 190274192, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_uint32, &enumerationId));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_int32, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantEnumById_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 190274192, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantFloat(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, float value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 106, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1848573802, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_float, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3272,10 +6942,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantFloat(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantFloat_call(krpc_schema_ProcedureCall * procedureCall, float value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1848573802, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_float, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantFloat_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1848573802, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantInt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, int32_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 107, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 631796625, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_int32, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3289,10 +6969,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantInt(krpc_connection_t co
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantInt_call(krpc_schema_ProcedureCall * procedureCall, int32_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 631796625, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_int32, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantInt_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 631796625, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantLong(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, int64_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 108, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 164180023, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_int64, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3306,10 +6996,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantLong(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantLong_call(krpc_schema_ProcedureCall * procedureCall, int64_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 164180023, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_int64, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantLong_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 164180023, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantNull(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t type) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 115, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3182444802, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &type));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3323,10 +7023,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantNull(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantNull_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t type) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3182444802, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &type));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantNull_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3182444802, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantObject(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint64_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 116, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2260237755, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3340,10 +7050,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantObject(krpc_connection_t
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantObject_call(krpc_schema_ProcedureCall * procedureCall, uint64_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2260237755, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantObject_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2260237755, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantString(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 112, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1769248828, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3357,10 +7077,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantString(krpc_connection_t
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantString_call(krpc_schema_ProcedureCall * procedureCall, const char * value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1769248828, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantString_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1769248828, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantUInt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint32_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 109, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2032430928, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint32, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3374,10 +7104,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantUInt(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantUInt_call(krpc_schema_ProcedureCall * procedureCall, uint32_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2032430928, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint32, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantUInt_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2032430928, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ConstantULong(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint64_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 110, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2601500955, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3391,10 +7131,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ConstantULong(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ConstantULong_call(krpc_schema_ProcedureCall * procedureCall, uint64_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2601500955, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConstantULong_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2601500955, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Contains(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 49, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 464423916, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3409,10 +7159,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Contains(krpc_connection_t conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Contains_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 464423916, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Contains_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 464423916, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ContainsKey(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t dictionary, krpc_KRPC_Expression_t key) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 50, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2086829321, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &dictionary));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &key));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3427,9 +7188,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ContainsKey(krpc_connection_t co
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ContainsKey_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t dictionary, krpc_KRPC_Expression_t key) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2086829321, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &dictionary));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &key));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ContainsKey_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2086829321, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Continue(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 74, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 1296563996, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -3440,12 +7212,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Continue(krpc_connection_t conne
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Continue_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1296563996, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Continue_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1296563996, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_ConvertToString(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 79, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1036381128, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3457,12 +7238,22 @@ static inline krpc_error_t krpc_KRPC_Expression_ConvertToString(krpc_connection_
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConvertToString_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1036381128, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ConvertToString_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1036381128, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_Count(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 24, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 479840905, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3476,10 +7267,20 @@ static inline krpc_error_t krpc_KRPC_Expression_Count(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Count_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 479840905, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Count_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 479840905, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_CreateDictionary(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * keys, const krpc_list_object_t * values) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 100, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1581166050, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_list_object, keys));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_list_object, values));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3494,10 +7295,21 @@ static inline krpc_error_t krpc_KRPC_Expression_CreateDictionary(krpc_connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_CreateDictionary_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * keys, const krpc_list_object_t * values) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1581166050, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_list_object, keys));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_list_object, values));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CreateDictionary_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1581166050, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyDictionary(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t keyType, krpc_KRPC_Type_t valueType) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 103, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 4234201722, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &keyType));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &valueType));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3512,10 +7324,21 @@ static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyDictionary(krpc_conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyDictionary_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t keyType, krpc_KRPC_Type_t valueType) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4234201722, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &keyType));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &valueType));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyDictionary_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4234201722, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyList(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t valueType) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 101, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 983967138, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &valueType));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3527,12 +7350,22 @@ static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyList(krpc_connection_
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyList_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 983967138, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &valueType));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptyList_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 983967138, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_CreateEmptySet(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t valueType) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 102, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3558866888, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &valueType));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3546,10 +7379,20 @@ static inline krpc_error_t krpc_KRPC_Expression_CreateEmptySet(krpc_connection_t
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptySet_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3558866888, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &valueType));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CreateEmptySet_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3558866888, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_CreateList(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * values) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 98, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3916059248, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_list_object, values));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3563,10 +7406,20 @@ static inline krpc_error_t krpc_KRPC_Expression_CreateList(krpc_connection_t con
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_CreateList_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * values) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3916059248, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_list_object, values));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CreateList_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3916059248, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_CreateSet(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_set_object_t * values) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 99, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1458547450, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_set_object, values));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3580,10 +7433,20 @@ static inline krpc_error_t krpc_KRPC_Expression_CreateSet(krpc_connection_t conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_CreateSet_call(krpc_schema_ProcedureCall * procedureCall, const krpc_set_object_t * values) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1458547450, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_set_object, values));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CreateSet_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1458547450, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_CreateStruct(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Type_t type, const krpc_list_object_t * fieldValues) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 97, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3864123124, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &type));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_list_object, fieldValues));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3598,10 +7461,21 @@ static inline krpc_error_t krpc_KRPC_Expression_CreateStruct(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_CreateStruct_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t type, const krpc_list_object_t * fieldValues) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3864123124, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &type));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_list_object, fieldValues));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CreateStruct_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3864123124, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_CreateTuple(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * elements) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 96, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3395699790, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_list_object, elements));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3615,10 +7489,20 @@ static inline krpc_error_t krpc_KRPC_Expression_CreateTuple(krpc_connection_t co
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_CreateTuple_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * elements) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3395699790, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_list_object, elements));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_CreateTuple_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3395699790, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_DictionaryKeys(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t dictionary) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 35, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 4222603760, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &dictionary));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3630,12 +7514,22 @@ static inline krpc_error_t krpc_KRPC_Expression_DictionaryKeys(krpc_connection_t
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_DictionaryKeys_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t dictionary) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4222603760, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &dictionary));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_DictionaryKeys_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4222603760, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_DictionaryValues(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t dictionary) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 36, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1846262064, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &dictionary));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3649,10 +7543,20 @@ static inline krpc_error_t krpc_KRPC_Expression_DictionaryValues(krpc_connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_DictionaryValues_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t dictionary) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1846262064, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &dictionary));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_DictionaryValues_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1846262064, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Distinct(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 42, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3445747566, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3666,10 +7570,20 @@ static inline krpc_error_t krpc_KRPC_Expression_Distinct(krpc_connection_t conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Distinct_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3445747566, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Distinct_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3445747566, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Divide(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 137, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3693031283, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3684,10 +7598,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Divide(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Divide_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3693031283, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Divide_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3693031283, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ElementAt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 39, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2809452898, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3702,10 +7627,21 @@ static inline krpc_error_t krpc_KRPC_Expression_ElementAt(krpc_connection_t conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ElementAt_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2809452898, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &index));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ElementAt_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2809452898, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Equal(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 120, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2900850024, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3720,10 +7656,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Equal(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Equal_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2900850024, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Equal_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2900850024, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Except(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 46, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2847433061, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg1));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg2));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3738,10 +7685,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Except(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Except_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2847433061, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg2));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Except_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2847433061, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ExclusiveOr(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 130, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 319120912, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3756,10 +7714,21 @@ static inline krpc_error_t krpc_KRPC_Expression_ExclusiveOr(krpc_connection_t co
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ExclusiveOr_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 319120912, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ExclusiveOr_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 319120912, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_First(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 37, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3091450428, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3773,10 +7742,20 @@ static inline krpc_error_t krpc_KRPC_Expression_First(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_First_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3091450428, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_First_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3091450428, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ForEach(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t variable, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t body) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 78, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 859623547, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &variable));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &collection));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &body));
@@ -3792,10 +7771,22 @@ static inline krpc_error_t krpc_KRPC_Expression_ForEach(krpc_connection_t connec
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ForEach_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t variable, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t body) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 859623547, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &variable));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &collection));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &body));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ForEach_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 859623547, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Get(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 23, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2486819832, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3810,10 +7801,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Get(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Get_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2486819832, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &index));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Get_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2486819832, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_GetField(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 104, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2008823776, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3828,10 +7830,50 @@ static inline krpc_error_t krpc_KRPC_Expression_GetField(krpc_connection_t conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_GetField_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, const char * name) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2008823776, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &name));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_GetField_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2008823776, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_GetFieldByIndex(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, int32_t index) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 1, 2240288813, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_int32, &index));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_GetFieldByIndex_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, int32_t index) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2240288813, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_int32, &index));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_GetFieldByIndex_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2240288813, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_GreaterThan(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 122, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1666989273, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3844,12 +7886,23 @@ static inline krpc_error_t krpc_KRPC_Expression_GreaterThan(krpc_connection_t co
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_GreaterThan_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1666989273, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_GreaterThan_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1666989273, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_GreaterThanOrEqual(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 123, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 89939750, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3864,10 +7917,21 @@ static inline krpc_error_t krpc_KRPC_Expression_GreaterThanOrEqual(krpc_connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_GreaterThanOrEqual_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 89939750, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_GreaterThanOrEqual_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 89939750, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_GroupBy(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 48, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3704697686, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &key));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3882,10 +7946,21 @@ static inline krpc_error_t krpc_KRPC_Expression_GroupBy(krpc_connection_t connec
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_GroupBy_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3704697686, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &key));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_GroupBy_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3704697686, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_IfThen(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 71, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3433680604, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &condition));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &body));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3900,10 +7975,21 @@ static inline krpc_error_t krpc_KRPC_Expression_IfThen(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_IfThen_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3433680604, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &condition));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &body));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_IfThen_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3433680604, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_IfThenElse(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t elseBody) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 72, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 4040154610, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &condition));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &body));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &elseBody));
@@ -3919,10 +8005,22 @@ static inline krpc_error_t krpc_KRPC_Expression_IfThenElse(krpc_connection_t con
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_IfThenElse_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t elseBody) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4040154610, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &condition));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &body));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &elseBody));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_IfThenElse_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4040154610, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Intersect(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 45, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 4011337072, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg1));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg2));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3937,10 +8035,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Intersect(krpc_connection_t conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Intersect_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4011337072, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg2));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Intersect_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4011337072, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Invoke(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t function, const krpc_dictionary_string_object_t * args) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 145, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3561229532, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &function));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_dictionary_string_object, args));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3955,10 +8064,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Invoke(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Invoke_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t function, const krpc_dictionary_string_object_t * args) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3561229532, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &function));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_dictionary_string_object, args));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Invoke_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3561229532, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_IsNull(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 117, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1714356854, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -3972,10 +8092,20 @@ static inline krpc_error_t krpc_KRPC_Expression_IsNull(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_IsNull_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1714356854, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_IsNull_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1714356854, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Lambda(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * parameters, krpc_KRPC_Expression_t body) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 144, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2224886924, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_list_object, parameters));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &body));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -3990,10 +8120,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Lambda(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Lambda_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * parameters, krpc_KRPC_Expression_t body) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2224886924, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_list_object, parameters));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &body));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Lambda_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2224886924, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Last(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 38, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 266847350, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4005,12 +8146,22 @@ static inline krpc_error_t krpc_KRPC_Expression_Last(krpc_connection_t connectio
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Last_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 266847350, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Last_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 266847350, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_LeftShift(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 140, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2502101610, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4023,12 +8174,23 @@ static inline krpc_error_t krpc_KRPC_Expression_LeftShift(krpc_connection_t conn
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_LeftShift_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2502101610, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_LeftShift_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2502101610, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_LessThan(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 124, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 810458165, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4041,12 +8203,23 @@ static inline krpc_error_t krpc_KRPC_Expression_LessThan(krpc_connection_t conne
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_LessThan_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 810458165, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_LessThan_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 810458165, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_LessThanOrEqual(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 125, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1782594424, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4059,12 +8232,54 @@ static inline krpc_error_t krpc_KRPC_Expression_LessThanOrEqual(krpc_connection_
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_LessThanOrEqual_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1782594424, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_LessThanOrEqual_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1782594424, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Match(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t value, const krpc_list_list_object_t * cases, const krpc_list_object_t * bodies) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 1, 3400470103, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &value));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_list_list_object, cases));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_list_object, bodies));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Match_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t value, const krpc_list_list_object_t * cases, const krpc_list_object_t * bodies) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3400470103, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &value));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_list_list_object, cases));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_list_object, bodies));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Match_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3400470103, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_Max(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 26, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1950537990, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4076,12 +8291,22 @@ static inline krpc_error_t krpc_KRPC_Expression_Max(krpc_connection_t connection
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Max_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1950537990, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Max_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1950537990, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_MaxBy(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 41, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2979752876, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &key));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4094,12 +8319,23 @@ static inline krpc_error_t krpc_KRPC_Expression_MaxBy(krpc_connection_t connecti
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_MaxBy_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2979752876, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &key));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_MaxBy_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2979752876, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_Min(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 27, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3368686969, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4111,12 +8347,22 @@ static inline krpc_error_t krpc_KRPC_Expression_Min(krpc_connection_t connection
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Min_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3368686969, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Min_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3368686969, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_MinBy(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 40, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3106265522, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &key));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4129,12 +8375,23 @@ static inline krpc_error_t krpc_KRPC_Expression_MinBy(krpc_connection_t connecti
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_MinBy_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3106265522, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &key));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_MinBy_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3106265522, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_Modulo(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 138, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 748817221, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4147,12 +8404,23 @@ static inline krpc_error_t krpc_KRPC_Expression_Modulo(krpc_connection_t connect
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Modulo_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 748817221, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Modulo_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 748817221, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_Multiply(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 136, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 936044631, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4165,12 +8433,23 @@ static inline krpc_error_t krpc_KRPC_Expression_Multiply(krpc_connection_t conne
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Multiply_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 936044631, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Multiply_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 936044631, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_Negate(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 132, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1218065707, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4182,12 +8461,22 @@ static inline krpc_error_t krpc_KRPC_Expression_Negate(krpc_connection_t connect
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Negate_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1218065707, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Negate_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1218065707, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_Not(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 131, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1706259104, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4201,10 +8490,20 @@ static inline krpc_error_t krpc_KRPC_Expression_Not(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Not_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1706259104, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Not_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1706259104, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_NotEqual(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 121, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1768770126, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4217,12 +8516,23 @@ static inline krpc_error_t krpc_KRPC_Expression_NotEqual(krpc_connection_t conne
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_NotEqual_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1768770126, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_NotEqual_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1768770126, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_Or(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 127, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1799016978, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4237,10 +8547,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Or(krpc_connection_t connection,
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Or_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1799016978, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Or_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1799016978, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_OrderBy(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 54, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 240133706, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &key));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4255,10 +8576,21 @@ static inline krpc_error_t krpc_KRPC_Expression_OrderBy(krpc_connection_t connec
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_OrderBy_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t key) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 240133706, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &key));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_OrderBy_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 240133706, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Parameter(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * name, krpc_KRPC_Type_t type) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 143, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1654119025, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &name));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &type));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4273,10 +8605,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Parameter(krpc_connection_t conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Parameter_call(krpc_schema_ProcedureCall * procedureCall, const char * name, krpc_KRPC_Type_t type) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1654119025, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &type));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Parameter_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1654119025, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Power(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 139, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 800786985, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4291,10 +8634,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Power(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Power_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 800786985, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Power_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 800786985, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Remove(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 63, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 84531411, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &collection));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4309,10 +8663,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Remove(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Remove_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 84531411, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &collection));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Remove_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 84531411, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_RemoveAt(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t list, krpc_KRPC_Expression_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 64, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3104170062, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &list));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4327,10 +8692,21 @@ static inline krpc_error_t krpc_KRPC_Expression_RemoveAt(krpc_connection_t conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_RemoveAt_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t list, krpc_KRPC_Expression_t index) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3104170062, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &list));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &index));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_RemoveAt_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3104170062, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Return(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 75, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1888876112, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4344,9 +8720,19 @@ static inline krpc_error_t krpc_KRPC_Expression_Return(krpc_connection_t connect
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Return_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1888876112, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Return_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1888876112, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ReturnNothing(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 76, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 2450249191, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -4359,10 +8745,19 @@ static inline krpc_error_t krpc_KRPC_Expression_ReturnNothing(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ReturnNothing_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2450249191, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ReturnNothing_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2450249191, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Reverse(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 43, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3228242213, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4376,10 +8771,20 @@ static inline krpc_error_t krpc_KRPC_Expression_Reverse(krpc_connection_t connec
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Reverse_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3228242213, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Reverse_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3228242213, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_RightShift(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 141, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2773935337, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4394,10 +8799,21 @@ static inline krpc_error_t krpc_KRPC_Expression_RightShift(krpc_connection_t con
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_RightShift_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2773935337, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_RightShift_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2773935337, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Select(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 29, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3620238914, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &func));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4410,12 +8826,23 @@ static inline krpc_error_t krpc_KRPC_Expression_Select(krpc_connection_t connect
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Select_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3620238914, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &func));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Select_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3620238914, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_SelectMany(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 33, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2119881453, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &func));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4430,10 +8857,21 @@ static inline krpc_error_t krpc_KRPC_Expression_SelectMany(krpc_connection_t con
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_SelectMany_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2119881453, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &func));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_SelectMany_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2119881453, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Set(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t index, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 62, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2310338212, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &collection));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &index));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &value));
@@ -4449,10 +8887,22 @@ static inline krpc_error_t krpc_KRPC_Expression_Set(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Set_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t collection, krpc_KRPC_Expression_t index, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2310338212, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &collection));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &index));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Set_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2310338212, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Skip(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t count) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 31, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3841397067, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &count));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4467,10 +8917,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Skip(krpc_connection_t connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Skip_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t count) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3841397067, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &count));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Skip_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3841397067, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StateVariable(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * name, krpc_KRPC_Expression_t initialValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 67, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3105493196, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &name));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &initialValue));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4485,10 +8946,21 @@ static inline krpc_error_t krpc_KRPC_Expression_StateVariable(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StateVariable_call(krpc_schema_ProcedureCall * procedureCall, const char * name, krpc_KRPC_Expression_t initialValue) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3105493196, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &initialValue));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StateVariable_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3105493196, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringConcat(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const krpc_list_object_t * args) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 80, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2425227664, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_list_object, args));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4502,10 +8974,20 @@ static inline krpc_error_t krpc_KRPC_Expression_StringConcat(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringConcat_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * args) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2425227664, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_list_object, args));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringConcat_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2425227664, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringContains(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 85, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3169948893, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4518,12 +9000,23 @@ static inline krpc_error_t krpc_KRPC_Expression_StringContains(krpc_connection_t
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringContains_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3169948893, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringContains_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3169948893, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_StringEndsWith(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 87, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 880643223, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4538,10 +9031,21 @@ static inline krpc_error_t krpc_KRPC_Expression_StringEndsWith(krpc_connection_t
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringEndsWith_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 880643223, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringEndsWith_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 880643223, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringGet(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 82, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 4017627622, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &index));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4556,10 +9060,21 @@ static inline krpc_error_t krpc_KRPC_Expression_StringGet(krpc_connection_t conn
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringGet_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t index) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4017627622, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &index));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringGet_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4017627622, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringIndexOf(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 84, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2426422537, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4574,10 +9089,21 @@ static inline krpc_error_t krpc_KRPC_Expression_StringIndexOf(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringIndexOf_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2426422537, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringIndexOf_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2426422537, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringJoin(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t separator, krpc_KRPC_Expression_t values) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 95, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 273789343, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &separator));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &values));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4592,10 +9118,21 @@ static inline krpc_error_t krpc_KRPC_Expression_StringJoin(krpc_connection_t con
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringJoin_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t separator, krpc_KRPC_Expression_t values) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 273789343, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &separator));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &values));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringJoin_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 273789343, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringLength(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 81, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1158461125, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4609,10 +9146,20 @@ static inline krpc_error_t krpc_KRPC_Expression_StringLength(krpc_connection_t c
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringLength_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1158461125, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringLength_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1158461125, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringReplace(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t oldValue, krpc_KRPC_Expression_t newValue) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 93, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2577070939, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &oldValue));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &newValue));
@@ -4628,10 +9175,22 @@ static inline krpc_error_t krpc_KRPC_Expression_StringReplace(krpc_connection_t 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringReplace_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t oldValue, krpc_KRPC_Expression_t newValue) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2577070939, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &oldValue));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &newValue));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringReplace_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2577070939, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringSplit(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t separator) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 94, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2058416925, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &separator));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4646,10 +9205,21 @@ static inline krpc_error_t krpc_KRPC_Expression_StringSplit(krpc_connection_t co
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringSplit_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t separator) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2058416925, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &separator));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringSplit_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2058416925, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringStartsWith(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 86, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3825314223, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &value));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4664,10 +9234,21 @@ static inline krpc_error_t krpc_KRPC_Expression_StringStartsWith(krpc_connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringStartsWith_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t value) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3825314223, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &value));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringStartsWith_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3825314223, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringSubstring(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t start, krpc_KRPC_Expression_t length) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 83, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1990863857, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &start));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &length));
@@ -4683,10 +9264,22 @@ static inline krpc_error_t krpc_KRPC_Expression_StringSubstring(krpc_connection_
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringSubstring_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t start, krpc_KRPC_Expression_t length) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1990863857, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &start));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &length));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringSubstring_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1990863857, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_StringToLower(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 89, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2142674925, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4698,12 +9291,22 @@ static inline krpc_error_t krpc_KRPC_Expression_StringToLower(krpc_connection_t 
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringToLower_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2142674925, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringToLower_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2142674925, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_StringToUpper(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 88, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 4251479465, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4715,12 +9318,22 @@ static inline krpc_error_t krpc_KRPC_Expression_StringToUpper(krpc_connection_t 
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringToUpper_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4251479465, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringToUpper_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4251479465, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_StringTrim(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 90, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 605198152, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4732,12 +9345,22 @@ static inline krpc_error_t krpc_KRPC_Expression_StringTrim(krpc_connection_t con
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringTrim_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 605198152, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringTrim_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 605198152, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_StringTrimEnd(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 92, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2637974618, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4749,12 +9372,22 @@ static inline krpc_error_t krpc_KRPC_Expression_StringTrimEnd(krpc_connection_t 
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringTrimEnd_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2637974618, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringTrimEnd_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2637974618, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_StringTrimStart(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 91, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1251768013, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4768,10 +9401,20 @@ static inline krpc_error_t krpc_KRPC_Expression_StringTrimStart(krpc_connection_
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_StringTrimStart_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1251768013, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_StringTrimStart_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1251768013, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Subtract(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 135, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1084359052, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg0));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg1));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4786,10 +9429,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Subtract(krpc_connection_t conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Subtract_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg0, krpc_KRPC_Expression_t arg1) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1084359052, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg0));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg1));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Subtract_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1084359052, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Sum(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 25, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 770661817, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4803,10 +9457,51 @@ static inline krpc_error_t krpc_KRPC_Expression_Sum(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Sum_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 770661817, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Sum_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 770661817, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Switch(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t value, const krpc_list_list_object_t * cases, const krpc_list_object_t * bodies) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 1, 3730488420, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &value));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_list_list_object, cases));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_list_object, bodies));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Switch_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t value, const krpc_list_list_object_t * cases, const krpc_list_object_t * bodies) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3730488420, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &value));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_list_list_object, cases));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_list_object, bodies));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Switch_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3730488420, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Take(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t count) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 32, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 4077629481, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &count));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4821,10 +9516,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Take(krpc_connection_t connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Take_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t count) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4077629481, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &count));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Take_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4077629481, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Throw(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * service, const char * name, krpc_KRPC_Expression_t message) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 57, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1755652913, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &service));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &message));
@@ -4840,10 +9546,53 @@ static inline krpc_error_t krpc_KRPC_Expression_Throw(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Throw_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name, krpc_KRPC_Expression_t message) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1755652913, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &service));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &message));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Throw_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1755652913, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ThrowById(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, uint32_t serviceId, uint32_t exceptionId, krpc_KRPC_Expression_t message) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[3];
+  KRPC_CHECK(krpc_call(&_call, 1, 3150253298, 3, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_uint32, &exceptionId));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &message));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ThrowById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t exceptionId, krpc_KRPC_Expression_t message) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3150253298, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_uint32, &exceptionId));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &message));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ThrowById_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3150253298, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_ToList(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 21, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1257863673, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4855,12 +9604,22 @@ static inline krpc_error_t krpc_KRPC_Expression_ToList(krpc_connection_t connect
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ToList_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1257863673, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ToList_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1257863673, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Expression_ToSet(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 22, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3305669307, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -4874,10 +9633,20 @@ static inline krpc_error_t krpc_KRPC_Expression_ToSet(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_ToSet_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3305669307, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_ToSet_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3305669307, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_TryCatch(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t body, const char * service, const char * name, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler) {
   krpc_call_t _call;
   krpc_argument_t _arguments[5];
-  KRPC_CHECK(krpc_call(&_call, 1, 58, 5, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2847307273, 5, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &body));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &service));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_string, &name));
@@ -4899,10 +9668,28 @@ static inline krpc_error_t krpc_KRPC_Expression_TryCatch(krpc_connection_t conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_TryCatch_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t body, const char * service, const char * name, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2847307273, 5));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &body));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &service));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_string, &name));
+  if (message == KRPC_NULL) {
+    KRPC_CHECK(krpc_procedure_call_null_argument(procedureCall, 3));
+  } else {
+    KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 3, &krpc_encode_callback_object, &message));
+  }
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 4, &krpc_encode_callback_object, &handler));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_TryCatch_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2847307273, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_TryCatchAll(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 59, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 536395474, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &body));
   if (message == KRPC_NULL) {
     KRPC_CHECK(krpc_add_null_argument(&_call, 1));
@@ -4922,10 +9709,69 @@ static inline krpc_error_t krpc_KRPC_Expression_TryCatchAll(krpc_connection_t co
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchAll_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 536395474, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &body));
+  if (message == KRPC_NULL) {
+    KRPC_CHECK(krpc_procedure_call_null_argument(procedureCall, 1));
+  } else {
+    KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &message));
+  }
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &handler));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchAll_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 536395474, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchById(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t body, uint32_t serviceId, uint32_t exceptionId, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[5];
+  KRPC_CHECK(krpc_call(&_call, 1, 2497801587, 5, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &body));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_uint32, &exceptionId));
+  if (message == KRPC_NULL) {
+    KRPC_CHECK(krpc_add_null_argument(&_call, 3));
+  } else {
+    KRPC_CHECK(krpc_add_argument(&_call, 3, &krpc_encode_callback_object, &message));
+  }
+  KRPC_CHECK(krpc_add_argument(&_call, 4, &krpc_encode_callback_object, &handler));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchById_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t body, uint32_t serviceId, uint32_t exceptionId, krpc_KRPC_Expression_t message, krpc_KRPC_Expression_t handler) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2497801587, 5));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &body));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_uint32, &exceptionId));
+  if (message == KRPC_NULL) {
+    KRPC_CHECK(krpc_procedure_call_null_argument(procedureCall, 3));
+  } else {
+    KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 3, &krpc_encode_callback_object, &message));
+  }
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 4, &krpc_encode_callback_object, &handler));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_TryCatchById_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2497801587, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_TryFinally(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t finalizer) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 60, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3120304961, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &body));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &finalizer));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4940,10 +9786,21 @@ static inline krpc_error_t krpc_KRPC_Expression_TryFinally(krpc_connection_t con
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_TryFinally_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t body, krpc_KRPC_Expression_t finalizer) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3120304961, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &body));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &finalizer));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_TryFinally_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3120304961, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Union(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 44, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2470515057, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg1));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg2));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4958,10 +9815,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Union(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Union_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2470515057, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg2));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Union_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2470515057, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Variable(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, const char * name, krpc_KRPC_Type_t type) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 66, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 316470410, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &name));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &type));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4976,10 +9844,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Variable(krpc_connection_t conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Variable_call(krpc_schema_ProcedureCall * procedureCall, const char * name, krpc_KRPC_Type_t type) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 316470410, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &name));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &type));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Variable_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 316470410, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Where(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 30, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2497581911, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &func));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -4994,10 +9873,21 @@ static inline krpc_error_t krpc_KRPC_Expression_Where(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Where_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg, krpc_KRPC_Expression_t func) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2497581911, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &func));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Where_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2497581911, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_While(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 77, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 379167417, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &condition));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &body));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -5012,10 +9902,21 @@ static inline krpc_error_t krpc_KRPC_Expression_While(krpc_connection_t connecti
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_While_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t condition, krpc_KRPC_Expression_t body) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 379167417, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &condition));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &body));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_While_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 379167417, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Expression_Zip(krpc_connection_t connection, krpc_KRPC_Expression_t * returnValue, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2, krpc_KRPC_Expression_t func) {
   krpc_call_t _call;
   krpc_argument_t _arguments[3];
-  KRPC_CHECK(krpc_call(&_call, 1, 47, 3, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2868001704, 3, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &arg1));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &arg2));
   KRPC_CHECK(krpc_add_argument(&_call, 2, &krpc_encode_callback_object, &func));
@@ -5031,10 +9932,22 @@ static inline krpc_error_t krpc_KRPC_Expression_Zip(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Expression_Zip_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Expression_t arg1, krpc_KRPC_Expression_t arg2, krpc_KRPC_Expression_t func) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2868001704, 3));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &arg1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &arg2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 2, &krpc_encode_callback_object, &func));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Expression_Zip_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2868001704, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_Code(krpc_connection_t connection, krpc_KRPC_TypeCode_t * returnValue, krpc_KRPC_Type_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 166, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 606384462, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -5048,10 +9961,20 @@ static inline krpc_error_t krpc_KRPC_Type_Code(krpc_connection_t connection, krp
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_Code_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 606384462, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Code_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 606384462, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_Name(krpc_connection_t connection, char * * returnValue, krpc_KRPC_Type_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 168, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3411906158, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -5065,10 +9988,20 @@ static inline krpc_error_t krpc_KRPC_Type_Name(krpc_connection_t connection, cha
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_Name_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3411906158, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Name_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3411906158, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_Nullable(krpc_connection_t connection, bool * returnValue, krpc_KRPC_Type_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 170, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3435768660, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -5082,10 +10015,20 @@ static inline krpc_error_t krpc_KRPC_Type_Nullable(krpc_connection_t connection,
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_Nullable_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3435768660, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Nullable_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3435768660, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_Service(krpc_connection_t connection, char * * returnValue, krpc_KRPC_Type_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 167, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3269084815, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -5099,10 +10042,20 @@ static inline krpc_error_t krpc_KRPC_Type_Service(krpc_connection_t connection, 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_Service_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3269084815, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Service_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3269084815, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_Types(krpc_connection_t connection, krpc_list_object_t * returnValue, krpc_KRPC_Type_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 169, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 203071539, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -5116,9 +10069,19 @@ static inline krpc_error_t krpc_KRPC_Type_Types(krpc_connection_t connection, kr
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_Types_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 203071539, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Types_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 203071539, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_Bool(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 155, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 2206882178, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -5131,9 +10094,18 @@ static inline krpc_error_t krpc_KRPC_Type_Bool(krpc_connection_t connection, krp
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_Bool_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2206882178, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Bool_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2206882178, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_Bytes(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 157, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 336434841, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -5144,12 +10116,21 @@ static inline krpc_error_t krpc_KRPC_Type_Bytes(krpc_connection_t connection, kr
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Bytes_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 336434841, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Bytes_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 336434841, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Type_ClassType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, const char * service, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 158, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1466660596, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &service));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -5164,10 +10145,50 @@ static inline krpc_error_t krpc_KRPC_Type_ClassType(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_ClassType_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1466660596, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &service));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &name));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_ClassType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1466660596, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Type_ClassTypeById(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, uint32_t serviceId, uint32_t classId) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 1, 696475116, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_uint32, &classId));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_ClassTypeById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t classId) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 696475116, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_uint32, &classId));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_ClassTypeById_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 696475116, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_DictionaryType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Type_t keyType, krpc_KRPC_Type_t valueType) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 164, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 2680469682, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &keyType));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_object, &valueType));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -5182,9 +10203,20 @@ static inline krpc_error_t krpc_KRPC_Type_DictionaryType(krpc_connection_t conne
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_DictionaryType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t keyType, krpc_KRPC_Type_t valueType) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2680469682, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &keyType));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_object, &valueType));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_DictionaryType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2680469682, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_Double(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 149, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 3290229521, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -5195,12 +10227,21 @@ static inline krpc_error_t krpc_KRPC_Type_Double(krpc_connection_t connection, k
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Double_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3290229521, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Double_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3290229521, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Type_EnumerationType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, const char * service, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 159, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3684507858, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &service));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -5215,9 +10256,23 @@ static inline krpc_error_t krpc_KRPC_Type_EnumerationType(krpc_connection_t conn
   return KRPC_OK;
 }
 
-static inline krpc_error_t krpc_KRPC_Type_Float(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
+static inline krpc_error_t krpc_KRPC_Type_EnumerationType_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3684507858, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &service));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &name));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_EnumerationType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3684507858, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Type_EnumerationTypeById(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, uint32_t serviceId, uint32_t enumerationId) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 150, 0, NULL));
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 1, 430603077, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_uint32, &enumerationId));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -5230,9 +10285,20 @@ static inline krpc_error_t krpc_KRPC_Type_Float(krpc_connection_t connection, kr
   return KRPC_OK;
 }
 
-static inline krpc_error_t krpc_KRPC_Type_Int(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
+static inline krpc_error_t krpc_KRPC_Type_EnumerationTypeById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t enumerationId) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 430603077, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_uint32, &enumerationId));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_EnumerationTypeById_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 430603077, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Float(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 151, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 2105993990, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -5243,12 +10309,45 @@ static inline krpc_error_t krpc_KRPC_Type_Int(krpc_connection_t connection, krpc
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Float_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 2105993990, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Float_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 2105993990, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Int(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
+  krpc_call_t _call;
+  KRPC_CHECK(krpc_call(&_call, 1, 4173010872, 0, NULL));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Int_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4173010872, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Int_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4173010872, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Type_ListType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Type_t valueType) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 162, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1276224415, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &valueType));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -5262,9 +10361,19 @@ static inline krpc_error_t krpc_KRPC_Type_ListType(krpc_connection_t connection,
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_ListType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1276224415, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &valueType));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_ListType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1276224415, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_Long(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 152, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 1364333811, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -5275,12 +10384,21 @@ static inline krpc_error_t krpc_KRPC_Type_Long(krpc_connection_t connection, krp
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Long_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1364333811, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_Long_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1364333811, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Type_NullableType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Type_t valueType) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 165, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 3364958950, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &valueType));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -5292,12 +10410,22 @@ static inline krpc_error_t krpc_KRPC_Type_NullableType(krpc_connection_t connect
   }
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_NullableType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 3364958950, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &valueType));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_NullableType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 3364958950, 0);
 }
 
 static inline krpc_error_t krpc_KRPC_Type_SetType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, krpc_KRPC_Type_t valueType) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 163, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1480586943, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &valueType));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -5311,9 +10439,19 @@ static inline krpc_error_t krpc_KRPC_Type_SetType(krpc_connection_t connection, 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_SetType_call(krpc_schema_ProcedureCall * procedureCall, krpc_KRPC_Type_t valueType) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1480586943, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &valueType));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_SetType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1480586943, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_String(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 156, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 269923514, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -5326,10 +10464,19 @@ static inline krpc_error_t krpc_KRPC_Type_String(krpc_connection_t connection, k
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_String_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 269923514, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_String_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 269923514, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_StructType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, const char * service, const char * name) {
   krpc_call_t _call;
   krpc_argument_t _arguments[2];
-  KRPC_CHECK(krpc_call(&_call, 1, 160, 2, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1427061179, 2, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_string, &service));
   KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_string, &name));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
@@ -5344,10 +10491,50 @@ static inline krpc_error_t krpc_KRPC_Type_StructType(krpc_connection_t connectio
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_StructType_call(krpc_schema_ProcedureCall * procedureCall, const char * service, const char * name) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1427061179, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_string, &service));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_string, &name));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_StructType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1427061179, 0);
+}
+
+static inline krpc_error_t krpc_KRPC_Type_StructTypeById(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, uint32_t serviceId, uint32_t structId) {
+  krpc_call_t _call;
+  krpc_argument_t _arguments[2];
+  KRPC_CHECK(krpc_call(&_call, 1, 1565899206, 2, _arguments));
+  KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_add_argument(&_call, 1, &krpc_encode_callback_uint32, &structId));
+  krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
+  KRPC_CHECK(krpc_init_result(&_result));
+  KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
+  if (returnValue) {
+    pb_istream_t _stream;
+    KRPC_CHECK(krpc_get_return_value(&_result, &_stream));
+    KRPC_CHECK(krpc_decode_object(&_stream, returnValue));
+  }
+  KRPC_CHECK(krpc_free_result(&_result));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_StructTypeById_call(krpc_schema_ProcedureCall * procedureCall, uint32_t serviceId, uint32_t structId) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1565899206, 2));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint32, &serviceId));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 1, &krpc_encode_callback_uint32, &structId));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_StructTypeById_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1565899206, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_TupleType(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue, const krpc_list_object_t * valueTypes) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 1, 161, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 1, 1091289324, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_list_object, valueTypes));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -5361,9 +10548,19 @@ static inline krpc_error_t krpc_KRPC_Type_TupleType(krpc_connection_t connection
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_TupleType_call(krpc_schema_ProcedureCall * procedureCall, const krpc_list_object_t * valueTypes) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 1091289324, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_list_object, valueTypes));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_TupleType_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 1091289324, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_UInt(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 153, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 4033596331, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -5376,9 +10573,18 @@ static inline krpc_error_t krpc_KRPC_Type_UInt(krpc_connection_t connection, krp
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_KRPC_Type_UInt_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 4033596331, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_UInt_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 4033596331, 0);
+}
+
 static inline krpc_error_t krpc_KRPC_Type_ULong(krpc_connection_t connection, krpc_KRPC_Type_t * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 1, 154, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 1, 977906162, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -5390,6 +10596,17 @@ static inline krpc_error_t krpc_KRPC_Type_ULong(krpc_connection_t connection, kr
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
+
+static inline krpc_error_t krpc_KRPC_Type_ULong_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 1, 977906162, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_KRPC_Type_ULong_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 1, 977906162, 0);
+}
+
+KRPC_DEPRECATED_USES_END
 
 #ifdef __cplusplus
 }  // extern "C"

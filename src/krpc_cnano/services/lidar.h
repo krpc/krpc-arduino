@@ -17,9 +17,12 @@
 extern "C" {
 #endif
 
+KRPC_DEPRECATED_USES_BEGIN
+
 /**
- * A LaserDist laser.
+ * A LiDAR. Obtained by calling krpc_LIDAR_Laser().
  */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
 typedef krpc_object_t krpc_LIDAR_Laser_t;
 
 #ifndef KRPC_TYPE_LIST_DOUBLE
@@ -42,26 +45,92 @@ static inline krpc_error_t krpc_decode_list_double(
 
 #endif  // KRPC_TYPE_LIST_DOUBLE
 
+#define KRPC_CLASS_LIDAR_LASER 10u, 1766711096u
+
 /**
- * Get a LaserDist part.
+ * Get the LiDAR on a part.
  */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
 static inline krpc_error_t krpc_LIDAR_Laser(krpc_connection_t connection, krpc_LIDAR_Laser_t * returnValue, krpc_SpaceCenter_Part_t part);
 
 /**
- * Check if the LaserDist API is available.
+ * Fills in the call krpc_LIDAR_Laser() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
  */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
+static inline krpc_error_t krpc_LIDAR_Laser_call(krpc_schema_ProcedureCall * procedureCall, krpc_SpaceCenter_Part_t part);
+
+/**
+ * Fills in the call template of krpc_LIDAR_Laser(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
+static inline krpc_error_t krpc_LIDAR_Laser_call_template(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Whether the LiDAR mod is installed.
+ */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
 static inline krpc_error_t krpc_LIDAR_Available(krpc_connection_t connection, bool * returnValue);
+
+/**
+ * Fills in the call krpc_LIDAR_Available() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
+static inline krpc_error_t krpc_LIDAR_Available_call(krpc_schema_ProcedureCall * procedureCall);
+
+/**
+ * Fills in the call template of krpc_LIDAR_Available(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
+static inline krpc_error_t krpc_LIDAR_Available_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Get the point cloud from the LiDAR.
  * Returns an empty list on failure.
  */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
 static inline krpc_error_t krpc_LIDAR_Laser_Cloud(krpc_connection_t connection, krpc_list_double_t * returnValue, krpc_LIDAR_Laser_t instance);
+
+/**
+ * Fills in the call krpc_LIDAR_Laser_Cloud() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
+static inline krpc_error_t krpc_LIDAR_Laser_Cloud_call(krpc_schema_ProcedureCall * procedureCall, krpc_LIDAR_Laser_t instance);
+
+/**
+ * Fills in the call template of krpc_LIDAR_Laser_Cloud(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
+static inline krpc_error_t krpc_LIDAR_Laser_Cloud_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 /**
  * Get the part containing this LiDAR.
  */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
 static inline krpc_error_t krpc_LIDAR_Laser_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_LIDAR_Laser_t instance);
+
+/**
+ * Fills in the call krpc_LIDAR_Laser_Part() makes, to pass to krpc_KRPC_Expression_Call(). Free it with
+ * krpc_free_procedure_call().
+ */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
+static inline krpc_error_t krpc_LIDAR_Laser_Part_call(krpc_schema_ProcedureCall * procedureCall, krpc_LIDAR_Laser_t instance);
+
+/**
+ * Fills in the call template of krpc_LIDAR_Laser_Part(), which names the procedure and carries no
+ * arguments, to pass to krpc_KRPC_Expression_CallWithArguments(). Free it with
+ * krpc_free_procedure_call().
+ */
+KRPC_DEPRECATED("Use SpaceCenter.RaycastDistance instead.")
+static inline krpc_error_t krpc_LIDAR_Laser_Part_call_template(krpc_schema_ProcedureCall * procedureCall);
 
 // Implementation
 
@@ -149,7 +218,7 @@ static inline krpc_error_t krpc_decode_list_double(
 static inline krpc_error_t krpc_LIDAR_Laser(krpc_connection_t connection, krpc_LIDAR_Laser_t * returnValue, krpc_SpaceCenter_Part_t part) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 10, 1, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 10, 1766711096, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_object, &part));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -163,9 +232,19 @@ static inline krpc_error_t krpc_LIDAR_Laser(krpc_connection_t connection, krpc_L
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_LIDAR_Laser_call(krpc_schema_ProcedureCall * procedureCall, krpc_SpaceCenter_Part_t part) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 10, 1766711096, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_object, &part));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_LIDAR_Laser_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 10, 1766711096, 0);
+}
+
 static inline krpc_error_t krpc_LIDAR_Available(krpc_connection_t connection, bool * returnValue) {
   krpc_call_t _call;
-  KRPC_CHECK(krpc_call(&_call, 10, 2, 0, NULL));
+  KRPC_CHECK(krpc_call(&_call, 10, 265274134, 0, NULL));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
   KRPC_CHECK(krpc_invoke(connection, &_result.message, &_call.message));
@@ -178,10 +257,19 @@ static inline krpc_error_t krpc_LIDAR_Available(krpc_connection_t connection, bo
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_LIDAR_Available_call(krpc_schema_ProcedureCall * procedureCall) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 10, 265274134, 0));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_LIDAR_Available_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 10, 265274134, 0);
+}
+
 static inline krpc_error_t krpc_LIDAR_Laser_Cloud(krpc_connection_t connection, krpc_list_double_t * returnValue, krpc_LIDAR_Laser_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 10, 4, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 10, 2578323427, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -195,10 +283,20 @@ static inline krpc_error_t krpc_LIDAR_Laser_Cloud(krpc_connection_t connection, 
   return KRPC_OK;
 }
 
+static inline krpc_error_t krpc_LIDAR_Laser_Cloud_call(krpc_schema_ProcedureCall * procedureCall, krpc_LIDAR_Laser_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 10, 2578323427, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_LIDAR_Laser_Cloud_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 10, 2578323427, 0);
+}
+
 static inline krpc_error_t krpc_LIDAR_Laser_Part(krpc_connection_t connection, krpc_SpaceCenter_Part_t * returnValue, krpc_LIDAR_Laser_t instance) {
   krpc_call_t _call;
   krpc_argument_t _arguments[1];
-  KRPC_CHECK(krpc_call(&_call, 10, 3, 1, _arguments));
+  KRPC_CHECK(krpc_call(&_call, 10, 1723235999, 1, _arguments));
   KRPC_CHECK(krpc_add_argument(&_call, 0, &krpc_encode_callback_uint64, &instance));
   krpc_result_t _result = KRPC_RESULT_INIT_DEFAULT;
   KRPC_CHECK(krpc_init_result(&_result));
@@ -211,6 +309,18 @@ static inline krpc_error_t krpc_LIDAR_Laser_Part(krpc_connection_t connection, k
   KRPC_CHECK(krpc_free_result(&_result));
   return KRPC_OK;
 }
+
+static inline krpc_error_t krpc_LIDAR_Laser_Part_call(krpc_schema_ProcedureCall * procedureCall, krpc_LIDAR_Laser_t instance) {
+  KRPC_CHECK(krpc_procedure_call(procedureCall, 10, 1723235999, 1));
+  KRPC_CHECK(krpc_procedure_call_argument(procedureCall, 0, &krpc_encode_callback_uint64, &instance));
+  return KRPC_OK;
+}
+
+static inline krpc_error_t krpc_LIDAR_Laser_Part_call_template(krpc_schema_ProcedureCall * procedureCall) {
+  return krpc_procedure_call(procedureCall, 10, 1723235999, 0);
+}
+
+KRPC_DEPRECATED_USES_END
 
 #ifdef __cplusplus
 }  // extern "C"
